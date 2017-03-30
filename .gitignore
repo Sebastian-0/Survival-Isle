@@ -1,0 +1,56 @@
+*.class
+
+# Package Files #
+# *.jar
+*.war
+*.ear
+
+*.pydevproject
+.recommenders
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin 
+.target
+
+# TeXlipse plugin
+.texlipse
+
+# Windows stuff
+thumbs.db
+Thumbs.db
+
+# Gradle
+gradle-app.setting
+build/
+
+# other
+.src
+data.db
+backup.db
+*.ini
+*.jar
+
+
+
