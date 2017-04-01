@@ -5,8 +5,8 @@
 	<inherits name='com.badlogic.gdx.controllers.controllers-gwt' />
 	<inherits name='libgdx-utils' />
 
-	<inherits name='MyGdxGame' />
-	<entry-point class='com.mygdx.game.client.HtmlLauncher' />
+	<inherits name='SurvivalIsle' />
+	<entry-point class='isle.survival.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../core/assets" />
 </module>
