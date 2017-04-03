@@ -1,10 +1,15 @@
 package server;
 
-public class Server implements Runnable {
+import java.io.IOException;
 
-	@Override
-	public void run() {
+public class Server {
 
+	public void start() throws IOException {
+		new Thread(new ClientAccepter()).start();
+		new Thread(new ServerUpdater()).start();
 	}
-
+	
+	public static void main(String[] args) throws IOException {
+		new Server().start();
+	}
 }
