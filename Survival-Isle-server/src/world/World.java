@@ -3,6 +3,9 @@ package world;
 import java.util.Random;
 
 public class World {
+	public int TILE_WIDTH = 32;
+	public int TILE_HEIGHT = 32;
+	
 	protected int[][] ground;
 	protected int width;
 	protected int height;
