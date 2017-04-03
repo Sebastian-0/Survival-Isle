@@ -1,3 +1,4 @@
+package server;
 
 public class ConnectionClosedException extends RuntimeException {
 	public ConnectionClosedException() {
