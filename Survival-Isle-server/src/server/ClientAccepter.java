@@ -8,11 +8,10 @@ public class ClientAccepter implements Runnable {
 	
 	@Override
 	public void run() {
-		try {
-			ServerSocket serverSocket = new ServerSocket(1337);
+		try (ServerSocket serverSocket = new ServerSocket(1337)) {
 			while (true) {
 				Socket socket = serverSocket.accept();
-				new Thread(new ClientListener()).start();
+				new Thread(new ClientListener(new MessageHandler(socket))).start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
