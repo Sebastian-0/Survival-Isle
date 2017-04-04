@@ -1,4 +1,4 @@
-package world;
+package isle.survival.world;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -30,5 +30,12 @@ public class ClientWorld extends World {
 			}
 		}
 		batch.end();
+	}
+
+	public void dispose() {
+		batch.dispose();
+		for (Texture t : textures) {
+			t.dispose();
+		}
 	}
 }
