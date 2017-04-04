@@ -3,7 +3,7 @@ package isle.survival.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import isle.survival.SurvivalIsle;
+import isle.survival.SurvivalIsleClient;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +14,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new SurvivalIsle();
+                return new SurvivalIsleClient();
         }
 }
