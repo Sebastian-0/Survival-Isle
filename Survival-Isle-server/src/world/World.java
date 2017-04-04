@@ -7,7 +7,7 @@ public class World {
 	public static final int TILE_HEIGHT = 32;
 	
 	public enum GroundTile {
-		WATER(0, "grass.png"),
+		WATER(0, "water.png"),
 		GRASS(1, "grass.png");
 		
 		
