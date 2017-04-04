@@ -16,8 +16,10 @@ public class ClientWorld extends World {
 
 	private void setUpTextures() {
 		batch = new SpriteBatch();
-		textures[0] = new Texture("water.png");
-		textures[1] = new Texture("grass.png");
+		textures = new Texture[GroundTile.values().length];
+		for (GroundTile t : GroundTile.values()) {
+			textures[t.id] = new Texture(t.textureName);
+		}
 	}
 
 	public void drawTerrain() {
