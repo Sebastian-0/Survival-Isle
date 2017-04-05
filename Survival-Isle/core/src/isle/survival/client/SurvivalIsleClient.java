@@ -5,16 +5,19 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.ClientWorld;
 import server.MessageHandler;
 
 public class SurvivalIsleClient extends ApplicationAdapter {
-	ClientWorld world;
-	Socket socket;
+	private SpriteBatch spriteBatch;
+	private ClientWorld world;
+	private Socket socket;
 	
 	@Override
 	public void create () {
+		spriteBatch = new SpriteBatch();
 		world = new ClientWorld(20, 15);
 		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
@@ -46,11 +49,15 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	}
 	
 	private void draw() {
-		world.drawTerrain();
+		spriteBatch.begin();
+		world.drawTerrain(spriteBatch);
+
+		spriteBatch.end();
 	}
 	
 	@Override
 	public void dispose() {
+		spriteBatch.dispose();
 		world.dispose();
 		if (socket != null) {
 			try {
