@@ -34,7 +34,7 @@ public class Connection {
 		}
 
 
-	public void sendByte(int code) {
+	private void sendByte(int code) {
 		try {
 			socket.getOutputStream().write(code);
 		} catch (java.io.IOException e) {
@@ -76,7 +76,7 @@ public class Connection {
 	}
 
 
-	public int receiveByte() {
+	private int receiveByte() {
 		try {
 			int code = socket.getInputStream().read();
 			if (code == -1) {

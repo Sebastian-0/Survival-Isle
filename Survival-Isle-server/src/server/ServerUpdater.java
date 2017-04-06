@@ -4,8 +4,8 @@ public class ServerUpdater implements Runnable {
 	
 	private Game game;
 	
-	public ServerUpdater(Game server) {
-		this.game = server;
+	public ServerUpdater(Game game) {
+		this.game = game;
 	}
 	
 	@Override

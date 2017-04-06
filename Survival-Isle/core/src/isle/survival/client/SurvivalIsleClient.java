@@ -13,12 +13,14 @@ import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import server.Connection;
+import server.Protocol;
 import world.World;
 
 public class SurvivalIsleClient extends ApplicationAdapter {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private Socket socket;
+	private ClientProtocolCoder coder;
 	
 	private ClientWorld world;
 	private ArrayList<NetworkObject> networkObjects;
@@ -32,7 +34,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		textureBase = new TextureBase();
 		spriteBatch = new SpriteBatch();
 		networkObjects = new ArrayList<>();
-		world = new ClientWorld(20, 15, textureBase);
+		world = new ClientWorld(textureBase);
 		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
 		
@@ -43,8 +45,8 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	private void connectToServer() {
 		try {
 			socket = new Socket("localhost", 1337);
-			
-			new Thread(new ServerListener(new Connection(socket)));
+			coder = new ClientProtocolCoder(new Connection(socket));
+			new Thread(new ServerListener(this)).start();
 
 			System.out.println("Connected to host.");
 		} catch (UnknownHostException e) {
@@ -90,6 +92,18 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 			} catch (IOException e) {
 				System.err.println("Client could not close socket when terminating.");
 			}
+		}
+	}
+
+	public void parseServerMessage() {
+		Protocol code = coder.receiveCode();
+//		System.out.println("Client received: " + code);
+		switch (code) {
+		case SEND_WORLD:
+			world.receive(coder.getConnection());
+			break;
+		default:
+			break;
 		}
 	}
 }

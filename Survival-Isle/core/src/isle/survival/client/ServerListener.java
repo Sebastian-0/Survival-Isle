@@ -1,16 +1,17 @@
 package isle.survival.client;
 
-import server.Connection;
-
 public class ServerListener implements Runnable {
 	
-	private Connection messageHandler;
+	private SurvivalIsleClient client;
 
-	public ServerListener(Connection messageHandler) {
-		this.messageHandler = messageHandler;
+	public ServerListener(SurvivalIsleClient client) {
+		this.client = client;
 	}
 	
 	@Override
 	public void run() {
+		while (true) {
+			client.parseServerMessage();
+		}
 	}
 }

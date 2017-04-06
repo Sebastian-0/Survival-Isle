@@ -32,6 +32,9 @@ public class World {
 		ground = new int[width][height];
 	}
 	
+	protected World() {
+	}
+	
 	
 	public void GenerateTerrain(long seed) {
 		Random random = new Random(seed);
@@ -44,10 +47,10 @@ public class World {
 	}
 	
 	public void send(Connection connection) {
-		connection.sendInt(TILE_WIDTH);
-		connection.sendInt(TILE_HEIGHT);
-		for (int x = 0; x < TILE_WIDTH; x++) {
-			for (int y = 0; y < TILE_HEIGHT; y++) {
+		connection.sendInt(width);
+		connection.sendInt(height);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				connection.sendInt(ground[x][y]);
 			}
 		}
