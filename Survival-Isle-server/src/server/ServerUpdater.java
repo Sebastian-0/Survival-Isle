@@ -2,11 +2,17 @@ package server;
 
 public class ServerUpdater implements Runnable {
 	
+	private Game game;
+	
+	public ServerUpdater(Game server) {
+		this.game = server;
+	}
+	
 	@Override
 	public void run() {
 		while (true) {
 			long beforeUpdate = System.currentTimeMillis();
-			update();
+			game.update(0.016);
 			long afterUpdate = System.currentTimeMillis();
 			long sleepTime = 1000 / 60 - (afterUpdate - beforeUpdate);
 			try {
@@ -18,8 +24,5 @@ public class ServerUpdater implements Runnable {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	private void update() {
 	}
 }

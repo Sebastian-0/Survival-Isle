@@ -1,12 +1,12 @@
 package isle.survival.client;
 
-import server.MessageHandler;
+import server.Connection;
 
 public class ServerListener implements Runnable {
 	
-	private MessageHandler messageHandler;
+	private Connection messageHandler;
 
-	public ServerListener(MessageHandler messageHandler) {
+	public ServerListener(Connection messageHandler) {
 		this.messageHandler = messageHandler;
 	}
 	

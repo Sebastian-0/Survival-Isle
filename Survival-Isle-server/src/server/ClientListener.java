@@ -2,10 +2,10 @@ package server;
 
 public class ClientListener implements Runnable {
 	
-	private MessageHandler messageHandler;
+	private ServerProtocolCoder coder;
 
-	public ClientListener(MessageHandler messageHandler) {
-		this.messageHandler = messageHandler;
+	public ClientListener(ServerProtocolCoder coder) {
+		this.coder = coder;
 	}
 	
 	@Override
