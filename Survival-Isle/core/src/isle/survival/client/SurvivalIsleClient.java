@@ -8,17 +8,20 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.ClientWorld;
+import isle.survival.world.TextureBase;
 import server.MessageHandler;
 
 public class SurvivalIsleClient extends ApplicationAdapter {
+	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private ClientWorld world;
 	private Socket socket;
 	
 	@Override
 	public void create () {
+		textureBase = new TextureBase();
 		spriteBatch = new SpriteBatch();
-		world = new ClientWorld(20, 15);
+		world = new ClientWorld(20, 15, textureBase);
 		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
 	}
@@ -57,8 +60,8 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	
 	@Override
 	public void dispose() {
+		textureBase.dispose();
 		spriteBatch.dispose();
-		world.dispose();
 		if (socket != null) {
 			try {
 				socket.close();
