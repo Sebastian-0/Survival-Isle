@@ -7,21 +7,16 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Connection {
+	
 	private Socket socket;
 	private InputStream inStream;
 	private OutputStream outStream;
-
 	
 	public Connection(Socket socket) {
 		this.socket = socket;
 		inStream = new BufferedInputStream(inStream);
 		outStream = new BufferedOutputStream(outStream);
 	}
-
-	
-//	public void sendCode(int code) throws ConnectionClosedException {
-//		sendByte(code);
-//	}
 
 	public void sendInt(int value) {
 		sendByte((value >> 24) & 0xFF);
@@ -45,6 +40,11 @@ public class Connection {
 		} catch (java.io.IOException e) {
 			throw new ConnectionClosedException();
 		}
+	}
+
+
+	public void sendCode(Enum<?> protocolCode) {
+		sendInt(protocolCode.ordinal());
 	}
 
 

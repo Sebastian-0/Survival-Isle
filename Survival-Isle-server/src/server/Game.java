@@ -19,6 +19,10 @@ public class Game {
 	public void update(double deltaTime) {
 		
 		
+		initNewClients();
+	}
+
+	private void initNewClients() {
 		synchronized (joiningClients) {
 			joiningClients.forEach(client -> client.sendWorld(world));
 			clients.addAll(joiningClients);

@@ -11,6 +11,7 @@ public class ServerProtocolCoder {
 	}
 
 	public void sendWorld(World world) {
-		
+		connection.sendCode(Protocol.SEND_WORLD);
+		world.send(connection);
 	}
 }

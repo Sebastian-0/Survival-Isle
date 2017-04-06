@@ -2,6 +2,8 @@ package world;
 
 import java.util.Random;
 
+import server.Connection;
+
 public class World {
 	public static final int TILE_WIDTH = 32;
 	public static final int TILE_HEIGHT = 32;
@@ -34,12 +36,20 @@ public class World {
 	public void GenerateTerrain(long seed) {
 		Random random = new Random(seed);
 		
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				ground[i][j] = random.nextInt(2);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				ground[x][y] = random.nextInt(2);
 			}
 		}
 	}
 	
-	
+	public void send(Connection connection) {
+		connection.sendInt(TILE_WIDTH);
+		connection.sendInt(TILE_HEIGHT);
+		for (int x = 0; x < TILE_WIDTH; x++) {
+			for (int y = 0; y < TILE_HEIGHT; y++) {
+				connection.sendInt(ground[x][y]);
+			}
+		}
+	}
 }
