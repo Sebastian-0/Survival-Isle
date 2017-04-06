@@ -38,7 +38,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
 
-		playerObject = new NetworkObject(0, 0, 0, 0); //TODO
+		playerObject = new NetworkObject(10, 7, 0, 0); //TODO don't create here
 		networkObjects.add(playerObject);
 	}
 	
@@ -58,7 +58,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	}
 	
 	@Override
-	public void render () {
+	public void render() {
 		update();
 		draw();
 	}

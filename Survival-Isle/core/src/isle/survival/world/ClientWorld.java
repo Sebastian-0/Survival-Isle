@@ -1,5 +1,6 @@
 package isle.survival.world;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import server.Connection;
@@ -13,8 +14,12 @@ public class ClientWorld extends World {
 	}
 
 	public void drawTerrain(SpriteBatch spriteBatch, float xOffset, float yOffset) {
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
+		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
+		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
+		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH, width));
+		int endY = (int) (Math.min((yOffset + Gdx.graphics.getWidth()) / TILE_HEIGHT, height));
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
 				spriteBatch.draw(textureBase.getGroundTexture(ground[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
 			}
 		}
