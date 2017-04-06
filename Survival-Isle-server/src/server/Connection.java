@@ -2,11 +2,11 @@ package server;
 import java.io.IOException;
 import java.net.Socket;
 
-public class MessageHandler {
+public class Connection {
 	private Socket socket;
 
 	
-	public MessageHandler(Socket socket) {
+	public Connection(Socket socket) {
 		this.socket = socket;
 	}
 

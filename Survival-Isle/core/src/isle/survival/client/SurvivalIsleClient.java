@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.ClientWorld;
 import isle.survival.world.TextureBase;
-import server.MessageHandler;
+import server.Connection;
 
 public class SurvivalIsleClient extends ApplicationAdapter {
 	private TextureBase textureBase;
@@ -30,7 +30,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		try {
 			socket = new Socket("localhost", 1337);
 			
-			new Thread(new ServerListener(new MessageHandler(socket)));
+			new Thread(new ServerListener(new Connection(socket)));
 
 			System.out.println("Connected to host.");
 		} catch (UnknownHostException e) {
