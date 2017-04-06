@@ -1,10 +1,13 @@
 package isle.survival.world;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import world.World;
+
 public class NetworkObject {
-	private int x;
-	private int y;
+	private float x;
+	private float y;
 	private int netId;
 	private int textureId;
 	
@@ -15,8 +18,15 @@ public class NetworkObject {
 		this.textureId = textureId;
 	}
 	
-	public void draw(SpriteBatch spriteBatch, TextureBase textures, int xOffset, int yOffset) {
-		spriteBatch.draw(textures.getObjectTexture(textureId),x, y);
+	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
+		spriteBatch.draw(textures.getObjectTexture(textureId),x*World.TILE_WIDTH - xView, y*World.TILE_HEIGHT - yView);
 	}
-	
+
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
 }

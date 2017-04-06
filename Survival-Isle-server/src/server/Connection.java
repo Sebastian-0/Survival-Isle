@@ -6,22 +6,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class MessageHandler {
+public class Connection {
+	
 	private Socket socket;
 	private InputStream inStream;
 	private OutputStream outStream;
-
 	
-	public MessageHandler(Socket socket) {
+	public Connection(Socket socket) {
 		this.socket = socket;
 		inStream = new BufferedInputStream(inStream);
 		outStream = new BufferedOutputStream(outStream);
 	}
-
-	
-//	public void sendCode(int code) throws ConnectionClosedException {
-//		sendByte(code);
-//	}
 
 	public void sendInt(int value) {
 		sendByte((value >> 24) & 0xFF);
@@ -39,12 +34,17 @@ public class MessageHandler {
 		}
 
 
-	public void sendByte(int code) {
+	private void sendByte(int code) {
 		try {
 			socket.getOutputStream().write(code);
 		} catch (java.io.IOException e) {
 			throw new ConnectionClosedException();
 		}
+	}
+
+
+	public void sendCode(Enum<?> protocolCode) {
+		sendInt(protocolCode.ordinal());
 	}
 
 
@@ -76,7 +76,7 @@ public class MessageHandler {
 	}
 
 
-	public int receiveByte() {
+	private int receiveByte() {
 		try {
 			int code = socket.getInputStream().read();
 			if (code == -1) {

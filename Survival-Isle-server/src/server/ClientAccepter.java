@@ -6,12 +6,20 @@ import java.net.Socket;
 
 public class ClientAccepter implements Runnable {
 	
+	private Game game;
+	
+	public ClientAccepter(Game game) {
+		this.game = game;
+	}
+	
 	@Override
 	public void run() {
 		try (ServerSocket serverSocket = new ServerSocket(1337)) {
 			while (true) {
 				Socket socket = serverSocket.accept();
-				new Thread(new ClientListener(new MessageHandler(socket))).start();
+				ServerProtocolCoder client = new ServerProtocolCoder(new Connection(socket));
+				new Thread(new ClientListener(client)).start();
+				game.addClient(client);
 				System.out.println("Client connected.");
 			}
 		} catch (IOException e) {

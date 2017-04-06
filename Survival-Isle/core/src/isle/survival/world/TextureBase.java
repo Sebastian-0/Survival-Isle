@@ -14,7 +14,7 @@ public class TextureBase {
 	
 	public void setUpTextures() {
 		setUpGroundTileTextures();
-		objectTextures = new Texture[0];
+		setUpObjectTextures();
 	}
 	
 	private void setUpGroundTileTextures() {
@@ -24,6 +24,11 @@ public class TextureBase {
 		}
 	}
 	
+	private void setUpObjectTextures() {
+		objectTextures = new Texture[1];
+		objectTextures[0] = new Texture("player.png");
+	}
+
 	public void dispose() {
 		for (Texture t : groundTextures) {
 			t.dispose();
