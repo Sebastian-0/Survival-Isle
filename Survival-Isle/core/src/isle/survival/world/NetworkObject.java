@@ -17,8 +17,8 @@ public class NetworkObject {
 		this.textureId = textureId;
 	}
 	
-	public void draw(SpriteBatch spriteBatch, TextureBase textures, int xOffset, int yOffset) {
-		spriteBatch.draw(textures.getObjectTexture(textureId),x*World.TILE_WIDTH - xOffset, y*World.TILE_HEIGHT - yOffset);
+	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
+		spriteBatch.draw(textures.getObjectTexture(textureId),x*World.TILE_WIDTH - xView, y*World.TILE_HEIGHT - yView);
 	}
 
 	public float getX() {
