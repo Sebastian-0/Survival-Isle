@@ -35,6 +35,9 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		world = new ClientWorld(20, 15, textureBase);
 		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
+		
+		playerObject = new NetworkObject(0, 0, 0, 0); //TODO
+		networkObjects.add(playerObject);
 	}
 	
 	private void connectToServer() {
@@ -71,7 +74,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		spriteBatch.begin();
 		world.drawTerrain(spriteBatch, xView, yView);
 		for (NetworkObject networkObject : networkObjects) {
-			networkObject.draw(spriteBatch, textureBase, 0, 0); //TODO: add offset.
+			networkObject.draw(spriteBatch, textureBase, xView, yView); //TODO: add offset.
 		}
 		
 		spriteBatch.end();
