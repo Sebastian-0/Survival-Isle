@@ -14,7 +14,6 @@ public class TextureBase {
 	
 	public void setUpTextures() {
 		setUpGroundTileTextures();
-		//groundTextures = new Texture[0];
 		objectTextures = new Texture[0];
 	}
 	

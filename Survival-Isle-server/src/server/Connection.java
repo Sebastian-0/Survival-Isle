@@ -1,13 +1,21 @@
 package server;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 public class Connection {
 	private Socket socket;
+	private InputStream inStream;
+	private OutputStream outStream;
 
 	
 	public Connection(Socket socket) {
 		this.socket = socket;
+		inStream = new BufferedInputStream(inStream);
+		outStream = new BufferedOutputStream(outStream);
 	}
 
 	
