@@ -12,10 +12,10 @@ public class ClientWorld extends World {
 		this.textureBase = textureBase;
 	}
 
-	public void drawTerrain(SpriteBatch spriteBatch) {
+	public void drawTerrain(SpriteBatch spriteBatch, float xOffset, float yOffset) {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				spriteBatch.draw(textureBase.getGroundTexture(ground[i][j]), i*TILE_WIDTH, j*TILE_HEIGHT);
+				spriteBatch.draw(textureBase.getGroundTexture(ground[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
 			}
 		}
 	}

@@ -6,12 +6,14 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import server.MessageHandler;
+import world.World;
 
 public class SurvivalIsleClient extends ApplicationAdapter {
 	private TextureBase textureBase;
@@ -20,6 +22,10 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	
 	private ClientWorld world;
 	private ArrayList<NetworkObject> networkObjects;
+	private NetworkObject playerObject;
+	private float xView;
+	private float yView;
+	
 	
 	@Override
 	public void create () {
@@ -54,11 +60,16 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	
 	private void update() {
 		//Sync objects
+		
+		if (playerObject != null) {
+			xView = playerObject.getX() * World.TILE_WIDTH - Gdx.graphics.getWidth()/2;
+			yView = playerObject.getY() * World.TILE_HEIGHT - Gdx.graphics.getHeight()/2;
+		}
 	}
 	
 	private void draw() {
 		spriteBatch.begin();
-		world.drawTerrain(spriteBatch);
+		world.drawTerrain(spriteBatch, xView, yView);
 		for (NetworkObject networkObject : networkObjects) {
 			networkObject.draw(spriteBatch, textureBase, 0, 0); //TODO: add offset.
 		}
