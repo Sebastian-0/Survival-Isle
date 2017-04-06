@@ -1,5 +1,6 @@
 package isle.survival.world;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import world.World;
@@ -28,5 +29,4 @@ public class NetworkObject {
 	public float getY() {
 		return y;
 	}
-	
 }

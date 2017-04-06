@@ -37,7 +37,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		world = new ClientWorld(textureBase);
 		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
-		
+
 		playerObject = new NetworkObject(0, 0, 0, 0); //TODO
 		networkObjects.add(playerObject);
 	}
@@ -76,11 +76,23 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		spriteBatch.begin();
 		world.drawTerrain(spriteBatch, xView, yView);
 		for (NetworkObject networkObject : networkObjects) {
-			networkObject.draw(spriteBatch, textureBase, xView, yView); //TODO: add offset.
+			if (isPointOnScreen(networkObject.getX() * World.TILE_WIDTH, networkObject.getY() * World.TILE_HEIGHT))
+				networkObject.draw(spriteBatch, textureBase, xView, yView); //TODO: add offset.
 		}
 		
 		spriteBatch.end();
 	}
+	
+	private boolean isPointOnScreen(float x, float y) {
+		int dx = 32;
+		int dy = 32;
+		int w = Gdx.graphics.getWidth();
+		int h = Gdx.graphics.getHeight();
+		if (x >= xView - dx && x < xView + w + dx && y >= yView - dy && y < yView + h + dy)
+			return true;
+		return false;
+	}
+	
 	
 	@Override
 	public void dispose() {
