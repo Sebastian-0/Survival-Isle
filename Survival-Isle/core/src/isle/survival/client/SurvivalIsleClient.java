@@ -3,24 +3,29 @@ package isle.survival.client;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.ClientWorld;
+import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import server.MessageHandler;
 
 public class SurvivalIsleClient extends ApplicationAdapter {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
-	private ClientWorld world;
 	private Socket socket;
+	
+	private ClientWorld world;
+	private ArrayList<NetworkObject> networkObjects;
 	
 	@Override
 	public void create () {
 		textureBase = new TextureBase();
 		spriteBatch = new SpriteBatch();
+		networkObjects = new ArrayList<>();
 		world = new ClientWorld(20, 15, textureBase);
 		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
@@ -54,7 +59,10 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	private void draw() {
 		spriteBatch.begin();
 		world.drawTerrain(spriteBatch);
-
+		for (NetworkObject networkObject : networkObjects) {
+			networkObject.draw(spriteBatch, textureBase, 0, 0); //TODO: add offset.
+		}
+		
 		spriteBatch.end();
 	}
 	
