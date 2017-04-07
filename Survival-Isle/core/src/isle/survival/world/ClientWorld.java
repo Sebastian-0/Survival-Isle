@@ -8,15 +8,17 @@ import world.World;
 
 public class ClientWorld extends World {
 	private TextureBase textureBase;
+	private SpriteBatch spriteBatch;
 	private int[][] walls;
 	
-	public ClientWorld(TextureBase textureBase) {
+	public ClientWorld(TextureBase textureBase, SpriteBatch spriteBatch) {
 		this.textureBase = textureBase;
+		this.spriteBatch = spriteBatch;
 		ground = new int[0][0];
 		walls = new int[0][0];
 	}
 
-	public void drawTerrain(SpriteBatch spriteBatch, float xOffset, float yOffset) {
+	public void drawTerrain(float xOffset, float yOffset) {
 		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
 		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
 		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH, width));
@@ -38,6 +40,7 @@ public class ClientWorld extends World {
 	}
 	
 	public void receive(Connection connection) {
+		System.out.println("start");
 		width = connection.receiveInt();
 		height = connection.receiveInt();
 		ground = new int[width][height];
@@ -53,6 +56,7 @@ public class ClientWorld extends World {
 				walls[x][y] = connection.receiveInt();
 			}
 		}
+		System.out.println("end");
 	}
 	
 }

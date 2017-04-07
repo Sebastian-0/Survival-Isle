@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
+import isle.survival.world.WorldObjects;
 import server.Connection;
 import server.ServerProtocol;
 import world.World;
@@ -26,8 +27,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	private ClientProtocolCoder coder;
 	
 	private ClientWorld world;
-	private Array<NetworkObject> networkObjects;
-	private NetworkObject playerObject;
+	private WorldObjects worldObjects;
 	private float xView;
 	private float yView;
 	
@@ -36,12 +36,12 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	public void create () {
 		textureBase = new TextureBase();
 		spriteBatch = new SpriteBatch();
-		networkObjects = new Array<>();
-		world = new ClientWorld(textureBase);
+		world = new ClientWorld(textureBase, spriteBatch);
+		worldObjects = new WorldObjects(textureBase, spriteBatch);
 		connectToServer();
 
-		playerObject = new NetworkObject(10, 7, 0, 0); //TODO don't create here
-		networkObjects.add(playerObject);
+//		playerObject = new NetworkObject(10, 7, 0, 0); //TODO don't create here
+//		networkObjects.add(playerObject);
 		
 		inputProcessor = new InputProcessor();
 		Gdx.input.setInputProcessor(inputProcessor);
@@ -73,31 +73,18 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	private void update() {
 		//Sync objects
 		
-		if (playerObject != null) {
-			xView = playerObject.getX() * World.TILE_WIDTH - Gdx.graphics.getWidth()/2;
-			yView = playerObject.getY() * World.TILE_HEIGHT - Gdx.graphics.getHeight()/2;
+		NetworkObject player = worldObjects.getPlayer();
+		if (player != null) {
+			xView = player.getX() * World.TILE_WIDTH - Gdx.graphics.getWidth()/2;
+			yView = player.getY() * World.TILE_HEIGHT - Gdx.graphics.getHeight()/2;
 		}
 	}
 	
 	private void draw() {
 		spriteBatch.begin();
-		world.drawTerrain(spriteBatch, xView, yView);
-		for (NetworkObject networkObject : networkObjects) {
-			if (isPointOnScreen(networkObject.getX() * World.TILE_WIDTH, networkObject.getY() * World.TILE_HEIGHT))
-				networkObject.draw(spriteBatch, textureBase, xView, yView); //TODO: add offset.
-		}
-		
+		world.drawTerrain(xView, yView);
+		worldObjects.draw(xView, yView);
 		spriteBatch.end();
-	}
-	
-	private boolean isPointOnScreen(float x, float y) {
-		int dx = 32;
-		int dy = 32;
-		int w = Gdx.graphics.getWidth();
-		int h = Gdx.graphics.getHeight();
-		if (x >= xView - dx && x < xView + w + dx && y >= yView - dy && y < yView + h + dy)
-			return true;
-		return false;
 	}
 	
 	
@@ -124,12 +111,14 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 				world.receive(coder.getConnection());
 				break;
 			case CREATE_OBJECTS:
+				worldObjects.createObjects(coder.getConnection());
 				break;
 			case SET_PLAYER:
+				worldObjects.setPlayer(coder.getConnection().receiveInt());
 				break;
 			default:
 				break;
-			}			
+			}
 		}
 	}
 	
