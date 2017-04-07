@@ -5,8 +5,8 @@ public class World {
 	public static final int TILE_HEIGHT = 32;
 	
 	public enum GroundTile {
-		WATER(0),
-		GRASS(1);
+		Water(0),
+		Grass(1);
 		
 		
 		public final int id;
