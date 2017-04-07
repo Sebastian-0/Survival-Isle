@@ -8,6 +8,7 @@ import world.World;
 
 public class ClientWorld extends World {
 	private TextureBase textureBase;
+	private int[][] walls;
 	
 	public ClientWorld(TextureBase textureBase) {
 		this.textureBase = textureBase;
@@ -18,11 +19,20 @@ public class ClientWorld extends World {
 		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
 		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH, width));
 		int endY = (int) (Math.min((yOffset + Gdx.graphics.getWidth()) / TILE_HEIGHT, height));
+		
 		for (int i = startX; i < endX; i++) {
 			for (int j = startY; j < endY; j++) {
-				spriteBatch.draw(textureBase.getGroundTexture(ground[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+				spriteBatch.draw(textureBase.getGroundTileTexture(ground[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
 			}
 		}
+
+		/*
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
+				spriteBatch.draw(textureBase.getWallTileTexture(ground[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+			}
+		}
+		*/
 	}
 	
 	public void receive(Connection connection) {

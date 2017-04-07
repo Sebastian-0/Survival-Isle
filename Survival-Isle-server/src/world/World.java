@@ -5,16 +5,14 @@ public class World {
 	public static final int TILE_HEIGHT = 32;
 	
 	public enum GroundTile {
-		WATER(0, "water.png"),
-		GRASS(1, "grass.png");
+		WATER(0),
+		GRASS(1);
 		
 		
 		public final int id;
-		public final String textureName;
 		
-		private GroundTile(int id, String textureName) {
+		private GroundTile(int id) {
 			this.id = id;
-			this.textureName = textureName;
 		}
 	}
 	
