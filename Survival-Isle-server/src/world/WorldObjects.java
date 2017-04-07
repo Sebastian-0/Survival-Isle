@@ -6,14 +6,14 @@ import java.util.List;
 import server.Connection;
 
 public class WorldObjects {
-	private List<Player> players;
+	private List<Player> objects;
 	
 	public WorldObjects() {
-		players = new ArrayList<>();
+		objects = new ArrayList<>();
 	}
 	
-	public void addObject(Player player) {
-		players.add(player);
+	public void addObject(Player object) {
+		objects.add(object);
 	}
 	
 	public void sendCreateAll(Connection connection) {
