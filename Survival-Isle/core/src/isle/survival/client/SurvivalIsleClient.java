@@ -68,7 +68,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	
 	private void update() {
 		float deltaTime = Gdx.graphics.getDeltaTime();
-		//Sync objects
+		worldObjects.update(deltaTime);
 		
 		NetworkObject player = worldObjects.getPlayer();
 		if (player != null) {
@@ -126,12 +126,12 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	
 	private class InputProcessor extends InputAdapter {
 		
-		private static final double TIME_BETWEEN_MOVE = 0.3;
+		private static final float MOVEMENT_TIME = NetworkObject.MOVEMENT_TIME;
 		
-		private double movingUpCounter;
-		private double movingLeftCounter;
-		private double movingDownCounter;
-		private double movingRightCounter;
+		private float movingUpCounter;
+		private float movingLeftCounter;
+		private float movingDownCounter;
+		private float movingRightCounter;
 		
 		@Override
 		public boolean keyDown(int keycode) {
@@ -139,22 +139,22 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 			case Input.Keys.W:
 			case Input.Keys.UP:
 				coder.sendMoveUp();
-				movingUpCounter = TIME_BETWEEN_MOVE;
+				movingUpCounter = MOVEMENT_TIME;
 				break;
 			case Input.Keys.A:
 			case Input.Keys.LEFT:
 				coder.sendMoveLeft();
-				movingLeftCounter = TIME_BETWEEN_MOVE;
+				movingLeftCounter = MOVEMENT_TIME;
 				break;
 			case Input.Keys.S:
 			case Input.Keys.DOWN:
 				coder.sendMoveDown();
-				movingDownCounter = TIME_BETWEEN_MOVE;
+				movingDownCounter = MOVEMENT_TIME;
 				break;
 			case Input.Keys.D:
 			case Input.Keys.RIGHT:
 				coder.sendMoveRight();
-				movingRightCounter = TIME_BETWEEN_MOVE;
+				movingRightCounter = MOVEMENT_TIME;
 				break;
 			default:
 				return false;
@@ -162,7 +162,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 			return true;
 		}
 		
-		public void update(double deltaTime) {
+		public void update(float deltaTime) {
 			if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))
 				movingUpCounter -= deltaTime;
 			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))
@@ -173,22 +173,22 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 				movingRightCounter -= deltaTime;
 			
 			if (movingUpCounter < 0) {
-				movingUpCounter += TIME_BETWEEN_MOVE;
+				movingUpCounter += MOVEMENT_TIME;
 				coder.sendMoveUp();
 			}
 
 			if (movingLeftCounter < 0) {
-				movingLeftCounter += TIME_BETWEEN_MOVE;
+				movingLeftCounter += MOVEMENT_TIME;
 				coder.sendMoveLeft();
 			}
 
 			if (movingDownCounter < 0) {
-				movingDownCounter += TIME_BETWEEN_MOVE;
+				movingDownCounter += MOVEMENT_TIME;
 				coder.sendMoveDown();
 			}
 
 			if (movingRightCounter < 0) {
-				movingRightCounter += TIME_BETWEEN_MOVE;
+				movingRightCounter += MOVEMENT_TIME;
 				coder.sendMoveRight();
 			}
 		}
