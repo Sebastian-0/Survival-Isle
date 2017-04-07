@@ -17,6 +17,9 @@ public class WorldObjects {
 	}
 	
 	public void sendCreateAll(Connection connection) {
-		
+		connection.sendInt(objects.size());
+		for (Player object : objects) {
+			object.sendCreate(connection);
+		}
 	}
 }

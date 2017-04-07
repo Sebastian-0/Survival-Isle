@@ -28,7 +28,9 @@ public class ServerProtocolCoder {
 	}
 
 	public void sendCreateObject(Player object) {
-		connection.sendCode(ServerProtocol.SET_PLAYER);
+		connection.sendCode(ServerProtocol.CREATE_OBJECTS);
+		connection.sendInt(1);
+		object.sendCreate(connection);
 	}
 
 	public ClientProtocol receiveCode() {
