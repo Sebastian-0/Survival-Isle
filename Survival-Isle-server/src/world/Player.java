@@ -1,5 +1,6 @@
 package world;
 
+import server.Connection;
 import util.Point;
 
 public class Player {
@@ -20,5 +21,11 @@ public class Player {
 	
 	public Point getPosition() {
 		return position;
+	}
+
+	public void sendCreate(Connection connection) {
+		connection.sendInt(id);
+		connection.sendInt((int)position.x);
+		connection.sendInt((int)position.y);
 	}
 }
