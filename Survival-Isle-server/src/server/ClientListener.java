@@ -14,7 +14,7 @@ public class ClientListener implements Runnable {
 	public void run() {
 		while (true) {
 			ClientProtocol code = client.receiveCode();
-//			System.out.println("Server received:" + code);
+			System.out.println("Server received:" + code);
 			game.parseClientMessage(code, client);
 		}
 	}

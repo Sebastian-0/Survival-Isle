@@ -1,6 +1,7 @@
 package world;
 
 import server.ClientProtocol;
+import server.Connection;
 import server.ServerProtocolCoder;
 import util.Point;
 
@@ -44,5 +45,11 @@ public class Player {
 			break;
 		}
 		System.out.println("Player position: " + position);
+	}
+		
+	public void sendCreate(Connection connection) {
+		connection.sendInt(id);
+		connection.sendInt((int)position.x);
+		connection.sendInt((int)position.y);
 	}
 }

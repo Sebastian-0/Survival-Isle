@@ -27,5 +27,11 @@ public class ServerWorld extends World {
 				connection.sendInt(ground[x][y]);
 			}
 		}
+		
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				connection.sendInt(-1);
+			}
+		}
 	}
 }
