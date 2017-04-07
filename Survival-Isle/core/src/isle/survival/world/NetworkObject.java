@@ -33,4 +33,9 @@ public class NetworkObject {
 	public float getY() {
 		return y;
 	}
+
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 }
