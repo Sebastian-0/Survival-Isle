@@ -2,8 +2,9 @@ package server;
 
 public enum ClientProtocol {
 
-	MOVE_PLAYER_UP,
-	MOVE_PLAYER_LEFT,
-	MOVE_PLAYER_DOWN,
-	MOVE_PLAYER_RIGHT;
+	TO_PLAYER,
+	MOVE_UP,
+	MOVE_LEFT,
+	MOVE_DOWN,
+	MOVE_RIGHT;
 }

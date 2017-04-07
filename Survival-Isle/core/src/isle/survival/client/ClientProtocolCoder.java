@@ -17,19 +17,23 @@ public class ClientProtocolCoder {
 	}
 
 	public void sendMoveUp() {
-		connection.sendCode(ClientProtocol.MOVE_PLAYER_UP);
+		connection.sendCode(ClientProtocol.TO_PLAYER);
+		connection.sendCode(ClientProtocol.MOVE_UP);
 	}
 
 	public void sendMoveLeft() {
-		connection.sendCode(ClientProtocol.MOVE_PLAYER_LEFT);
+		connection.sendCode(ClientProtocol.TO_PLAYER);
+		connection.sendCode(ClientProtocol.MOVE_LEFT);
 	}
 
 	public void sendMoveDown() {
-		connection.sendCode(ClientProtocol.MOVE_PLAYER_DOWN);
+		connection.sendCode(ClientProtocol.TO_PLAYER);
+		connection.sendCode(ClientProtocol.MOVE_DOWN);
 	}
 
 	public void sendMoveRight() {
-		connection.sendCode(ClientProtocol.MOVE_PLAYER_RIGHT);
+		connection.sendCode(ClientProtocol.TO_PLAYER);
+		connection.sendCode(ClientProtocol.MOVE_RIGHT);
 	}
 
 	public ServerProtocol receiveCode() {

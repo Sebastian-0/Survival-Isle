@@ -19,4 +19,8 @@ public class WorldObjects {
 	public void sendCreateAll(Connection connection) {
 		
 	}
+
+	public Player getObject(int id) {
+		return objects.stream().filter(player -> player.getId() == id).findAny().orElse(null);
+	}
 }

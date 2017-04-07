@@ -1,7 +1,9 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import world.Player;
 import world.ServerWorld;
@@ -13,6 +15,7 @@ public class Game {
 
 	private ServerWorld world;
 	private WorldObjects worldObjects;
+	private Map<ServerProtocolCoder, Integer> playerIds = new HashMap<>();
 	
 	public Game() {
 		world = new ServerWorld(20, 15);
@@ -21,7 +24,7 @@ public class Game {
 		worldObjects = new WorldObjects();
 	}
 
-	public void update(double deltaTime) {
+	public synchronized void update(double deltaTime) {
 		
 		
 		initNewClients();
@@ -29,13 +32,14 @@ public class Game {
 
 	private void initNewClients() {
 		synchronized (joiningClients) {
-			for (ServerProtocolCoder client : clients) {
+			for (ServerProtocolCoder client : joiningClients) {
 				client.sendWorld(world);
 				client.sendCreateWorldObjects(worldObjects);
 				clients.add(client);
 				Player newPlayer = new Player();
 				addObject(newPlayer);
 				client.sendSetPlayer(newPlayer);
+				playerIds.put(client, newPlayer.getId());
 			}
 
 			joiningClients.clear();
@@ -52,6 +56,18 @@ public class Game {
 	public void addClient(ServerProtocolCoder client) {
 		synchronized (joiningClients) {
 			joiningClients.add(client);
+		}
+	}
+
+	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
+		switch (code) {
+		case TO_PLAYER:
+			int id = playerIds.get(client);
+			Player player = (Player) worldObjects.getObject(id);
+			player.parseMessage(client);
+			break;
+		default:
+			break;
 		}
 	}
 }
