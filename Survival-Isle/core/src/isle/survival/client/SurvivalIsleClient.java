@@ -78,6 +78,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 			xView = player.getX() * World.TILE_WIDTH - Gdx.graphics.getWidth()/2;
 			yView = player.getY() * World.TILE_HEIGHT - Gdx.graphics.getHeight()/2;
 		}
+		coder.flush();
 	}
 	
 	private void draw() {
@@ -103,7 +104,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 
 	public void parseServerMessage() {
 		ServerProtocol code = coder.receiveCode();
-//		System.out.println("Client received: " + code);
+		System.out.println("Client received: " + code);
 		
 		synchronized (this) {
 			switch (code) {
@@ -116,6 +117,10 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 			case SET_PLAYER:
 				worldObjects.setPlayer(coder.getConnection().receiveInt());
 				break;
+			case SEND_OBJECTS:
+				System.out.println(coder.getConnection().receiveInt());
+				System.out.println(coder.getConnection().receiveInt());
+				System.out.println(coder.getConnection().receiveInt());
 			default:
 				break;
 			}

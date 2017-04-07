@@ -2,6 +2,7 @@ package world;
 
 import server.ClientProtocol;
 import server.Connection;
+import server.GameInterface;
 import server.ServerProtocolCoder;
 import util.Point;
 
@@ -25,7 +26,7 @@ public class Player {
 		return position;
 	}
 
-	public void parseMessage(ServerProtocolCoder client) {
+	public void parseMessage(ServerProtocolCoder client, GameInterface game) {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MOVE_UP:
@@ -45,9 +46,16 @@ public class Player {
 			break;
 		}
 		System.out.println("Player position: " + position);
+		game.updateObject(this);
 	}
 		
 	public void sendCreate(Connection connection) {
+		connection.sendInt(id);
+		connection.sendInt((int)position.x);
+		connection.sendInt((int)position.y);
+	}
+
+	public void sendUpdate(Connection connection) {
 		connection.sendInt(id);
 		connection.sendInt((int)position.x);
 		connection.sendInt((int)position.y);

@@ -9,7 +9,7 @@ import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
 
-public class Game {
+public class Game implements GameInterface {
 	private List<ServerProtocolCoder> clients = new ArrayList<>();
 	private List<ServerProtocolCoder> joiningClients = new ArrayList<>();
 
@@ -28,6 +28,7 @@ public class Game {
 		
 		
 		initNewClients();
+		clients.forEach(client -> client.flush());
 	}
 
 	private void initNewClients() {
@@ -46,10 +47,18 @@ public class Game {
 		}
 	}
 	
+	@Override
 	public void addObject(Player object) {
 		worldObjects.addObject(object);
 		for (ServerProtocolCoder client : clients) {
 			client.sendCreateObject(object);
+		}
+	}
+	
+	@Override
+	public void updateObject(Player object) {
+		for (ServerProtocolCoder client : clients) {
+			client.sendUpdateObject(object);
 		}
 	}
 	
@@ -64,7 +73,7 @@ public class Game {
 		case TO_PLAYER:
 			int id = playerIds.get(client);
 			Player player = (Player) worldObjects.getObject(id);
-			player.parseMessage(client);
+			player.parseMessage(client, this);
 			break;
 		default:
 			break;

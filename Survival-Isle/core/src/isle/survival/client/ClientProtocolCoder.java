@@ -40,4 +40,8 @@ public class ClientProtocolCoder {
 		int code = connection.receiveInt();
 		return ServerProtocol.values()[code];
 	}
+
+	public void flush() {
+		connection.flush();
+	}
 }
