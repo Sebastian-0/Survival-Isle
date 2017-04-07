@@ -37,6 +37,7 @@ public class Game implements GameInterface {
 			for (ServerProtocolCoder client : leavingClients) {
 				clients.remove(client);
 				removeObject(worldObjects.getObject(playerIds.get(client)));
+				playerIds.remove(client);
 			}
 			leavingClients.clear();
 		}

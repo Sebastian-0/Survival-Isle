@@ -90,7 +90,6 @@ public class WorldObjects {
 			int id = connection.receiveInt();
 			objects.removeIndex(id);
 		}
-		System.out.println("HELLO");
 	}
 
 	public void setPlayer(int id) {
