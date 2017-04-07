@@ -64,8 +64,10 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	
 	@Override
 	public void render() {
-		update();
-		draw();
+		synchronized (this) {
+			update();
+			draw();			
+		}
 	}
 	
 	private void update() {
@@ -115,12 +117,19 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	public void parseServerMessage() {
 		ServerProtocol code = coder.receiveCode();
 //		System.out.println("Client received: " + code);
-		switch (code) {
-		case SEND_WORLD:
-			world.receive(coder.getConnection());
-			break;
-		default:
-			break;
+		
+		synchronized (this) {
+			switch (code) {
+			case SEND_WORLD:
+				world.receive(coder.getConnection());
+				break;
+			case CREATE_OBJECTS:
+				break;
+			case SET_PLAYER:
+				break;
+			default:
+				break;
+			}			
 		}
 	}
 	
