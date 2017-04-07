@@ -20,6 +20,7 @@ public class ClientListener implements Runnable {
 			}
 			catch (ConnectionClosedException e) {
 				game.removeClient(client);
+				return;
 			}
 		}
 	}

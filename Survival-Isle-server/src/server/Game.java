@@ -34,6 +34,7 @@ public class Game implements GameInterface {
 
 	private void removeLeavingClients() {
 		synchronized (leavingClients) {
+			
 			for (ServerProtocolCoder client : leavingClients) {
 				clients.remove(client);
 				removeObject(worldObjects.getObject(playerIds.get(client)));
@@ -75,7 +76,7 @@ public class Game implements GameInterface {
 	}
 
 	public void removeObject(Player object) {
-		worldObjects.removeObject(object.getId());
+		worldObjects.removeObject(object);
 		for (ServerProtocolCoder client : clients) {
 			client.sendDestroyObject(object);
 		}

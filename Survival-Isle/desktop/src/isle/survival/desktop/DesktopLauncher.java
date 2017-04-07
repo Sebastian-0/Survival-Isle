@@ -10,8 +10,8 @@ import server.Server;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) throws IOException {
-		Server server = new Server();
-		server.start();
+		//Server server = new Server();
+		//server.start();
 		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		new LwjglApplication(new SurvivalIsleClient(), config);

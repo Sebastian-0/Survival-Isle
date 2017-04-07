@@ -16,8 +16,8 @@ public class WorldObjects {
 		objects.add(object);
 	}
 	
-	public void removeObject(int id) {
-		objects.remove(id);
+	public void removeObject(Player object) {
+		objects.remove(object);
 	}
 
 	public void sendCreateAll(Connection connection) {
