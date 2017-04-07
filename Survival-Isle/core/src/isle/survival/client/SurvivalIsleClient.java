@@ -67,6 +67,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	}
 	
 	private void update() {
+		float deltaTime = Gdx.graphics.getDeltaTime();
 		//Sync objects
 		
 		NetworkObject player = worldObjects.getPlayer();
@@ -74,6 +75,8 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 			xView = player.getX() * World.TILE_WIDTH - Gdx.graphics.getWidth()/2;
 			yView = player.getY() * World.TILE_HEIGHT - Gdx.graphics.getHeight()/2;
 		}
+		
+		inputProcessor.update(deltaTime);
 		coder.flush();
 	}
 	
@@ -125,29 +128,71 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	
 	private class InputProcessor extends InputAdapter {
 		
+		private static final double TIME_BETWEEN_MOVE = 0.3;
+		
+		private double movingUpCounter;
+		private double movingLeftCounter;
+		private double movingDownCounter;
+		private double movingRightCounter;
+		
 		@Override
 		public boolean keyDown(int keycode) {
 			switch (keycode) {
 			case Input.Keys.W:
 			case Input.Keys.UP:
 				coder.sendMoveUp();
+				movingUpCounter = TIME_BETWEEN_MOVE;
 				break;
 			case Input.Keys.A:
 			case Input.Keys.LEFT:
 				coder.sendMoveLeft();
+				movingLeftCounter = TIME_BETWEEN_MOVE;
 				break;
 			case Input.Keys.S:
 			case Input.Keys.DOWN:
-				coder.sendMoveDown();				
+				coder.sendMoveDown();
+				movingDownCounter = TIME_BETWEEN_MOVE;
 				break;
 			case Input.Keys.D:
 			case Input.Keys.RIGHT:
 				coder.sendMoveRight();
+				movingRightCounter = TIME_BETWEEN_MOVE;
 				break;
 			default:
 				return false;
 			}
 			return true;
+		}
+		
+		public void update(double deltaTime) {
+			if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))
+				movingUpCounter -= deltaTime;
+			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))
+				movingLeftCounter-= deltaTime;
+			if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))
+				movingDownCounter -= deltaTime;
+			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+				movingRightCounter -= deltaTime;
+			
+			if (movingUpCounter < 0) {
+				movingUpCounter += TIME_BETWEEN_MOVE;
+				coder.sendMoveUp();
+			}
+
+			if (movingLeftCounter < 0) {
+				movingLeftCounter += TIME_BETWEEN_MOVE;
+				coder.sendMoveLeft();
+			}
+
+			if (movingDownCounter < 0) {
+				movingDownCounter += TIME_BETWEEN_MOVE;
+				coder.sendMoveDown();
+			}
+
+			if (movingRightCounter < 0) {
+				movingRightCounter += TIME_BETWEEN_MOVE;
+				coder.sendMoveRight();
+			}
 		}
 	}
 }

@@ -16,22 +16,22 @@ public class ClientProtocolCoder {
 		return connection;
 	}
 
-	public void sendMoveUp() {
+	public synchronized void sendMoveUp() {
 		connection.sendCode(ClientProtocol.TO_PLAYER);
 		connection.sendCode(ClientProtocol.MOVE_UP);
 	}
 
-	public void sendMoveLeft() {
+	public synchronized void sendMoveLeft() {
 		connection.sendCode(ClientProtocol.TO_PLAYER);
 		connection.sendCode(ClientProtocol.MOVE_LEFT);
 	}
 
-	public void sendMoveDown() {
+	public synchronized void sendMoveDown() {
 		connection.sendCode(ClientProtocol.TO_PLAYER);
 		connection.sendCode(ClientProtocol.MOVE_DOWN);
 	}
 
-	public void sendMoveRight() {
+	public synchronized void sendMoveRight() {
 		connection.sendCode(ClientProtocol.TO_PLAYER);
 		connection.sendCode(ClientProtocol.MOVE_RIGHT);
 	}
@@ -41,7 +41,7 @@ public class ClientProtocolCoder {
 		return ServerProtocol.values()[code];
 	}
 
-	public void flush() {
+	public synchronized void flush() {
 		connection.flush();
 	}
 }
