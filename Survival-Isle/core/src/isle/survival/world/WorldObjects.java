@@ -30,9 +30,13 @@ public class WorldObjects {
 		return player;
 	}
 
-//	public NetworkObject getObject(int id) {
-//		return ;
-//	}
+	public NetworkObject getObject(int id) {
+		for (NetworkObject object : objects) {
+			if (object.getId() == id)
+				return object;
+		}
+		return null;
+	}
 	
 	
 	public void draw(float xOffset, float yOffset) {
@@ -69,10 +73,14 @@ public class WorldObjects {
 	}
 
 	public void updateObjects(Connection connection) {
-		System.out.println(connection.receiveInt());
-		System.out.println(connection.receiveInt());
-		System.out.println(connection.receiveInt());
-		System.out.println(connection.receiveInt());
+		int amount = connection.receiveInt();
+		for (int i = 0; i < amount; i++) {
+			int id = connection.receiveInt();
+			NetworkObject object = getObject(id);
+			int x = connection.receiveInt();
+			int y = connection.receiveInt();
+			object.setPosition(x, y);
+		}
 	}
 
 	public void setPlayer(int id) {
