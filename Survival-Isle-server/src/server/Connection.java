@@ -8,14 +8,16 @@ import java.net.Socket;
 
 public class Connection {
 	
-	private Socket socket;
 	private InputStream inStream;
 	private OutputStream outStream;
 	
 	public Connection(Socket socket) {
-		this.socket = socket;
-		inStream = new BufferedInputStream(inStream);
-		outStream = new BufferedOutputStream(outStream);
+		try {
+			inStream = new BufferedInputStream(socket.getInputStream());
+			outStream = new BufferedOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void sendInt(int value) {
@@ -36,7 +38,7 @@ public class Connection {
 
 	private void sendByte(int code) {
 		try {
-			socket.getOutputStream().write(code);
+			outStream.write(code);
 		} catch (java.io.IOException e) {
 			throw new ConnectionClosedException();
 		}
@@ -75,14 +77,22 @@ public class Connection {
 		return result.toString();
 	}
 
-
 	private int receiveByte() {
 		try {
-			int code = socket.getInputStream().read();
+			int code = inStream.read();
 			if (code == -1) {
 				throw new ConnectionClosedException();
 			}
 			return code;
+		} catch (IOException e) {
+			throw new ConnectionClosedException();
+		}
+	}
+	
+	
+	public void flush() {
+		try {
+			outStream.flush();
 		} catch (IOException e) {
 			throw new ConnectionClosedException();
 		}
