@@ -17,4 +17,8 @@ public class Player {
 	public int getId() {
 		return id;
 	}
+	
+	public Point getPosition() {
+		return position;
+	}
 }
