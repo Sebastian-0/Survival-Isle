@@ -16,7 +16,7 @@ public class ClientWorld extends World {
 		walls = new int[0][0];
 	}
 
-	public synchronized void drawTerrain(SpriteBatch spriteBatch, float xOffset, float yOffset) {
+	public void drawTerrain(SpriteBatch spriteBatch, float xOffset, float yOffset) {
 		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
 		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
 		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH, width));
@@ -37,7 +37,7 @@ public class ClientWorld extends World {
 		
 	}
 	
-	public synchronized void receive(Connection connection) {
+	public void receive(Connection connection) {
 		width = connection.receiveInt();
 		height = connection.receiveInt();
 		ground = new int[width][height];
