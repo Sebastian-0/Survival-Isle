@@ -40,7 +40,6 @@ public class ClientWorld extends World {
 	}
 	
 	public void receive(Connection connection) {
-		System.out.println("start");
 		width = connection.receiveInt();
 		height = connection.receiveInt();
 		ground = new int[width][height];
@@ -56,7 +55,6 @@ public class ClientWorld extends World {
 				walls[x][y] = connection.receiveInt();
 			}
 		}
-		System.out.println("end");
 	}
 	
 }

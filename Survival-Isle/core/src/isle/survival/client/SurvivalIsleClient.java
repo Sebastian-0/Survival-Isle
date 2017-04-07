@@ -9,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
@@ -39,9 +38,6 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		world = new ClientWorld(textureBase, spriteBatch);
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
 		connectToServer();
-
-//		playerObject = new NetworkObject(10, 7, 0, 0); //TODO don't create here
-//		networkObjects.add(playerObject);
 		
 		inputProcessor = new InputProcessor();
 		Gdx.input.setInputProcessor(inputProcessor);
