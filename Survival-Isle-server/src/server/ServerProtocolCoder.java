@@ -14,4 +14,9 @@ public class ServerProtocolCoder {
 		connection.sendCode(ServerProtocol.SEND_WORLD);
 		world.send(connection);
 	}
+
+	public ClientProtocol receiveCode() {
+		int code = connection.receiveInt();
+		return ClientProtocol.values()[code];
+	}
 }
