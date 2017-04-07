@@ -11,10 +11,12 @@ public class Player {
 	private static int idCounter;
 	
 	private int id;
+	private int textureId;
 	private Point position;
 	
 	public Player() {
 		id = idCounter++;
+		textureId = 0;
 		position = new Point(0, 0);
 	}
 	
@@ -50,9 +52,8 @@ public class Player {
 	}
 		
 	public void sendCreate(Connection connection) {
-		connection.sendInt(id);
-		connection.sendInt((int)position.x);
-		connection.sendInt((int)position.y);
+		sendUpdate(connection);
+		connection.sendInt(textureId);
 	}
 
 	public void sendUpdate(Connection connection) {

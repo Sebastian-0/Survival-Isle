@@ -63,7 +63,8 @@ public class WorldObjects {
 			int id = connection.receiveInt();
 			int x = connection.receiveInt();
 			int y = connection.receiveInt();
-			NetworkObject object = new NetworkObject(x, y, id, 0);
+			int textureId = connection.receiveInt();
+			NetworkObject object = new NetworkObject(x, y, id, textureId);
 			objects.add(object);
 		}
 	}
