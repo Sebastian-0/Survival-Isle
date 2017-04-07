@@ -10,4 +10,8 @@ public class Server {
 		new Thread(new ClientAccepter(game)).start();
 		new Thread(new ServerUpdater(game)).start();
 	}
+	
+	public static void main(String[] args) throws IOException {
+		new Server().start();
+	}
 }

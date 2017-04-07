@@ -47,7 +47,6 @@ public class Player {
 		default:
 			break;
 		}
-		System.out.println("Player position: " + position);
 		game.updateObject(this);
 	}
 		
