@@ -1,6 +1,6 @@
 package server;
 
-import world.World;
+import world.ServerWorld;
 
 public class ServerProtocolCoder {
 	
@@ -10,7 +10,7 @@ public class ServerProtocolCoder {
 		this.connection = connection;
 	}
 
-	public void sendWorld(World world) {
+	public void sendWorld(ServerWorld world) {
 		connection.sendCode(ServerProtocol.SEND_WORLD);
 		world.send(connection);
 	}

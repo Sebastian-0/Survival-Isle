@@ -3,13 +3,13 @@ package isle.survival.client;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
@@ -26,7 +26,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	private ClientProtocolCoder coder;
 	
 	private ClientWorld world;
-	private ArrayList<NetworkObject> networkObjects;
+	private Array<NetworkObject> networkObjects;
 	private NetworkObject playerObject;
 	private float xView;
 	private float yView;
@@ -36,7 +36,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	public void create () {
 		textureBase = new TextureBase();
 		spriteBatch = new SpriteBatch();
-		networkObjects = new ArrayList<>();
+		networkObjects = new Array<>();
 		world = new ClientWorld(textureBase);
 		connectToServer();
 
