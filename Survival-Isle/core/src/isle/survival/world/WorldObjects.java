@@ -38,6 +38,9 @@ public class WorldObjects {
 		return null;
 	}
 	
+	public void update(float deltaTime) {
+		objects.forEach(object -> object.update(deltaTime));
+	}
 	
 	public void draw(float xOffset, float yOffset) {
 		for (NetworkObject object : objects) {
