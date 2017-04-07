@@ -39,6 +39,12 @@ public class ServerProtocolCoder {
 		object.sendUpdate(connection);
 	}
 
+	public void sendDestroyObject(Player object) {
+		connection.sendCode(ServerProtocol.DESTROY_OBJECTS);
+		connection.sendInt(1);
+		object.sendDestroy(connection);
+	}
+
 	public ClientProtocol receiveCode() {
 		int code = connection.receiveInt();
 		return ClientProtocol.values()[code];

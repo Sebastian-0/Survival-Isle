@@ -115,6 +115,8 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 				break;
 			case SEND_OBJECTS:
 				worldObjects.updateObjects(coder.getConnection());
+			case DESTROY_OBJECTS:
+				worldObjects.destroyObjects(coder.getConnection());
 			default:
 				break;
 			}

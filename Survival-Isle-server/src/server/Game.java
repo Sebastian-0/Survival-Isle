@@ -12,6 +12,7 @@ import world.WorldObjects;
 public class Game implements GameInterface {
 	private List<ServerProtocolCoder> clients = new ArrayList<>();
 	private List<ServerProtocolCoder> joiningClients = new ArrayList<>();
+	private List<ServerProtocolCoder> leavingClients = new ArrayList<>();
 
 	private ServerWorld world;
 	private WorldObjects worldObjects;
@@ -26,9 +27,19 @@ public class Game implements GameInterface {
 
 	public synchronized void update(double deltaTime) {
 		
-		
+		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
+	}
+
+	private void removeLeavingClients() {
+		synchronized (leavingClients) {
+			for (ServerProtocolCoder client : leavingClients) {
+				clients.remove(client);
+				removeObject(worldObjects.getObject(playerIds.get(client)));
+			}
+			leavingClients.clear();
+		}
 	}
 
 	private void initNewClients() {
@@ -61,10 +72,23 @@ public class Game implements GameInterface {
 			client.sendUpdateObject(object);
 		}
 	}
+
+	public void removeObject(Player object) {
+		worldObjects.removeObject(object.getId());
+		for (ServerProtocolCoder client : clients) {
+			client.sendDestroyObject(object);
+		}
+	}
 	
 	public void addClient(ServerProtocolCoder client) {
 		synchronized (joiningClients) {
 			joiningClients.add(client);
+		}
+	}
+
+	public void removeClient(ServerProtocolCoder client) {
+		synchronized (leavingClients) {
+			leavingClients.add(client);
 		}
 	}
 

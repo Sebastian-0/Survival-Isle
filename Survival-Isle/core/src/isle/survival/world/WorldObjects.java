@@ -84,6 +84,15 @@ public class WorldObjects {
 		}
 	}
 
+	public void destroyObjects(Connection connection) {
+		int amount = connection.receiveInt();
+		for (int i = 0; i < amount; i++) {
+			int id = connection.receiveInt();
+			objects.removeIndex(id);
+		}
+		System.out.println("HELLO");
+	}
+
 	public void setPlayer(int id) {
 		for (NetworkObject object : objects) {
 			if (object.getId() == id) {

@@ -61,4 +61,8 @@ public class Player {
 		connection.sendInt((int)position.x);
 		connection.sendInt((int)position.y);
 	}
+
+	public void sendDestroy(Connection connection) {
+		connection.sendInt(id);
+	}
 }

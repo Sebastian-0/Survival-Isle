@@ -13,9 +13,14 @@ public class ClientListener implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			ClientProtocol code = client.receiveCode();
-			System.out.println("Server received:" + code);
-			game.parseClientMessage(code, client);
+			try {
+				ClientProtocol code = client.receiveCode();
+				System.out.println("Server received:" + code);
+				game.parseClientMessage(code, client);
+			}
+			catch (ConnectionClosedException e) {
+				game.removeClient(client);
+			}
 		}
 	}
 }
