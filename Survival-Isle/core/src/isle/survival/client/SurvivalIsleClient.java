@@ -118,9 +118,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 				worldObjects.setPlayer(coder.getConnection().receiveInt());
 				break;
 			case SEND_OBJECTS:
-				System.out.println(coder.getConnection().receiveInt());
-				System.out.println(coder.getConnection().receiveInt());
-				System.out.println(coder.getConnection().receiveInt());
+				worldObjects.updateObjects(coder.getConnection());
 			default:
 				break;
 			}

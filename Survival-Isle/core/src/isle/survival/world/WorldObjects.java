@@ -61,6 +61,13 @@ public class WorldObjects {
 		
 	}
 
+	public void updateObjects(Connection connection) {
+		System.out.println(connection.receiveInt());
+		System.out.println(connection.receiveInt());
+		System.out.println(connection.receiveInt());
+		System.out.println(connection.receiveInt());
+	}
+
 	public void setPlayer(int id) {
 		for (NetworkObject object : objects) {
 			if (object.getId() == id) {
