@@ -1,6 +1,6 @@
 package server;
 
-public enum Protocol {
+public enum ServerProtocol {
 
 	SEND_WORLD;
 }

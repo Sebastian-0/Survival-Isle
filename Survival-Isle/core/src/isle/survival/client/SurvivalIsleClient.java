@@ -7,18 +7,21 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import server.Connection;
-import server.Protocol;
+import server.ServerProtocol;
 import world.World;
 
 public class SurvivalIsleClient extends ApplicationAdapter {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
+	private InputProcessor inputProcessor;
 	private Socket socket;
 	private ClientProtocolCoder coder;
 	
@@ -35,11 +38,13 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		spriteBatch = new SpriteBatch();
 		networkObjects = new ArrayList<>();
 		world = new ClientWorld(textureBase);
-		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
 
 		playerObject = new NetworkObject(10, 7, 0, 0); //TODO don't create here
 		networkObjects.add(playerObject);
+		
+		inputProcessor = new InputProcessor();
+		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	
 	private void connectToServer() {
@@ -108,7 +113,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 	}
 
 	public void parseServerMessage() {
-		Protocol code = coder.receiveCode();
+		ServerProtocol code = coder.receiveCode();
 //		System.out.println("Client received: " + code);
 		switch (code) {
 		case SEND_WORLD:
@@ -116,6 +121,34 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	private class InputProcessor extends InputAdapter {
+		
+		@Override
+		public boolean keyDown(int keycode) {
+			switch (keycode) {
+			case Input.Keys.W:
+			case Input.Keys.UP:
+				coder.sendMoveUp();
+				break;
+			case Input.Keys.A:
+			case Input.Keys.LEFT:
+				coder.sendMoveLeft();
+				break;
+			case Input.Keys.S:
+			case Input.Keys.DOWN:
+				coder.sendMoveDown();				
+				break;
+			case Input.Keys.D:
+			case Input.Keys.RIGHT:
+				coder.sendMoveRight();
+				break;
+			default:
+				return false;
+			}
+			return true;
 		}
 	}
 }

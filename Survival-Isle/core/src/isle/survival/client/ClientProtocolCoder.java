@@ -1,7 +1,8 @@
 package isle.survival.client;
 
+import server.ClientProtocol;
 import server.Connection;
-import server.Protocol;
+import server.ServerProtocol;
 
 public class ClientProtocolCoder {
 	
@@ -15,8 +16,24 @@ public class ClientProtocolCoder {
 		return connection;
 	}
 
-	public Protocol receiveCode() {
+	public ServerProtocol receiveCode() {
 		int code = connection.receiveInt();
-		return Protocol.values()[code];
+		return ServerProtocol.values()[code];
+	}
+
+	public void sendMoveUp() {
+		connection.sendCode(ClientProtocol.MOVE_PLAYER_UP);
+	}
+
+	public void sendMoveLeft() {
+		connection.sendCode(ClientProtocol.MOVE_PLAYER_LEFT);
+	}
+
+	public void sendMoveDown() {
+		connection.sendCode(ClientProtocol.MOVE_PLAYER_DOWN);
+	}
+
+	public void sendMoveRight() {
+		connection.sendCode(ClientProtocol.MOVE_PLAYER_RIGHT);
 	}
 }
