@@ -10,5 +10,8 @@ public class ClientListener implements Runnable {
 	
 	@Override
 	public void run() {
+		while (true) {
+			System.out.println(coder.receiveCode());
+		}
 	}
 }

@@ -16,11 +16,6 @@ public class ClientProtocolCoder {
 		return connection;
 	}
 
-	public ServerProtocol receiveCode() {
-		int code = connection.receiveInt();
-		return ServerProtocol.values()[code];
-	}
-
 	public void sendMoveUp() {
 		connection.sendCode(ClientProtocol.MOVE_PLAYER_UP);
 	}
@@ -35,5 +30,10 @@ public class ClientProtocolCoder {
 
 	public void sendMoveRight() {
 		connection.sendCode(ClientProtocol.MOVE_PLAYER_RIGHT);
+	}
+
+	public ServerProtocol receiveCode() {
+		int code = connection.receiveInt();
+		return ServerProtocol.values()[code];
 	}
 }
