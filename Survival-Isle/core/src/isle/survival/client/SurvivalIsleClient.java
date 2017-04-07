@@ -35,7 +35,6 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		spriteBatch = new SpriteBatch();
 		networkObjects = new ArrayList<>();
 		world = new ClientWorld(textureBase);
-		world.GenerateTerrain(0); //TODO: move to server
 		connectToServer();
 
 		playerObject = new NetworkObject(10, 7, 0, 0); //TODO don't create here
