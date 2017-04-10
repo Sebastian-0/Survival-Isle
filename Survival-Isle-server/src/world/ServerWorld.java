@@ -149,4 +149,8 @@ public class ServerWorld extends World {
 			}
 		}
 	}
+
+	public WallTile getWallTile(int x, int y) {
+		return walls[x][y];
+	}
 }

@@ -32,16 +32,20 @@ public class Player {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MOVE_UP:
-			position.y += 1;
+			if (game.getWallTileAtPosition((int)position.x, (int)position.y+1) == null)
+				position.y += 1;
 			break;
 		case MOVE_LEFT:
-			position.x -= 1;
+			if (game.getWallTileAtPosition((int)position.x-1, (int)position.y) == null)
+				position.x -= 1;
 			break;
 		case MOVE_DOWN:
-			position.y -= 1;
+			if (game.getWallTileAtPosition((int)position.x, (int)position.y-1) == null)
+				position.y -= 1;
 			break;
 		case MOVE_RIGHT:
-			position.x += 1;
+			if (game.getWallTileAtPosition((int)position.x+1, (int)position.y) == null)
+				position.x += 1;
 			break;
 
 		default:
