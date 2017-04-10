@@ -17,11 +17,12 @@ public class ServerWorld extends World {
 	
 	public void GenerateTerrain(long seed) {
 		Random random = new Random(seed);
-		generateGround(random);
+		List<Point> coast = generateGround(random);
+		generateRivers(random, coast);
 		generateForests(random);
 	}
 
-	private void generateGround(Random random) {
+	private List<Point> generateGround(Random random) {
 		List<Point> coast = new ArrayList<>();
 		
 		ground[width/2][height/2] = GroundTile.Grass.id;
@@ -48,6 +49,8 @@ public class ServerWorld extends World {
 					coast.add(new Point(x, y+1));
 			}
 		}
+		
+		return coast;
 	}
 
 	private void generateForests(Random random) {
@@ -84,7 +87,49 @@ public class ServerWorld extends World {
 		}
 		return false;
 	}
-	
+
+	private void generateRivers(Random random, List<Point> coast) {
+		for (int i = 0; i < Math.sqrt(width*height)/20; i++) {
+			int index = random.nextInt(coast.size());
+			int x = (int)coast.get(index).x;
+			int y = (int)coast.remove(index).y;
+			int dx = 0;
+			int dy = -1;
+			
+			System.out.println("River at (" + x + ", " + y + ")");
+			
+			if (ground[x+1][y] == GroundTile.Grass.id) {
+				dx = 1;
+				dy = 0;
+			} else if (ground[x][y+1] == GroundTile.Grass.id) {
+				dx = 0;
+				dy = 1;
+			} else if (ground[x-1][y] == GroundTile.Grass.id) {
+				dx = -1;
+				dy = 0;
+			} 
+			
+			x += dx;
+			y += dy;
+			
+			while (ground[x][y] != GroundTile.Water.id) {
+				ground[x][y] = GroundTile.Water.id;
+				if (random.nextInt(4) < 1) {
+					if (random.nextBoolean()) {
+						int t = -dy;
+						dy = dx;
+						dx = t;
+					} else {
+						int t = dy;
+						dy = -dx;
+						dx = t;
+					}
+				}
+				x += dx;
+				y += dy;
+			}
+		}
+	}
 	
 	public void send(Connection connection) {
 		connection.sendInt(width);
