@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
+import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
 import server.Connection;
@@ -23,6 +24,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private String name;
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
+	private SoundBase soundBase;
 	private InputProcessor inputProcessor;
 	private Socket socket;
 	private ClientProtocolCoder coder;
@@ -41,6 +43,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	public void create () {
 		textureBase = new TextureBase();
 		spriteBatch = new SpriteBatch();
+		soundBase = new SoundBase();
 		world = new ClientWorld(textureBase, spriteBatch);
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
 		inventory = new Inventory();
