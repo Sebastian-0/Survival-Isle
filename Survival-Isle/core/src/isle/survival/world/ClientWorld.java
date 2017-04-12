@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import server.Connection;
 import world.World;
 
+@SuppressWarnings("serial")
 public class ClientWorld extends World {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
@@ -58,12 +59,13 @@ public class ClientWorld extends World {
 	}
 
 	public void receiveWallTiles(Connection connection) {
-		do {
+		int amount = connection.receiveInt();
+		for (int i = 0; i < amount; i++) {
 			int x = connection.receiveInt();
 			int y = connection.receiveInt();
 			int id = connection.receiveInt();
 			walls[x][y] = id;
-		} while (connection.receiveInt() == 1);
+		}
 	}
 	
 }

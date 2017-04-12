@@ -2,7 +2,6 @@ package world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -10,6 +9,7 @@ import java.util.Random;
 import server.Connection;
 import util.Point;
 
+@SuppressWarnings("serial")
 public class ServerWorld extends World implements Serializable {
 	private WallTile[][] walls;
 	private List<Point> wallTilesToUpdate; 
@@ -17,7 +17,7 @@ public class ServerWorld extends World implements Serializable {
 	public ServerWorld(int width, int height) {
 		super(width, height);
 		walls = new WallTile[width][height];
-		wallTilesToUpdate = Collections.synchronizedList(new LinkedList<Point>());
+		wallTilesToUpdate = new LinkedList<Point>();
 	}
 	
 	public void GenerateTerrain(long seed) {
@@ -145,7 +145,9 @@ public class ServerWorld extends World implements Serializable {
 		if (tile.isBreakable()) {
 			if (tile.damage(damage)) {
 				//TODO: Give player resources
-				wallTilesToUpdate.add(new Point(x, y));
+				synchronized (wallTilesToUpdate) {
+					wallTilesToUpdate.add(new Point(x, y));
+				}
 				walls[x][y] = null;
 				return false;
 			}
@@ -174,8 +176,9 @@ public class ServerWorld extends World implements Serializable {
 	}
 
 	public void sendWallTileUpdate(Connection connection) {
-		while (true) {
-			Point p = wallTilesToUpdate.remove(0);
+		connection.sendInt(wallTilesToUpdate.size());
+		for (int i = 0; i < wallTilesToUpdate.size(); i++) {
+			Point p = wallTilesToUpdate.get(0);
 			connection.sendInt((int) p.x);
 			connection.sendInt((int) p.y);
 			if (walls[(int)p.x][(int)p.y] == null) {
@@ -183,17 +186,14 @@ public class ServerWorld extends World implements Serializable {
 			} else {
 				connection.sendInt(walls[(int)p.x][(int)p.y].getId());
 			}
-			
-			if (!wallTilesToUpdate.isEmpty())
-				connection.sendInt(1);
-			else {
-				connection.sendInt(0);
-				break;
-			}
 		}
 	}
 	
 	public boolean shouldUpdateWallTiles() {
 		return !wallTilesToUpdate.isEmpty();
+	}
+
+	public void clearWallTileUpdateList() {
+		wallTilesToUpdate.clear();
 	}
 }

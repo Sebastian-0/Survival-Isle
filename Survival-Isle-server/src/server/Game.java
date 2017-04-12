@@ -14,6 +14,7 @@ import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
 
+@SuppressWarnings("serial")
 public class Game implements GameInterface, Serializable {
 	private transient List<ServerProtocolCoder> clients = new ArrayList<>();
 	private transient List<ServerProtocolCoder> joiningClients = new ArrayList<>();
@@ -113,6 +114,7 @@ public class Game implements GameInterface, Serializable {
 			for (ServerProtocolCoder client : clients) {
 				client.sendUpdateWallTiles(world);
 			}
+			world.clearWallTileUpdateList();
 		}
 	}
 	

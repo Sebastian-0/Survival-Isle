@@ -7,6 +7,7 @@ import server.Connection;
 import server.ServerProtocolCoder;
 import util.Point;
 
+@SuppressWarnings("serial")
 public class Player implements Serializable {
 	
 	public static int idCounter;
