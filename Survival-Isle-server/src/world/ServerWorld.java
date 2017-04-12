@@ -2,6 +2,8 @@ package world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,7 +17,7 @@ public class ServerWorld extends World implements Serializable {
 	public ServerWorld(int width, int height) {
 		super(width, height);
 		walls = new WallTile[width][height];
-		wallTilesToUpdate = new ArrayList<Point>();
+		wallTilesToUpdate = Collections.synchronizedList(new LinkedList<Point>());
 	}
 	
 	public void GenerateTerrain(long seed) {
@@ -172,14 +174,22 @@ public class ServerWorld extends World implements Serializable {
 	}
 
 	public void sendWallTileUpdate(Connection connection) {
-		connection.sendInt(wallTilesToUpdate.size());
-		Point p = wallTilesToUpdate.remove(wallTilesToUpdate.size()-1);
-		connection.sendInt((int) p.x);
-		connection.sendInt((int) p.y);
-		if (walls[(int)p.x][(int)p.y] == null) {
-			connection.sendInt(-1);
-		} else {
-			connection.sendInt(walls[(int)p.x][(int)p.y].getId());
+		while (true) {
+			Point p = wallTilesToUpdate.remove(0);
+			connection.sendInt((int) p.x);
+			connection.sendInt((int) p.y);
+			if (walls[(int)p.x][(int)p.y] == null) {
+				connection.sendInt(-1);
+			} else {
+				connection.sendInt(walls[(int)p.x][(int)p.y].getId());
+			}
+			
+			if (!wallTilesToUpdate.isEmpty())
+				connection.sendInt(1);
+			else {
+				connection.sendInt(0);
+				break;
+			}
 		}
 	}
 	
