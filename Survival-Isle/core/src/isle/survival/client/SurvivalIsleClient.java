@@ -17,6 +17,7 @@ import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
 import server.Connection;
 import server.ServerProtocol;
+import world.Inventory;
 import world.World;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
@@ -29,6 +30,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	
 	private ClientWorld world;
 	private WorldObjects worldObjects;
+	private Inventory inventory;
 	private float xView;
 	private float yView;
 	
@@ -44,6 +46,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch = new SpriteBatch();
 		world = new ClientWorld(textureBase, spriteBatch);
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
+		inventory = new Inventory();
 		connectToServer();
 		
 		inputProcessor = new InputProcessor();
@@ -123,20 +126,23 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		synchronized (this) {
 			switch (code) {
-			case SEND_WORLD:
+			case SendWorld:
 				world.receive(coder.getConnection());
 				break;
-			case CREATE_OBJECTS:
+			case CreateObjects:
 				worldObjects.createObjects(coder.getConnection());
 				break;
-			case SET_PLAYER:
+			case SetPlayer:
 				worldObjects.setPlayer(coder.getConnection().receiveInt());
 				break;
-			case SEND_OBJECTS:
+			case SendObjects:
 				worldObjects.updateObjects(coder.getConnection());
 				break;
-			case DESTROY_OBJECTS:
+			case DestroyObject:
 				worldObjects.destroyObjects(coder.getConnection());
+				break;
+			case SetInventory:
+				inventory.setInventory(coder.getConnection());
 				break;
 			case FailedToConnect:
 				System.out.println("User name already in use.");

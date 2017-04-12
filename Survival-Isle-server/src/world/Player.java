@@ -12,11 +12,13 @@ public class Player {
 	private int id;
 	private int textureId;
 	private Point position;
+	private Inventory inv;
 	
 	public Player() {
 		id = idCounter++;
 		textureId = 0;
 		position = new Point(0, 0);
+		inv = new Inventory();
 	}
 	
 	public int getId() {
@@ -42,7 +44,6 @@ public class Player {
 		case MOVE_RIGHT:
 			actOnWorld(client, game, 1, 0);
 			break;
-
 		default:
 			break;
 		}
@@ -59,8 +60,10 @@ public class Player {
 			position.y += dy;
 		}
 		else if (tile.isBreakable()) {
-			//Attack tile in direction
-			//tile.damage(1, this);
+			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, 1, this)) {
+				//Attacking = true
+			}
+				//Attacking = false
 		}
 	}
 		
@@ -74,7 +77,7 @@ public class Player {
 		connection.sendInt((int)position.x);
 		connection.sendInt((int)position.y);
 	}
-
+	
 	public void sendDestroy(Connection connection) {
 		connection.sendInt(id);
 	}
