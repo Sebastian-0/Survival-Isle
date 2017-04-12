@@ -32,26 +32,33 @@ public class Player {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MOVE_UP:
-			if (game.getWallTileAtPosition((int)position.x, (int)position.y+1) == null)
-				position.y += 1;
+			actOnWorld(client, game, 0, 1);
 			break;
 		case MOVE_LEFT:
-			if (game.getWallTileAtPosition((int)position.x-1, (int)position.y) == null)
-				position.x -= 1;
+			actOnWorld(client, game, -1, 0);
 			break;
 		case MOVE_DOWN:
-			if (game.getWallTileAtPosition((int)position.x, (int)position.y-1) == null)
-				position.y -= 1;
+			actOnWorld(client, game, 0, -1);
 			break;
 		case MOVE_RIGHT:
-			if (game.getWallTileAtPosition((int)position.x+1, (int)position.y) == null)
-				position.x += 1;
+			actOnWorld(client, game, 1, 0);
 			break;
 
 		default:
 			break;
 		}
 		game.updateObject(this);
+	}
+	
+	private void actOnWorld(ServerProtocolCoder client, GameInterface game, int dx, int dy) {
+		WallTile tile = game.getWallTileAtPosition((int)position.x+dx, (int)position.y+dy);
+		if (tile == null) {
+			position.x += dx;
+			position.y += dy;
+		}
+		else if (tile.isBreakable()) {
+			//Attack tile in direction
+		}
 	}
 		
 	public void sendCreate(Connection connection) {
