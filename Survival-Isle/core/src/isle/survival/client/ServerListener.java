@@ -2,9 +2,9 @@ package isle.survival.client;
 
 public class ServerListener implements Runnable {
 	
-	private SurvivalIsleClient client;
+	private ClientInterface client;
 
-	public ServerListener(SurvivalIsleClient client) {
+	public ServerListener(ClientInterface client) {
 		this.client = client;
 	}
 	

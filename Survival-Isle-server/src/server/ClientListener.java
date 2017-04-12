@@ -15,7 +15,7 @@ public class ClientListener implements Runnable {
 		while (true) {
 			try {
 				ClientProtocol code = client.receiveCode();
-				System.out.println("Server received:" + code);
+				System.out.println("Server received: " + code);
 				game.parseClientMessage(code, client);
 			}
 			catch (ConnectionClosedException e) {

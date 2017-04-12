@@ -18,7 +18,7 @@ import server.Connection;
 import server.ServerProtocol;
 import world.World;
 
-public class SurvivalIsleClient extends ApplicationAdapter {
+public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private InputProcessor inputProcessor;
@@ -101,6 +101,7 @@ public class SurvivalIsleClient extends ApplicationAdapter {
 		}
 	}
 
+	@Override
 	public void parseServerMessage() {
 		ServerProtocol code = coder.receiveCode();
 		System.out.println("Client received: " + code);
