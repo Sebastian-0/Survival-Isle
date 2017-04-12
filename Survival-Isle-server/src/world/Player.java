@@ -51,7 +51,10 @@ public class Player {
 	}
 	
 	private void actOnWorld(ServerProtocolCoder client, GameInterface game, int dx, int dy) {
-		WallTile tile = game.getWallTileAtPosition((int)position.x+dx, (int)position.y+dy);
+		if (position.x + dx < 0 || position.y + dy < 0 || position.x + dx >= game.getWorld().width || position.y + dy >= game.getWorld().height)
+			return;
+		
+		WallTile tile = game.getWorld().getWallTile((int) position.x + dx, (int) position.y + dy);
 		if (tile == null) {
 			position.x += dx;
 			position.y += dy;
