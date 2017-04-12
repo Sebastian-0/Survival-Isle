@@ -18,9 +18,7 @@ public class ClientAccepter implements Runnable {
 			while (true) {
 				Socket socket = serverSocket.accept();
 				ServerProtocolCoder client = new ServerProtocolCoder(new Connection(socket));
-				new Thread(new ClientListener(game, client)).start();
 				game.addClient(client);
-				System.out.println("Client connected.");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

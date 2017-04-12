@@ -15,10 +15,12 @@ import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
 import server.Connection;
+import server.ConnectionClosedException;
 import server.ServerProtocol;
 import world.World;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
+	private String name;
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private InputProcessor inputProcessor;
@@ -30,6 +32,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private float xView;
 	private float yView;
 	
+	public SurvivalIsleClient(String name) {
+		this.name = name;
+	}
 	
 	@Override
 	public void create () {
@@ -46,7 +51,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private void connectToServer() {
 		try {
 			socket = new Socket("localhost", 1337);
-			coder = new ClientProtocolCoder(new Connection(socket));
+			coder = new ClientProtocolCoder(name, new Connection(socket));
 			new Thread(new ServerListener(this)).start();
 
 			System.out.println("Connected to host.");
@@ -123,6 +128,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 			case DESTROY_OBJECTS:
 				worldObjects.destroyObjects(coder.getConnection());
 				break;
+			case FailedToConnect:
+				throw new ConnectionClosedException();
 			default:
 				break;
 			}

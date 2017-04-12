@@ -7,9 +7,29 @@ import world.WorldObjects;
 public class ServerProtocolCoder {
 	
 	private Connection connection;
+	private String name;
 	
 	public ServerProtocolCoder(Connection connection) {
 		this.connection = connection;
+		name = connection.receiveStringParameter();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ServerProtocolCoder) {
+			return name.equals(((ServerProtocolCoder) obj).name);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 
 	public synchronized void sendWorld(ServerWorld world) {
@@ -43,6 +63,11 @@ public class ServerProtocolCoder {
 		connection.sendCode(ServerProtocol.DESTROY_OBJECTS);
 		connection.sendInt(1);
 		object.sendDestroy(connection);
+	}
+
+	public void sendFailedToConnect() {
+		connection.sendCode(ServerProtocol.FailedToConnect);
+		connection.close();
 	}
 
 	public ClientProtocol receiveCode() {

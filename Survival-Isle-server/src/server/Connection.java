@@ -97,4 +97,15 @@ public class Connection {
 			throw new ConnectionClosedException();
 		}
 	}
+
+	public void close() {
+		try {
+			inStream.close();
+		} catch (IOException e) {
+		}
+		try {
+			outStream.close();
+		} catch (IOException e) {
+		}
+	}
 }
