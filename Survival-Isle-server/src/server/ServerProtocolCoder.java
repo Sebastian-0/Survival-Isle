@@ -48,7 +48,7 @@ public class ServerProtocolCoder {
 	}
 
 	public synchronized void sendUpdateWallTiles(ServerWorld world) {
-		connection.sendCode(ServerProtocol.SendWorldTiles);
+		connection.sendCode(ServerProtocol.SendWorldWallTiles);
 		world.sendWallTileUpdate(connection);
 	}
 

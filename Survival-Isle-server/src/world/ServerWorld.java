@@ -9,12 +9,12 @@ import util.Point;
 
 public class ServerWorld extends World {
 	private WallTile[][] walls;
-	private List<Point> tilesToUpdate; 
+	private List<Point> wallTilesToUpdate; 
 	
 	public ServerWorld(int width, int height) {
 		super(width, height);
 		walls = new WallTile[width][height];
-		tilesToUpdate = new ArrayList<Point>();
+		wallTilesToUpdate = new ArrayList<Point>();
 	}
 	
 	public void GenerateTerrain(long seed) {
@@ -133,6 +133,24 @@ public class ServerWorld extends World {
 		}
 	}
 	
+	public WallTile getWallTileAtPosition(int x, int y) {
+		return walls[x][y];
+	}
+	
+	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
+		WallTile tile = walls[x][y];
+		if (tile.isBreakable()) {
+			if (tile.damage(damage)) {
+				//TODO: Give player resources
+				wallTilesToUpdate.add(new Point(x, y));
+				walls[x][y] = null;
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+
 	public void send(Connection connection) {
 		connection.sendInt(width);
 		connection.sendInt(height);
@@ -152,27 +170,19 @@ public class ServerWorld extends World {
 		}
 	}
 
-	public WallTile getWallTileAtPosition(int x, int y) {
-		return walls[x][y];
+	public void sendWallTileUpdate(Connection connection) {
+		connection.sendInt(wallTilesToUpdate.size());
+		Point p = wallTilesToUpdate.remove(wallTilesToUpdate.size()-1);
+		connection.sendInt((int) p.x);
+		connection.sendInt((int) p.y);
+		if (walls[(int)p.x][(int)p.y] == null) {
+			connection.sendInt(-1);
+		} else {
+			connection.sendInt(walls[(int)p.x][(int)p.y].getId());
+		}
 	}
 	
-	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
-		WallTile tile = walls[x][y];
-		if (tile.isBreakable()) {
-			if (tile.damage(damage)) {
-				//TODO: Give player resources
-				//TODO: Sync with clients
-				tilesToUpdate.add(new Point(x, y));
-				walls[x][y] = null;
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public void sendWallTileUpdate(Connection connection) {
-		// TODO Auto-generated method stub
-		
+	public boolean shouldUpdateWallTiles() {
+		return !wallTilesToUpdate.isEmpty();
 	}
 }

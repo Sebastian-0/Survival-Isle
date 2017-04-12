@@ -56,5 +56,16 @@ public class ClientWorld extends World {
 			}
 		}
 	}
+
+	public void receiveWallTiles(Connection connection) {
+		int amount = connection.receiveInt();
+		System.out.println(amount);
+		for (int i = 0; i < amount; i++) {
+			int x = connection.receiveInt();
+			int y = connection.receiveInt();
+			int id = connection.receiveInt();
+			walls[x][y] = id;
+		}
+	}
 	
 }

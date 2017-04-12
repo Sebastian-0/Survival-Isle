@@ -144,6 +144,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 			case SetInventory:
 				inventory.setInventory(coder.getConnection());
 				break;
+			case SendWorldWallTiles:
+				world.receiveWallTiles(coder.getConnection());
+				break;
 			case FailedToConnect:
 				System.out.println("User name already in use.");
 				Gdx.app.exit();

@@ -27,7 +27,7 @@ public class Game implements GameInterface {
 	}
 
 	public synchronized void update(double deltaTime) {
-		
+		updateWallTiles();
 		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
@@ -103,6 +103,14 @@ public class Game implements GameInterface {
 		}
 	}
 
+	public void updateWallTiles() {
+		if (world.shouldUpdateWallTiles()) {
+			for (ServerProtocolCoder client : clients) {
+				client.sendUpdateWallTiles(world);
+			}
+		}
+	}
+	
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
 		switch (code) {
 		case TO_PLAYER:
