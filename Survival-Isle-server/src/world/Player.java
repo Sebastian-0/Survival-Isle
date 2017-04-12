@@ -2,7 +2,6 @@ package world;
 
 import server.ClientProtocol;
 import server.Connection;
-import server.GameInterface;
 import server.ServerProtocolCoder;
 import util.Point;
 
@@ -54,13 +53,14 @@ public class Player {
 		if (position.x + dx < 0 || position.y + dy < 0 || position.x + dx >= game.getWorld().width || position.y + dy >= game.getWorld().height)
 			return;
 		
-		WallTile tile = game.getWorld().getWallTile((int) position.x + dx, (int) position.y + dy);
+		WallTile tile = game.getWorld().getWallTileAtPosition((int) position.x + dx, (int) position.y + dy);
 		if (tile == null) {
 			position.x += dx;
 			position.y += dy;
 		}
 		else if (tile.isBreakable()) {
 			//Attack tile in direction
+			//tile.damage(1, this);
 		}
 	}
 		

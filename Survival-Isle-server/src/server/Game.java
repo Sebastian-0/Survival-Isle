@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import world.GameInterface;
 import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
