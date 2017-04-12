@@ -60,8 +60,10 @@ public class Player {
 			position.y += dy;
 		}
 		else if (tile.isBreakable()) {
-			//Attack tile in direction
-			//tile.damage(1, this);
+			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, 1, this)) {
+				//Attacking = true
+			}
+				//Attacking = false
 		}
 	}
 		

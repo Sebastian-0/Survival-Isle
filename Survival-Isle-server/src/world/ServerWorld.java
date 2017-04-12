@@ -153,4 +153,17 @@ public class ServerWorld extends World {
 	public WallTile getWallTileAtPosition(int x, int y) {
 		return walls[x][y];
 	}
+	
+	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
+		WallTile tile = walls[x][y];
+		if (tile.isBreakable()) {
+			if (tile.damage(damage)) {
+				//TODO: Give player resources
+				walls[x][y] = null;
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
 }
