@@ -8,8 +8,9 @@ public class ClientProtocolCoder {
 	
 	private Connection connection;
 	
-	public ClientProtocolCoder(Connection connection) {
+	public ClientProtocolCoder(String name, Connection connection) {
 		this.connection = connection;
+		connection.sendString(name);
 	}
 	
 	public Connection getConnection() {

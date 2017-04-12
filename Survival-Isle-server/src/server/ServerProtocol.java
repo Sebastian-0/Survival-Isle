@@ -5,5 +5,6 @@ public enum ServerProtocol {
 	SET_PLAYER,
 	CREATE_OBJECTS,
 	SEND_OBJECTS, 
-	DESTROY_OBJECTS;
+	DESTROY_OBJECTS,
+	FailedToConnect;
 }
