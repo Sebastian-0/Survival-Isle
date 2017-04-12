@@ -2,7 +2,6 @@ package world;
 
 import server.ClientProtocol;
 import server.Connection;
-import server.GameInterface;
 import server.ServerProtocolCoder;
 import util.Point;
 

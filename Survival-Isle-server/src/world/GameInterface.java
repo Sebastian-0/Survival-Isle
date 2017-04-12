@@ -1,7 +1,4 @@
-package server;
-
-import world.Player;
-import world.ServerWorld;
+package world;
 
 public interface GameInterface {
 

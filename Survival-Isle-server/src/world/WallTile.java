@@ -1,7 +1,5 @@
 package world;
 
-import server.GameInterface;
-
 public class WallTile {
 	private int id;
 	private int health;
