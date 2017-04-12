@@ -12,12 +12,12 @@ public class ServerListener implements Runnable {
 	
 	@Override
 	public void run() {
-		while (true) {
+		while (!Thread.interrupted()) {
 			try {
 				client.parseServerMessage();
 			} catch (ConnectionClosedException e) {
 				e.printStackTrace();
-				System.exit(1);
+				break;
 			}
 		}
 	}

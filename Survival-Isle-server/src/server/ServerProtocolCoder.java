@@ -67,6 +67,7 @@ public class ServerProtocolCoder {
 
 	public void sendFailedToConnect() {
 		connection.sendCode(ServerProtocol.FailedToConnect);
+		connection.flush();
 		connection.close();
 	}
 

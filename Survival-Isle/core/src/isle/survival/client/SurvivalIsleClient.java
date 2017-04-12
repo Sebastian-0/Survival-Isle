@@ -15,7 +15,6 @@ import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
 import server.Connection;
-import server.ConnectionClosedException;
 import server.ServerProtocol;
 import world.World;
 
@@ -129,7 +128,10 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				worldObjects.destroyObjects(coder.getConnection());
 				break;
 			case FailedToConnect:
-				throw new ConnectionClosedException();
+				System.out.println("User name already in use.");
+				Gdx.app.exit();
+				Thread.currentThread().interrupt();
+				break;
 			default:
 				break;
 			}
