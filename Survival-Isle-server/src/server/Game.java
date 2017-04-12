@@ -7,7 +7,7 @@ import java.util.Map;
 
 import world.Player;
 import world.ServerWorld;
-import world.WallTile;
+import world.World;
 import world.WorldObjects;
 
 public class Game implements GameInterface {
@@ -115,7 +115,7 @@ public class Game implements GameInterface {
 	}
 
 	@Override
-	public WallTile getWallTileAtPosition(int x, int y) {
-		return world.getWallTile(x, y);
+	public ServerWorld getWorld() {
+		return world;
 	}
 }

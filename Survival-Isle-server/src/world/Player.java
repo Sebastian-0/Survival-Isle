@@ -51,13 +51,14 @@ public class Player {
 	}
 	
 	private void actOnWorld(ServerProtocolCoder client, GameInterface game, int dx, int dy) {
-		WallTile tile = game.getWallTileAtPosition((int)position.x+dx, (int)position.y+dy);
+		WallTile tile = game.getWorld().getWallTileAtPosition((int)position.x+dx, (int)position.y+dy);
 		if (tile == null) {
 			position.x += dx;
 			position.y += dy;
 		}
 		else if (tile.isBreakable()) {
 			//Attack tile in direction
+			//tile.damage(1, this);
 		}
 	}
 		

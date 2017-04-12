@@ -1,18 +1,23 @@
 package world;
 
+import server.GameInterface;
+
 public class WallTile {
 	private int id;
+	private int health;
 	private boolean isBreakable;
 	
 	public enum TileType {
-		Forest(0, true);
+		Forest(0, true, 2);
 		
 
 		public final int id;
+		public final int health;
 		public final boolean isBreakable;
 		
-		private TileType(int id, boolean isBreakable) {
+		private TileType(int id, boolean isBreakable, int health) {
 			this.id = id;
+			this.health = health;
 			this.isBreakable = isBreakable;
 		}
 	}
@@ -30,5 +35,15 @@ public class WallTile {
 	
 	public boolean isBreakable() {
 		return isBreakable;
+	}
+
+
+	public void damage(int amount, Player source, GameInterface game) {
+		health -= amount;
+		/*
+		if (health <= 0) {
+			game.
+		}
+		*/
 	}
 }
