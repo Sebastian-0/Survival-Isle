@@ -31,7 +31,7 @@ public class Game implements GameInterface, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		
+		updateWallTiles();
 		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
@@ -108,6 +108,14 @@ public class Game implements GameInterface, Serializable {
 		}
 	}
 
+	public void updateWallTiles() {
+		if (world.shouldUpdateWallTiles()) {
+			for (ServerProtocolCoder client : clients) {
+				client.sendUpdateWallTiles(world);
+			}
+		}
+	}
+	
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
 		switch (code) {
 		case TO_PLAYER:

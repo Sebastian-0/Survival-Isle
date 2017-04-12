@@ -38,12 +38,12 @@ public class WallTile implements Serializable {
 	}
 
 
-	public void damage(int amount, Player source, GameInterface game) {
+	public boolean damage(int amount) {
 		health -= amount;
-		/*
+		
 		if (health <= 0) {
-			game.
+			return true;
 		}
-		*/
+		return false;
 	}
 }
