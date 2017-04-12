@@ -115,22 +115,22 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		synchronized (this) {
 			switch (code) {
-			case SEND_WORLD:
+			case SendWorld:
 				world.receive(coder.getConnection());
 				break;
-			case CREATE_OBJECTS:
+			case CreateObjects:
 				worldObjects.createObjects(coder.getConnection());
 				break;
-			case SET_PLAYER:
+			case SetPlayer:
 				worldObjects.setPlayer(coder.getConnection().receiveInt());
 				break;
-			case SEND_OBJECTS:
+			case SendObjects:
 				worldObjects.updateObjects(coder.getConnection());
 				break;
-			case DESTROY_OBJECTS:
+			case DestroyObject:
 				worldObjects.destroyObjects(coder.getConnection());
 				break;
-			case SET_INVENTORY:
+			case SetInventory:
 				inventory.setInventory(coder.getConnection());
 				break;
 			case FailedToConnect:

@@ -9,10 +9,12 @@ import util.Point;
 
 public class ServerWorld extends World {
 	private WallTile[][] walls;
+	private List<Point> tilesToUpdate; 
 	
 	public ServerWorld(int width, int height) {
 		super(width, height);
 		walls = new WallTile[width][height];
+		tilesToUpdate = new ArrayList<Point>();
 	}
 	
 	public void GenerateTerrain(long seed) {
@@ -159,11 +161,18 @@ public class ServerWorld extends World {
 		if (tile.isBreakable()) {
 			if (tile.damage(damage)) {
 				//TODO: Give player resources
+				//TODO: Sync with clients
+				tilesToUpdate.add(new Point(x, y));
 				walls[x][y] = null;
 				return false;
 			}
 			return true;
 		}
 		return false;
+	}
+
+	public void sendWallTileUpdate(Connection connection) {
+		// TODO Auto-generated method stub
+		
 	}
 }
