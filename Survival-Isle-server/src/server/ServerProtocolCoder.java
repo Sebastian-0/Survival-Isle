@@ -1,12 +1,14 @@
 package server;
 
+import java.io.Serializable;
+
 import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
 
-public class ServerProtocolCoder {
+public class ServerProtocolCoder implements Serializable {
 	
-	private Connection connection;
+	private transient Connection connection;
 	private String name;
 	
 	public ServerProtocolCoder(Connection connection) {
@@ -59,16 +61,15 @@ public class ServerProtocolCoder {
 		object.sendUpdate(connection);
 	}
 
-	public void sendDestroyObject(Player object) {
+	public synchronized void sendDestroyObject(Player object) {
 		connection.sendCode(ServerProtocol.DESTROY_OBJECTS);
 		connection.sendInt(1);
 		object.sendDestroy(connection);
 	}
 
-	public void sendFailedToConnect() {
+	public synchronized void sendFailedToConnect() {
 		connection.sendCode(ServerProtocol.FailedToConnect);
 		connection.flush();
-		connection.close();
 	}
 
 	public ClientProtocol receiveCode() {
@@ -78,5 +79,9 @@ public class ServerProtocolCoder {
 
 	public synchronized void flush() {
 		connection.flush();
+	}
+
+	public synchronized void disconnect() {
+		connection.close();
 	}
 }

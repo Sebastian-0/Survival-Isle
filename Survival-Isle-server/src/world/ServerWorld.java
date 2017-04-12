@@ -1,5 +1,6 @@
 package world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,7 +8,7 @@ import java.util.Random;
 import server.Connection;
 import util.Point;
 
-public class ServerWorld extends World {
+public class ServerWorld extends World implements Serializable {
 	private WallTile[][] walls;
 	
 	public ServerWorld(int width, int height) {

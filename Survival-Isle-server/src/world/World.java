@@ -1,6 +1,8 @@
 package world;
 
-public class World {
+import java.io.Serializable;
+
+public class World implements Serializable {
 	public static final int TILE_WIDTH = 32;
 	public static final int TILE_HEIGHT = 32;
 	

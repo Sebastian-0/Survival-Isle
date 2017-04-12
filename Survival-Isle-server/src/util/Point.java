@@ -1,6 +1,8 @@
 package util;
 
-public class Point {
+import java.io.Serializable;
+
+public class Point implements Serializable {
 	public float x;
 	public float y;
 	
