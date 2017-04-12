@@ -8,6 +8,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.ui.BuildMenu;
@@ -93,6 +94,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	}
 	
 	private void draw() {
+		Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
+		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		spriteBatch.begin();
 		world.drawTerrain(xView, yView);
 		worldObjects.draw(xView, yView);
