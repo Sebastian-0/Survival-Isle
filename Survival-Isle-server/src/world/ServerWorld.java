@@ -59,7 +59,7 @@ public class ServerWorld extends World {
 			int y0 = random.nextInt(height-2)+1;
 			
 			if (ground[x0][y0] == GroundTile.Grass.id && walls[x0][y0] == null) {
-				walls[x0][y0] = new WallTile(WallTile.TileType.Forest.id);
+				walls[x0][y0] = new WallTile(WallTile.TileType.Forest);
 				
 				int size = random.nextInt(8) + 3;
 				for (float j = 0; j < size; j += 0.1) {
@@ -69,7 +69,7 @@ public class ServerWorld extends World {
 					if (ground[x][y] == GroundTile.Grass.id && 
 						isNearWallTile(x, y, WallTile.TileType.Forest.id) && 
 						walls[x][y] == null) {
-						walls[x][y] = new WallTile(WallTile.TileType.Forest.id);
+						walls[x][y] = new WallTile(WallTile.TileType.Forest);
 						j += 0.9;
 					}
 				}
@@ -150,7 +150,7 @@ public class ServerWorld extends World {
 		}
 	}
 
-	public WallTile getWallTile(int x, int y) {
+	public WallTile getWallTileAtPosition(int x, int y) {
 		return walls[x][y];
 	}
 }

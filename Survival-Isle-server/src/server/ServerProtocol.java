@@ -6,5 +6,6 @@ public enum ServerProtocol {
 	CREATE_OBJECTS,
 	SEND_OBJECTS, 
 	DESTROY_OBJECTS,
-	SET_INVENTORY;
+	SET_INVENTORY,
+	FailedToConnect;
 }

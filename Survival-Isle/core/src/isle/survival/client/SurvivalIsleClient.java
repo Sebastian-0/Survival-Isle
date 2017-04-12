@@ -20,6 +20,7 @@ import world.Inventory;
 import world.World;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
+	private String name;
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private InputProcessor inputProcessor;
@@ -32,6 +33,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private float xView;
 	private float yView;
 	
+	public SurvivalIsleClient(String name) {
+		this.name = name;
+	}
 	
 	@Override
 	public void create () {
@@ -49,7 +53,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private void connectToServer() {
 		try {
 			socket = new Socket("localhost", 1337);
-			coder = new ClientProtocolCoder(new Connection(socket));
+			coder = new ClientProtocolCoder(name, new Connection(socket));
 			new Thread(new ServerListener(this)).start();
 
 			System.out.println("Connected to host.");
@@ -128,6 +132,11 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				break;
 			case SET_INVENTORY:
 				inventory.setInventory(coder.getConnection());
+				break;
+			case FailedToConnect:
+				System.out.println("User name already in use.");
+				Gdx.app.exit();
+				Thread.currentThread().interrupt();
 				break;
 			default:
 				break;

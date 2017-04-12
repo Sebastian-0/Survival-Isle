@@ -1,5 +1,7 @@
 package isle.survival.client;
 
+import server.ConnectionClosedException;
+
 public class ServerListener implements Runnable {
 	
 	private ClientInterface client;
@@ -10,8 +12,13 @@ public class ServerListener implements Runnable {
 	
 	@Override
 	public void run() {
-		while (true) {
-			client.parseServerMessage();
+		while (!Thread.interrupted()) {
+			try {
+				client.parseServerMessage();
+			} catch (ConnectionClosedException e) {
+				e.printStackTrace();
+				break;
+			}
 		}
 	}
 }

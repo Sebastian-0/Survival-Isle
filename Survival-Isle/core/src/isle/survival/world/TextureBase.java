@@ -2,16 +2,21 @@ package isle.survival.world;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.ObjectMap.Entries;
 
 public class TextureBase {
 	private ObjectMap<Integer, Texture> groundTileTextures;
 	private ObjectMap<Integer, Texture> wallTileTextures;
 	private ObjectMap<Integer, Texture> objectTextures;
 	
+	private ObjectMap<String, Texture> textures;
+	
 	private Texture defaultTexture;
 
 	public TextureBase() {
+		groundTileTextures = new ObjectMap<>();
+		wallTileTextures = new ObjectMap<>();
+		objectTextures = new ObjectMap<>();
+		textures = new ObjectMap<>();
 		setUpTextures();
 	}
 	
@@ -23,38 +28,25 @@ public class TextureBase {
 	}
 
 	private void setUpGroundTileTextures() {
-		groundTileTextures = new ObjectMap<>();
 		groundTileTextures.put(0, new Texture("water.png"));
 		groundTileTextures.put(1, new Texture("grass.png"));
 	}
 	
 	private void setUpWallTileTextures() {
-		wallTileTextures = new ObjectMap<>();
 		wallTileTextures.put(0, new Texture("forest.png"));
 	}
 	
 	private void setUpObjectTextures() {
-		objectTextures = new ObjectMap<>();
 		objectTextures.put(0, new Texture("player.png"));
 	}
 
 	public void dispose() {
 		defaultTexture.dispose();
-		
-		Entries<Integer, Texture> i = groundTileTextures.iterator();
-		while (i.hasNext) {
-			i.next().value.dispose();
-		}
 
-		i = wallTileTextures.iterator();
-		while (i.hasNext) {
-			i.next().value.dispose();
-		}
-		
-		i = objectTextures.iterator();
-		while (i.hasNext) {
-			i.next().value.dispose();
-		}
+		groundTileTextures.forEach((t) -> {t.value.dispose();}); 
+		wallTileTextures.forEach((t) -> {t.value.dispose();}); 
+		objectTextures.forEach((t) -> {t.value.dispose();}); 
+		textures.forEach((t) -> {t.value.dispose();}); 
 	}
 	
 	public Texture getGroundTileTexture(int tileId) {
@@ -67,5 +59,15 @@ public class TextureBase {
 
 	public Texture getObjectTexture(int objectId) {
 		return objectTextures.get(objectId, defaultTexture);
+	}
+	
+	public Texture getTexture(String name) {
+		if (textures.containsKey(name)) {
+			return textures.get(name);
+		}
+		
+		Texture texture = new Texture(name + ".png");
+		textures.put(name, texture);
+		return texture;
 	}
 }

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import world.GameInterface;
 import world.Player;
 import world.ServerWorld;
-import world.WallTile;
 import world.WorldObjects;
 
 public class Game implements GameInterface {
@@ -17,7 +17,7 @@ public class Game implements GameInterface {
 
 	private ServerWorld world;
 	private WorldObjects worldObjects;
-	private Map<ServerProtocolCoder, Integer> playerIds = new HashMap<>();
+	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 	
 	public Game() {
 		world = new ServerWorld(20, 15);
@@ -35,11 +35,9 @@ public class Game implements GameInterface {
 
 	private void removeLeavingClients() {
 		synchronized (leavingClients) {
-			
 			for (ServerProtocolCoder client : leavingClients) {
 				clients.remove(client);
-				removeObject(worldObjects.getObject(playerIds.get(client)));
-				playerIds.remove(client);
+				removeObject(players.get(client));
 			}
 			leavingClients.clear();
 		}
@@ -48,17 +46,27 @@ public class Game implements GameInterface {
 	private void initNewClients() {
 		synchronized (joiningClients) {
 			for (ServerProtocolCoder client : joiningClients) {
-				client.sendWorld(world);
-				client.sendCreateWorldObjects(worldObjects);
-				clients.add(client);
-				Player newPlayer = new Player();
-				addObject(newPlayer);
-				client.sendSetPlayer(newPlayer);
-				playerIds.put(client, newPlayer.getId());
+				if (clients.contains(client)) {
+					client.sendFailedToConnect();
+				} else {
+					initNewClient(client);
+				}
 			}
 
 			joiningClients.clear();
 		}
+	}
+
+	private void initNewClient(ServerProtocolCoder client) {
+		client.sendWorld(world);
+		client.sendCreateWorldObjects(worldObjects);
+		clients.add(client);
+		Player newPlayer = players.getOrDefault(client, new Player());
+		addObject(newPlayer);
+		client.sendSetPlayer(newPlayer);
+		players.put(client, newPlayer);
+		new Thread(new ClientListener(this, client)).start();
+		System.out.println("Client connected: " + client);
 	}
 	
 	@Override
@@ -98,8 +106,7 @@ public class Game implements GameInterface {
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
 		switch (code) {
 		case TO_PLAYER:
-			int id = playerIds.get(client);
-			Player player = (Player) worldObjects.getObject(id);
+			Player player = players.get(client);
 			player.parseMessage(client, this);
 			break;
 		default:
@@ -108,7 +115,7 @@ public class Game implements GameInterface {
 	}
 
 	@Override
-	public WallTile getWallTileAtPosition(int x, int y) {
-		return world.getWallTile(x, y);
+	public ServerWorld getWorld() {
+		return world;
 	}
 }

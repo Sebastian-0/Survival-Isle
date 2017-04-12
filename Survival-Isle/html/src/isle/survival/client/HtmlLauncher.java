@@ -13,6 +13,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new SurvivalIsleClient();
+                return new SurvivalIsleClient("");
         }
 }
