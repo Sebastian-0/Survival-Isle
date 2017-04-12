@@ -13,11 +13,13 @@ public class Player {
 	private int id;
 	private int textureId;
 	private Point position;
+	private Inventory inv;
 	
 	public Player() {
 		id = idCounter++;
 		textureId = 0;
 		position = new Point(0, 0);
+		inv = new Inventory();
 	}
 	
 	public int getId() {
@@ -47,7 +49,6 @@ public class Player {
 			if (game.getWallTileAtPosition((int)position.x+1, (int)position.y) == null)
 				position.x += 1;
 			break;
-
 		default:
 			break;
 		}
@@ -64,7 +65,7 @@ public class Player {
 		connection.sendInt((int)position.x);
 		connection.sendInt((int)position.y);
 	}
-
+	
 	public void sendDestroy(Connection connection) {
 		connection.sendInt(id);
 	}

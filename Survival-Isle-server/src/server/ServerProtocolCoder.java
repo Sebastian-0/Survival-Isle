@@ -1,5 +1,6 @@
 package server;
 
+import world.ItemType;
 import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
@@ -43,6 +44,12 @@ public class ServerProtocolCoder {
 		connection.sendCode(ServerProtocol.DESTROY_OBJECTS);
 		connection.sendInt(1);
 		object.sendDestroy(connection);
+	}
+	
+	public void sendSetInventory(int id, int amount) {
+		connection.sendCode(ServerProtocol.SET_INVENTORY);
+		connection.sendInt(id);
+		connection.sendInt(amount);
 	}
 
 	public ClientProtocol receiveCode() {

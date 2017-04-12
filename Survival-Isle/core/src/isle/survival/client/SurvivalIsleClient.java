@@ -16,6 +16,7 @@ import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
 import server.Connection;
 import server.ServerProtocol;
+import world.Inventory;
 import world.World;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
@@ -27,6 +28,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	
 	private ClientWorld world;
 	private WorldObjects worldObjects;
+	private Inventory inventory;
 	private float xView;
 	private float yView;
 	
@@ -37,6 +39,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch = new SpriteBatch();
 		world = new ClientWorld(textureBase, spriteBatch);
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
+		inventory = new Inventory();
 		connectToServer();
 		
 		inputProcessor = new InputProcessor();
@@ -122,6 +125,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				break;
 			case DESTROY_OBJECTS:
 				worldObjects.destroyObjects(coder.getConnection());
+				break;
+			case SET_INVENTORY:
+				inventory.setInventory(coder.getConnection());
 				break;
 			default:
 				break;
