@@ -1,6 +1,5 @@
 package server;
 
-import world.ItemType;
 import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
