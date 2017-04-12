@@ -25,6 +25,7 @@ public class WallTile implements Serializable {
 	public WallTile(TileType type) {
 		id = type.id;
 		isBreakable = type.isBreakable;
+		health = type.health;
 	}
 	
 	
@@ -40,7 +41,6 @@ public class WallTile implements Serializable {
 
 	public boolean damage(int amount) {
 		health -= amount;
-		
 		if (health <= 0) {
 			return true;
 		}
