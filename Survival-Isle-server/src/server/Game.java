@@ -1,5 +1,9 @@
 package server;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,13 +14,13 @@ import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
 
-public class Game implements GameInterface {
-	private List<ServerProtocolCoder> clients = new ArrayList<>();
-	private List<ServerProtocolCoder> joiningClients = new ArrayList<>();
-	private List<ServerProtocolCoder> leavingClients = new ArrayList<>();
+public class Game implements GameInterface, Serializable {
+	private transient List<ServerProtocolCoder> clients = new ArrayList<>();
+	private transient List<ServerProtocolCoder> joiningClients = new ArrayList<>();
+	private transient List<ServerProtocolCoder> leavingClients = new ArrayList<>();
 
 	private ServerWorld world;
-	private WorldObjects worldObjects;
+	private transient WorldObjects worldObjects;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 	
 	public Game() {
@@ -27,7 +31,7 @@ public class Game implements GameInterface {
 	}
 
 	public synchronized void update(double deltaTime) {
-		
+		updateWallTiles();
 		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
@@ -48,6 +52,7 @@ public class Game implements GameInterface {
 			for (ServerProtocolCoder client : joiningClients) {
 				if (clients.contains(client)) {
 					client.sendFailedToConnect();
+					client.disconnect();
 				} else {
 					initNewClient(client);
 				}
@@ -103,6 +108,14 @@ public class Game implements GameInterface {
 		}
 	}
 
+	public void updateWallTiles() {
+		if (world.shouldUpdateWallTiles()) {
+			for (ServerProtocolCoder client : clients) {
+				client.sendUpdateWallTiles(world);
+			}
+		}
+	}
+	
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
 		switch (code) {
 		case TO_PLAYER:
@@ -117,5 +130,23 @@ public class Game implements GameInterface {
 	@Override
 	public ServerWorld getWorld() {
 		return world;
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		ois.defaultReadObject();
+		clients = new ArrayList<>();
+		joiningClients = new ArrayList<>();
+		leavingClients = new ArrayList<>();
+		worldObjects = new WorldObjects();
+		Player.idCounter = ois.readInt();
+	}
+	
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeInt(Player.idCounter);
+	}
+
+	public void stop() {
+		clients.forEach(client -> client.disconnect());
 	}
 }

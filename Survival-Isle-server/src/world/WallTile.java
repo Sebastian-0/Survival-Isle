@@ -1,6 +1,8 @@
 package world;
 
-public class WallTile {
+import java.io.Serializable;
+
+public class WallTile implements Serializable {
 	private int id;
 	private int health;
 	private boolean isBreakable;

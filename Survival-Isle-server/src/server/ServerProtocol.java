@@ -7,6 +7,6 @@ public enum ServerProtocol {
 	SendObjects, 
 	DestroyObject,
 	SetInventory,
-	SendWorldTiles,
+	SendWorldWallTiles,
 	FailedToConnect;
 }
