@@ -1,13 +1,15 @@
 package world;
 
+import java.io.Serializable;
+
 import server.ClientProtocol;
 import server.Connection;
 import server.ServerProtocolCoder;
 import util.Point;
 
-public class Player {
+public class Player implements Serializable {
 	
-	private static int idCounter;
+	public static int idCounter;
 	
 	private int id;
 	private int textureId;

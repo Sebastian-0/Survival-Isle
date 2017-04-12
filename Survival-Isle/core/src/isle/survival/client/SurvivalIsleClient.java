@@ -8,8 +8,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import isle.survival.ui.BuildMenu;
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.SoundBase;
@@ -35,6 +37,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private float xView;
 	private float yView;
 	
+	private BuildMenu buildMenu;
+	
 	public SurvivalIsleClient(String name) {
 		this.name = name;
 	}
@@ -51,6 +55,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		inputProcessor = new InputProcessor();
 		Gdx.input.setInputProcessor(inputProcessor);
+		
+		buildMenu = new BuildMenu(textureBase);
 	}
 	
 	private void connectToServer() {
@@ -91,9 +97,18 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	}
 	
 	private void draw() {
+		Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
+		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		spriteBatch.begin();
 		world.drawTerrain(xView, yView);
 		worldObjects.draw(xView, yView);
+		
+		int x = Gdx.graphics.getWidth()/2 - buildMenu.getWidth()/2;
+		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(x, 0, 0));
+		buildMenu.draw(spriteBatch);
+		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(-x, 0, 0));
+		
 		spriteBatch.end();
 	}
 	
@@ -118,23 +133,26 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		synchronized (this) {
 			switch (code) {
-			case SEND_WORLD:
+			case SendWorld:
 				world.receive(coder.getConnection());
 				break;
-			case CREATE_OBJECTS:
+			case CreateObjects:
 				worldObjects.createObjects(coder.getConnection());
 				break;
-			case SET_PLAYER:
+			case SetPlayer:
 				worldObjects.setPlayer(coder.getConnection().receiveInt());
 				break;
-			case SEND_OBJECTS:
+			case SendObjects:
 				worldObjects.updateObjects(coder.getConnection());
 				break;
-			case DESTROY_OBJECTS:
+			case DestroyObject:
 				worldObjects.destroyObjects(coder.getConnection());
 				break;
-			case SET_INVENTORY:
+			case SetInventory:
 				inventory.setInventory(coder.getConnection());
+				break;
+			case SendWorldWallTiles:
+				world.receiveWallTiles(coder.getConnection());
 				break;
 			case FailedToConnect:
 				System.out.println("User name already in use.");
@@ -179,9 +197,35 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				coder.sendMoveRight();
 				movingRightCounter = MOVEMENT_TIME;
 				break;
+			case Input.Keys.Q:
+				buildMenu.decrementSelection();
+				break;
+			case Input.Keys.E:
+				buildMenu.incrementSelection();
+				break;
+			case Input.Keys.NUM_1:
+			case Input.Keys.NUM_2:
+			case Input.Keys.NUM_3:
+			case Input.Keys.NUM_4:
+			case Input.Keys.NUM_5:
+			case Input.Keys.NUM_6:
+			case Input.Keys.NUM_7:
+			case Input.Keys.NUM_8:
+			case Input.Keys.NUM_9:
+				buildMenu.setSelectedIndex(keycode - Input.Keys.NUM_1);
+				break;
 			default:
 				return false;
 			}
+			return true;
+		}
+		
+		@Override
+		public boolean scrolled(int amount) {
+			if (amount > 0)
+				buildMenu.incrementSelection();
+			else
+				buildMenu.decrementSelection();
 			return true;
 		}
 		

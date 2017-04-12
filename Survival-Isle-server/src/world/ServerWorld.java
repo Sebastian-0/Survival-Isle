@@ -1,18 +1,23 @@
 package world;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import server.Connection;
 import util.Point;
 
-public class ServerWorld extends World {
+public class ServerWorld extends World implements Serializable {
 	private WallTile[][] walls;
+	private List<Point> wallTilesToUpdate; 
 	
 	public ServerWorld(int width, int height) {
 		super(width, height);
 		walls = new WallTile[width][height];
+		wallTilesToUpdate = Collections.synchronizedList(new LinkedList<Point>());
 	}
 	
 	public void GenerateTerrain(long seed) {
@@ -131,6 +136,24 @@ public class ServerWorld extends World {
 		}
 	}
 	
+	public WallTile getWallTileAtPosition(int x, int y) {
+		return walls[x][y];
+	}
+	
+	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
+		WallTile tile = walls[x][y];
+		if (tile.isBreakable()) {
+			if (tile.damage(damage)) {
+				//TODO: Give player resources
+				wallTilesToUpdate.add(new Point(x, y));
+				walls[x][y] = null;
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+
 	public void send(Connection connection) {
 		connection.sendInt(width);
 		connection.sendInt(height);
@@ -150,20 +173,27 @@ public class ServerWorld extends World {
 		}
 	}
 
-	public WallTile getWallTileAtPosition(int x, int y) {
-		return walls[x][y];
+	public void sendWallTileUpdate(Connection connection) {
+		while (true) {
+			Point p = wallTilesToUpdate.remove(0);
+			connection.sendInt((int) p.x);
+			connection.sendInt((int) p.y);
+			if (walls[(int)p.x][(int)p.y] == null) {
+				connection.sendInt(-1);
+			} else {
+				connection.sendInt(walls[(int)p.x][(int)p.y].getId());
+			}
+			
+			if (!wallTilesToUpdate.isEmpty())
+				connection.sendInt(1);
+			else {
+				connection.sendInt(0);
+				break;
+			}
+		}
 	}
 	
-	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
-		WallTile tile = walls[x][y];
-		if (tile.isBreakable()) {
-			if (tile.damage(damage)) {
-				//TODO: Give player resources
-				walls[x][y] = null;
-				return false;
-			}
-			return true;
-		}
-		return false;
+	public boolean shouldUpdateWallTiles() {
+		return !wallTilesToUpdate.isEmpty();
 	}
 }

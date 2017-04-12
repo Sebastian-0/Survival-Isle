@@ -1,6 +1,8 @@
 package world;
 
-public class WallTile {
+import java.io.Serializable;
+
+public class WallTile implements Serializable {
 	private int id;
 	private int health;
 	private boolean isBreakable;
@@ -23,6 +25,7 @@ public class WallTile {
 	public WallTile(TileType type) {
 		id = type.id;
 		isBreakable = type.isBreakable;
+		health = type.health;
 	}
 	
 	
@@ -38,7 +41,6 @@ public class WallTile {
 
 	public boolean damage(int amount) {
 		health -= amount;
-		
 		if (health <= 0) {
 			return true;
 		}

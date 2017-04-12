@@ -1,10 +1,10 @@
 package world;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import server.Connection;
-import server.ServerProtocol;
 
-public class Inventory {
+public class Inventory implements Serializable {
 
 	private HashMap<ItemType, Integer> items;
 

@@ -3,6 +3,7 @@ package server;
 public class ServerUpdater implements Runnable {
 	
 	private Game game;
+	private volatile boolean running;
 	
 	public ServerUpdater(Game game) {
 		this.game = game;
@@ -10,7 +11,8 @@ public class ServerUpdater implements Runnable {
 	
 	@Override
 	public void run() {
-		while (true) {
+		running = true;
+		while (running) {
 			long beforeUpdate = System.currentTimeMillis();
 			game.update(0.016);
 			long afterUpdate = System.currentTimeMillis();
@@ -24,5 +26,9 @@ public class ServerUpdater implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void stop() {
+		running = false;
 	}
 }
