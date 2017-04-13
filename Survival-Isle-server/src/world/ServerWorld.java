@@ -25,6 +25,7 @@ public class ServerWorld extends World implements Serializable {
 		List<Point> coast = generateGround(random);
 		generateRivers(random, coast);
 		generateForests(random);
+		generateMountains(random);
 	}
 
 	private List<Point> generateGround(Random random) {
@@ -75,6 +76,32 @@ public class ServerWorld extends World implements Serializable {
 						isNearWallTile(x, y, WallTile.TileType.Forest.id) && 
 						walls[x][y] == null) {
 						walls[x][y] = new WallTile(WallTile.TileType.Forest);
+						j += 0.9;
+					}
+				}
+			}
+		}
+	}
+
+	private void generateMountains(Random random) {
+		for (int i = 0; i < width*height/50; i++) {
+			int x0 = random.nextInt(width-2)+1;
+			int y0 = random.nextInt(height-2)+1;
+			
+			if (ground[x0][y0] == GroundTile.Grass.id && walls[x0][y0] == null) {
+				walls[x0][y0] = new WallTile(WallTile.TileType.Mountain);
+				ground[x0][y0] = GroundTile.Rock.id;
+				
+				int size = random.nextInt(8) + 3;
+				for (float j = 0; j < size; j += 0.1) {
+					int x = Math.max(0, Math.min(width, x0 + random.nextInt(size) - size/2));
+					int y = Math.max(0, Math.min(height, y0 + random.nextInt(size) - size/2));
+					
+					if (ground[x][y] == GroundTile.Grass.id && 
+						isNearWallTile(x, y, WallTile.TileType.Mountain.id) && 
+						walls[x][y] == null) {
+						walls[x][y] = new WallTile(WallTile.TileType.Mountain);
+						ground[x][y] = GroundTile.Rock.id;
 						j += 0.9;
 					}
 				}
