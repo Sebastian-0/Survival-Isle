@@ -13,6 +13,8 @@ import util.Point;
 public class ServerWorld extends World implements Serializable {
 	private WallTile[][] walls;
 	private List<Point> wallTilesToUpdate; 
+	private List<Point> coast;
+	private Random random;
 	
 	public ServerWorld(int width, int height) {
 		super(width, height);
@@ -22,7 +24,9 @@ public class ServerWorld extends World implements Serializable {
 	
 	public void GenerateTerrain(long seed) {
 		Random random = new Random(seed);
-		List<Point> coast = generateGround(random);
+		this.random = random;
+		
+		coast = generateGround(random);
 		generateRivers(random, coast);
 		generateForests(random);
 		generateMountains(random);
@@ -222,5 +226,34 @@ public class ServerWorld extends World implements Serializable {
 
 	public void clearWallTileUpdateList() {
 		wallTilesToUpdate.clear();
+	}
+
+	public Point getNewSpawnPoint() {
+		for (int i = 0; i < 10000; i++) {
+			int index = random.nextInt(coast.size());
+			int x = (int) coast.get(index).x;
+			int y = (int) coast.get(index).y;
+
+			if (isValidSpawnPoint(x+2,y))
+				return new Point(x+2, y);
+			if (isValidSpawnPoint(x,y+2))
+				return new Point(x, y+2);
+			if (isValidSpawnPoint(x-2,y))
+				return new Point(x-2, y);
+			if (isValidSpawnPoint(x,y-2))
+				return new Point(x, y-2);
+		}
+		
+		return new Point(width/2, height/2);
+	}
+
+	private boolean isValidSpawnPoint(int x, int y) {
+		if (ground[x][y] != GroundTile.Water.id && walls[x][y] == null &&
+			ground[x+1][y] != GroundTile.Water.id && walls[x+1][y] == null &&
+			ground[x-1][y] != GroundTile.Water.id && walls[x-1][y] == null &&
+			ground[x][y+1] != GroundTile.Water.id && walls[x][y+1] == null &&
+			ground[x][y-1] != GroundTile.Water.id && walls[x][y-1] == null)
+			return true;
+		return false;
 	}
 }
