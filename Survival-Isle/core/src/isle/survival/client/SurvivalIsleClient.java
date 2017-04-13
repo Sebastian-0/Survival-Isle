@@ -114,6 +114,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	public void dispose() {
 		textureBase.dispose();
 		spriteBatch.dispose();
+		soundBase.dispose();
 		if (socket != null) {
 			try {
 				socket.close();
@@ -155,6 +156,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				System.out.println("User name already in use.");
 				Gdx.app.exit();
 				Thread.currentThread().interrupt();
+				break;
+			case PlaySound:
+				soundBase.playSound(coder.getConnection());
 				break;
 			default:
 				break;

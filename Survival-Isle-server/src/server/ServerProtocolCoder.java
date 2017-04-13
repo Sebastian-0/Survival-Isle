@@ -82,6 +82,11 @@ public class ServerProtocolCoder implements Serializable {
 		connection.sendCode(ServerProtocol.FailedToConnect);
 		connection.flush();
 	}
+	
+	public void sendPlaySound(int id) {
+		connection.sendCode(ServerProtocol.PlaySound);
+		connection.sendInt(id);
+	}
 
 	public ClientProtocol receiveCode() {
 		int code = connection.receiveInt();

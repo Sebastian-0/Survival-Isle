@@ -8,5 +8,6 @@ public enum ServerProtocol {
 	DestroyObject,
 	SetInventory,
 	SendWorldWallTiles,
-	FailedToConnect;
+	FailedToConnect,
+	PlaySound;
 }

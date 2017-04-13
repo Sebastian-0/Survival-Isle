@@ -2,7 +2,7 @@ package isle.survival.world;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
-import java.util.ArrayList;
+import server.Connection;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -19,11 +19,12 @@ public class SoundBase {
 		//sounds.put(0, Gdx.audio.newSound(Gdx.files.internal("test.wav")));
 	}
 	
-	private void disposeSounds() {
+	public void dispose() {
 		sounds.forEach((t) -> {t.value.dispose();}); 
 	}
 	
-	public void playSound(int id, float volume) {
-		sounds.get(id).play(volume);
+	public void playSound(Connection coder) {
+		int id = coder.receiveInt();
+		sounds.get(id).play((float)0.5);
 	}
 }
