@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import world.GameInterface;
+import world.GameObject;
 import world.Inventory;
 import world.Player;
 import world.ServerWorld;
@@ -97,18 +98,19 @@ public class Game implements GameInterface, Serializable {
 	}
 	
 	@Override
-	public void addObject(Player object) {
+	public void addObject(GameObject object) {
 		worldObjects.addObject(object);
 		for (ServerProtocolCoder client : clients) {
 			client.sendCreateObject(object);
 		}
 	}
 	
+	@Override
 	public void doForEachClient(Consumer<ServerProtocolCoder> function) {
 		clients.forEach(function);
 	}
 
-	public void removeObject(Player object) {
+	public void removeObject(GameObject object) {
 		worldObjects.removeObject(object);
 		for (ServerProtocolCoder client : clients) {
 			client.sendDestroyObject(object);
@@ -149,12 +151,12 @@ public class Game implements GameInterface, Serializable {
 		joiningClients = new ArrayList<>();
 		leavingClients = new ArrayList<>();
 		worldObjects = new WorldObjects();
-		Player.idCounter = ois.readInt();
+		GameObject.idCounter = ois.readInt();
 	}
 	
 	private synchronized void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
-		oos.writeInt(Player.idCounter);
+		oos.writeInt(GameObject.idCounter);
 	}
 
 	public synchronized void stop() {

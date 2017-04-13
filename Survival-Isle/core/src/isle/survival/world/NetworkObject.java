@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import util.Point;
 import world.World;
-import world.Player.AnimationState;
+import world.GameObject.AnimationState;
 
 public class NetworkObject {
 	public static final float MOVEMENT_TIME = 0.3f;

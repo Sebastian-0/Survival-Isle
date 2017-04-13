@@ -6,7 +6,7 @@ import server.ServerProtocolCoder;
 
 public interface GameInterface {
 
-	void addObject(Player object);
+	void addObject(GameObject object);
 	void doForEachClient(Consumer<ServerProtocolCoder> function);
 	
 	ServerWorld getWorld();

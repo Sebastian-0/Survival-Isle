@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 import server.Connection;
-import world.Player.AnimationState;
+import world.GameObject.AnimationState;
 import world.World;
 
 public class WorldObjects {
