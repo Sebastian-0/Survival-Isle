@@ -51,9 +51,11 @@ public class InputProcessor extends InputAdapter {
 			break;
 		case Input.Keys.Q:
 			buildMenu.decrementSelection();
+			coder.sendSelectTool(buildMenu.getSelectedItemId());
 			break;
 		case Input.Keys.E:
 			buildMenu.incrementSelection();
+			coder.sendSelectTool(buildMenu.getSelectedItemId());
 			break;
 		case Input.Keys.NUM_1:
 		case Input.Keys.NUM_2:
@@ -64,7 +66,9 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.NUM_7:
 		case Input.Keys.NUM_8:
 		case Input.Keys.NUM_9:
-			buildMenu.setSelectedIndex(keycode - Input.Keys.NUM_1);
+			int toolIndex = keycode - Input.Keys.NUM_1;
+			buildMenu.setSelectedIndex(toolIndex);
+			coder.sendSelectTool(toolIndex);
 			break;
 		case Input.Keys.ESCAPE:
 			Gdx.app.exit();

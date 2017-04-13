@@ -1,5 +1,14 @@
 package isle.survival.client;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import isle.survival.input.InputProcessor;
 import isle.survival.ui.Ui;
 import isle.survival.world.ClientWorld;
@@ -7,20 +16,10 @@ import isle.survival.world.NetworkObject;
 import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
-
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
 import server.Connection;
 import server.ServerProtocol;
 import world.Inventory;
 import world.World;
-
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
 	private String name;

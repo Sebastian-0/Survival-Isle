@@ -5,6 +5,7 @@ import java.io.Serializable;
 import server.ClientProtocol;
 import server.Connection;
 import server.ServerProtocolCoder;
+import server.Tool;
 import util.Point;
 
 @SuppressWarnings("serial")
@@ -29,6 +30,7 @@ public class Player implements Serializable {
 	private Point attackTarget;
 	private Inventory inv;
 	private AnimationState animationState;
+	private Tool selectedTool = Tool.Pickaxe;
 	
 	public Player() {
 		id = idCounter++;
@@ -54,17 +56,25 @@ public class Player implements Serializable {
 	public void parseMessage(ServerProtocolCoder client, GameInterface game) {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
-		case MOVE_UP:
+		case MoveUp:
 			actOnWorld(client, game, 0, 1);
 			break;
-		case MOVE_LEFT:
+		case MoveLeft:
 			actOnWorld(client, game, -1, 0);
 			break;
-		case MOVE_DOWN:
+		case MoveDown:
 			actOnWorld(client, game, 0, -1);
 			break;
-		case MOVE_RIGHT:
+		case MoveRight:
 			actOnWorld(client, game, 1, 0);
+			break;
+		case SelectTool:
+			int toolIndex = client.getConnection().receiveInt();
+			try {
+				selectedTool = Tool.values()[toolIndex];
+			} catch (ArrayIndexOutOfBoundsException e) {
+				System.out.println("Tool selection failed");
+			}
 			break;
 		default:
 			break;
@@ -82,7 +92,7 @@ public class Player implements Serializable {
 			position.x += dx;
 			position.y += dy;
 		}
-		else if (tile.isBreakable()) {
+		else if (tile.isBreakable() && selectedTool == Tool.Pickaxe) {
 			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, 1, this)) {
 				animationState = AnimationState.Attacking;
 				attackTarget.x = position.x+dx;

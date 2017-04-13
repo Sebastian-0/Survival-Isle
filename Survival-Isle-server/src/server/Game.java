@@ -130,7 +130,7 @@ public class Game implements GameInterface, Serializable {
 
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
 		switch (code) {
-		case TO_PLAYER:
+		case ToPlayer:
 			Player player = players.get(client);
 			player.parseMessage(client, this);
 			break;

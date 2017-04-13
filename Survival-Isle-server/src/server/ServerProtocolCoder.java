@@ -17,6 +17,10 @@ public class ServerProtocolCoder implements Serializable {
 		name = connection.receiveStringParameter();
 	}
 	
+	public Connection getConnection() {
+		return connection;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ServerProtocolCoder) {
@@ -33,6 +37,11 @@ public class ServerProtocolCoder implements Serializable {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public ClientProtocol receiveCode() {
+		int code = connection.receiveInt();
+		return ClientProtocol.values()[code];
 	}
 
 	public synchronized void sendWorld(ServerWorld world) {
@@ -86,11 +95,6 @@ public class ServerProtocolCoder implements Serializable {
 	public void sendPlaySound(int id) {
 		connection.sendCode(ServerProtocol.PlaySound);
 		connection.sendInt(id);
-	}
-
-	public ClientProtocol receiveCode() {
-		int code = connection.receiveInt();
-		return ClientProtocol.values()[code];
 	}
 
 	public synchronized void flush() {
