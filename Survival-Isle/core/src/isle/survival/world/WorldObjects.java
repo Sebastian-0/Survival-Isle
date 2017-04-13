@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 import server.Connection;
+import world.Player.AnimationState;
 import world.World;
 
 public class WorldObjects {
@@ -71,7 +72,9 @@ public class WorldObjects {
 			int x = connection.receiveInt();
 			int y = connection.receiveInt();
 			int textureId = connection.receiveInt();
+			int animation = connection.receiveInt();
 			NetworkObject object = new NetworkObject(x, y, id, textureId);
+			object.setAnimation(animation);
 			objects.add(object);
 		}
 	}
@@ -84,6 +87,14 @@ public class WorldObjects {
 			int x = connection.receiveInt();
 			int y = connection.receiveInt();
 			object.setPosition(x, y);
+			
+			int animation = connection.receiveInt();
+			object.setAnimation(animation);
+			if (animation == AnimationState.Attacking.id) {
+				x = connection.receiveInt();
+				y = connection.receiveInt();
+				object.setAttackTarget(x, y);
+			}
 		}
 	}
 

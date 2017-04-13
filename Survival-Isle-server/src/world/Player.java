@@ -12,16 +12,31 @@ public class Player implements Serializable {
 	
 	public static int idCounter;
 	
+	public enum AnimationState {
+		Idle(0),
+		Attacking(1);
+		
+		public final int id;
+		
+		AnimationState(int id) {
+			this.id = id;
+		}
+	}
+	
 	private int id;
 	private int textureId;
 	private Point position;
+	private Point attackTarget;
 	private Inventory inv;
+	private AnimationState animationState;
 	
 	public Player() {
 		id = idCounter++;
 		textureId = 0;
 		position = new Point(0, 0);
+		attackTarget = new Point(0, 0);
 		inv = new Inventory();
+		animationState = AnimationState.Idle;
 	}
 	
 	public int getId() {
@@ -64,9 +79,11 @@ public class Player implements Serializable {
 		}
 		else if (tile.isBreakable()) {
 			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, 1, this)) {
-				//Attacking = true
+				animationState = AnimationState.Attacking;
+				attackTarget.x = position.x+dx;
+				attackTarget.y = position.y+dy;
 			}
-				//Attacking = false
+			animationState = AnimationState.Idle;
 		}
 	}
 		
@@ -79,6 +96,12 @@ public class Player implements Serializable {
 		connection.sendInt(id);
 		connection.sendInt((int)position.x);
 		connection.sendInt((int)position.y);
+		connection.sendInt(animationState.id);
+		
+		if (animationState == AnimationState.Attacking) {
+			connection.sendInt((int)attackTarget.x);
+			connection.sendInt((int)attackTarget.y);
+		}
 	}
 	
 	public void sendDestroy(Connection connection) {
