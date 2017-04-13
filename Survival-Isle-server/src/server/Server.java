@@ -29,11 +29,11 @@ public class Server {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(readFilename(in))));
 				try {
 					game = (Game) ois.readObject();
+					start();
 				} catch (ClassNotFoundException e) {
 					System.out.println("Failed to load game");
 					e.printStackTrace();
 				}
-				start();
 				break;
 			case "save":
 				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(readFilename(in))));
