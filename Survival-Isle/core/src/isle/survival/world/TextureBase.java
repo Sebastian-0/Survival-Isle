@@ -42,7 +42,10 @@ public class TextureBase {
 	}
 	
 	private void setUpObjectTextures() {
-		objectTextures.put(0, new Texture("player.png"));
+		objectTextures.put(0, new Texture("player_down.png"));
+		objectTextures.put(1, new Texture("player_right.png"));
+		objectTextures.put(2, new Texture("player_up.png"));
+		objectTextures.put(3, new Texture("player_left.png"));
 	}
 
 	public void dispose() {
