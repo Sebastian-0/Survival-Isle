@@ -154,12 +154,12 @@ public class Game implements GameInterface, Serializable {
 		Player.idCounter = ois.readInt();
 	}
 	
-	private void writeObject(ObjectOutputStream oos) throws IOException {
+	private synchronized void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
 		oos.writeInt(Player.idCounter);
 	}
 
-	public void stop() {
+	public synchronized void stop() {
 		clients.forEach(client -> client.disconnect());
 	}
 }

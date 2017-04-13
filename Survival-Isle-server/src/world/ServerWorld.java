@@ -181,9 +181,7 @@ public class ServerWorld extends World implements Serializable {
 	
 	public void addWallTileAtPosition(int x, int y, TileType tile) {
 		walls[x][y] = new WallTile(tile);
-		synchronized (wallTilesToUpdate) {
-			wallTilesToUpdate.add(new Point(x, y));
-		}
+		wallTilesToUpdate.add(new Point(x, y));
 	}
 
 	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
@@ -191,9 +189,7 @@ public class ServerWorld extends World implements Serializable {
 		if (tile.isBreakable()) {
 			if (tile.damage(damage)) {
 				tile.dropItems(source.getInventory());
-				synchronized (wallTilesToUpdate) {
-					wallTilesToUpdate.add(new Point(x, y));
-				}
+				wallTilesToUpdate.add(new Point(x, y));
 				walls[x][y] = null;
 			}
 			return true;

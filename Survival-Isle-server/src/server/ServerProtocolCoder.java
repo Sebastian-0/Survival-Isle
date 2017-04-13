@@ -44,39 +44,39 @@ public class ServerProtocolCoder implements Serializable {
 		return ClientProtocol.values()[code];
 	}
 
-	public synchronized void sendWorld(ServerWorld world) {
+	public void sendWorld(ServerWorld world) {
 		connection.sendCode(ServerProtocol.SendWorld);
 		world.send(connection);
 	}
 
-	public synchronized void sendCreateWorldObjects(WorldObjects worldObjects) {
+	public void sendCreateWorldObjects(WorldObjects worldObjects) {
 		connection.sendCode(ServerProtocol.CreateObjects);
 		worldObjects.sendCreateAll(connection);
 	}
 
-	public synchronized void sendSetPlayer(Player newPlayer) {
+	public void sendSetPlayer(Player newPlayer) {
 		connection.sendCode(ServerProtocol.SetPlayer);
 		connection.sendInt(newPlayer.getId());
 	}
 
-	public synchronized void sendUpdateWallTiles(ServerWorld world) {
+	public void sendUpdateWallTiles(ServerWorld world) {
 		connection.sendCode(ServerProtocol.SendWorldWallTiles);
 		world.sendWallTileUpdate(connection);
 	}
 
-	public synchronized void sendCreateObject(Player object) {
+	public void sendCreateObject(Player object) {
 		connection.sendCode(ServerProtocol.CreateObjects);
 		connection.sendInt(1);
 		object.sendCreate(connection);
 	}
 
-	public synchronized void sendUpdateObject(Player object) {
+	public void sendUpdateObject(Player object) {
 		connection.sendCode(ServerProtocol.SendObjects);
 		connection.sendInt(1);
 		object.sendUpdate(connection);
 	}
 
-	public synchronized void sendDestroyObject(Player object) {
+	public void sendDestroyObject(Player object) {
 		connection.sendCode(ServerProtocol.DestroyObject);
 		connection.sendInt(1);
 		object.sendDestroy(connection);
@@ -87,7 +87,7 @@ public class ServerProtocolCoder implements Serializable {
 		inventory.sendInventory(connection);
 	}
 
-	public synchronized void sendFailedToConnect() {
+	public void sendFailedToConnect() {
 		connection.sendCode(ServerProtocol.FailedToConnect);
 		connection.flush();
 	}
@@ -97,11 +97,11 @@ public class ServerProtocolCoder implements Serializable {
 		connection.sendInt(id);
 	}
 
-	public synchronized void flush() {
+	public void flush() {
 		connection.flush();
 	}
 
-	public synchronized void disconnect() {
+	public void disconnect() {
 		connection.close();
 	}
 }

@@ -22,27 +22,27 @@ public class ClientProtocolCoder {
 		return ServerProtocol.values()[code];
 	}
 
-	public synchronized void sendMoveUp() {
+	public void sendMoveUp() {
 		connection.sendCode(ClientProtocol.ToPlayer);
 		connection.sendCode(ClientProtocol.MoveUp);
 	}
 
-	public synchronized void sendMoveLeft() {
+	public void sendMoveLeft() {
 		connection.sendCode(ClientProtocol.ToPlayer);
 		connection.sendCode(ClientProtocol.MoveLeft);
 	}
 
-	public synchronized void sendMoveDown() {
+	public void sendMoveDown() {
 		connection.sendCode(ClientProtocol.ToPlayer);
 		connection.sendCode(ClientProtocol.MoveDown);
 	}
 
-	public synchronized void sendMoveRight() {
+	public void sendMoveRight() {
 		connection.sendCode(ClientProtocol.ToPlayer);
 		connection.sendCode(ClientProtocol.MoveRight);
 	}
 	
-	public synchronized void sendSelectTool(int tool) {
+	public void sendSelectTool(int tool) {
 		connection.sendCode(ClientProtocol.ToPlayer);
 		connection.sendCode(ClientProtocol.SelectTool);
 		connection.sendInt(tool);
@@ -53,7 +53,7 @@ public class ClientProtocolCoder {
 		connection.sendCode(ClientProtocol.UseTool);
 	}
 
-	public synchronized void flush() {
+	public void flush() {
 		connection.flush();
 	}
 }
