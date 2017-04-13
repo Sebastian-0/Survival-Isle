@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import world.GameInterface;
 import world.Inventory;
@@ -103,11 +104,8 @@ public class Game implements GameInterface, Serializable {
 		}
 	}
 	
-	@Override
-	public void updateObject(Player object) {
-		for (ServerProtocolCoder client : clients) {
-			client.sendUpdateObject(object);
-		}
+	public void doForEachClient(Consumer<ServerProtocolCoder> function) {
+		clients.forEach(function);
 	}
 
 	public void removeObject(Player object) {

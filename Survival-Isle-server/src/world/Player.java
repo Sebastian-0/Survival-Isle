@@ -57,20 +57,20 @@ public class Player implements Serializable {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MoveUp:
-			actOnWorld(client, game, 0, 1);
-			game.updateObject(this);
+			actOnWorld(game, 0, 1);
+			game.doForEachClient(c->c.sendUpdateObject(this));
 			break;
 		case MoveLeft:
-			actOnWorld(client, game, -1, 0);
-			game.updateObject(this);
+			actOnWorld(game, -1, 0);
+			game.doForEachClient(c->c.sendUpdateObject(this));
 			break;
 		case MoveDown:
-			actOnWorld(client, game, 0, -1);
-			game.updateObject(this);
+			actOnWorld(game, 0, -1);
+			game.doForEachClient(c->c.sendUpdateObject(this));
 			break;
 		case MoveRight:
-			actOnWorld(client, game, 1, 0);
-			game.updateObject(this);
+			actOnWorld(game, 1, 0);
+			game.doForEachClient(c->c.sendUpdateObject(this));
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
@@ -88,8 +88,11 @@ public class Player implements Serializable {
 		}
 	}
 	
-	private void actOnWorld(ServerProtocolCoder client, GameInterface game, int dx, int dy) {
-		if (position.x + dx < 0 || position.y + dy < 0 || position.x + dx >= game.getWorld().width || position.y + dy >= game.getWorld().height)
+	private void actOnWorld(GameInterface game, int dx, int dy) {
+		if (position.x + dx < 0 || 
+			position.y + dy < 0 ||
+			position.x + dx >= game.getWorld().width ||
+			position.y + dy >= game.getWorld().height)
 			return;
 
 		animationState = AnimationState.Idle;
