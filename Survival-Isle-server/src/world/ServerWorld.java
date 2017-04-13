@@ -77,7 +77,7 @@ public class ServerWorld extends World implements Serializable {
 	}
 
 	private void generateForests(Random random) {
-		int quantity = width*height/50;
+		int quantity = Math.max(1,width*height/200);
 		int minSize = 3;
 		int maxSize = 11;
 		generateLocalEnvironment(random, WallTile.TileType.Forest, 
@@ -85,9 +85,9 @@ public class ServerWorld extends World implements Serializable {
 	}
 
 	private void generateMountains(Random random) {
-		int quantity = width*height/200;
-		int minSize = 6;
-		int maxSize = 22;
+		int quantity = Math.max(1,width*height/800);
+		int minSize = 12;
+		int maxSize = 28;
 		generateLocalEnvironment(random, WallTile.TileType.Mountain, 
 				GroundTile.Rock, quantity, minSize, maxSize);
 	}
@@ -96,7 +96,7 @@ public class ServerWorld extends World implements Serializable {
 			GroundTile groundType, int quantity, int minSize, int maxSize) {
 		List<Point> edge = new ArrayList<>();
 		
-		for (int i = 0; i < quantity; i++) {
+		for (int i = 0; i < quantity;) {
 			int x0 = random.nextInt(width-2)+1;
 			int y0 = random.nextInt(height-2)+1;
 			
@@ -119,6 +119,7 @@ public class ServerWorld extends World implements Serializable {
 						addWallsToEdgeList(x,y, edge);
 					}
 				}
+				i++;
 			}
 			edge.clear();
 		}
