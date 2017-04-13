@@ -75,7 +75,8 @@ public class Player implements Serializable {
 	private void actOnWorld(ServerProtocolCoder client, GameInterface game, int dx, int dy) {
 		if (position.x + dx < 0 || position.y + dy < 0 || position.x + dx >= game.getWorld().width || position.y + dy >= game.getWorld().height)
 			return;
-		
+
+		animationState = AnimationState.Idle;
 		WallTile tile = game.getWorld().getWallTileAtPosition((int) position.x + dx, (int) position.y + dy);
 		if (tile == null) {
 			position.x += dx;
@@ -87,7 +88,6 @@ public class Player implements Serializable {
 				attackTarget.x = position.x+dx;
 				attackTarget.y = position.y+dy;
 			}
-			animationState = AnimationState.Idle;
 		}
 	}
 		

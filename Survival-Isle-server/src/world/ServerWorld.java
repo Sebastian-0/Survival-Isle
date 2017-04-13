@@ -149,7 +149,6 @@ public class ServerWorld extends World implements Serializable {
 					wallTilesToUpdate.add(new Point(x, y));
 				}
 				walls[x][y] = null;
-				return false;
 			}
 			return true;
 		}
