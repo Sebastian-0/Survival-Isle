@@ -28,7 +28,7 @@ public class TextureBase {
 	}
 
 	private void setUpGroundTileTextures() {
-		groundTileTextures.put(0, new Texture("water.png"));
+		groundTileTextures.put(0, new Texture("seafloor.png"));
 		groundTileTextures.put(1, new Texture("grass.png"));
 		groundTileTextures.put(2, new Texture("rock.png"));
 	}
