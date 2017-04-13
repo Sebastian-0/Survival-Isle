@@ -131,7 +131,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	@Override
 	public void parseServerMessage() {
 		ServerProtocol code = coder.receiveCode();
-		System.out.println("Client received: " + code);
+//		System.out.println("Client received: " + code);
 		
 		synchronized (this) {
 			switch (code) {

@@ -220,7 +220,7 @@ public class ServerWorld extends World implements Serializable {
 	public void sendWallTileUpdate(Connection connection) {
 		connection.sendInt(wallTilesToUpdate.size());
 		for (int i = 0; i < wallTilesToUpdate.size(); i++) {
-			Point p = wallTilesToUpdate.get(0);
+			Point p = wallTilesToUpdate.get(i);
 			connection.sendInt((int) p.x);
 			connection.sendInt((int) p.y);
 			if (walls[(int)p.x][(int)p.y] == null) {
