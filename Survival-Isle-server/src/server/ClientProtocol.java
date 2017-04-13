@@ -7,5 +7,6 @@ public enum ClientProtocol {
 	MoveLeft,
 	MoveDown,
 	MoveRight, 
-	SelectTool;
+	SelectTool,
+	UseTool;
 }

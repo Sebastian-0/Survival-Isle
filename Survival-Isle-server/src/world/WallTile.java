@@ -12,17 +12,17 @@ public class WallTile implements Serializable {
 	private Map<ItemType, Integer> itemDrops;
 	
 	public enum TileType {
-		Forest(0, true, 2, ItemType.Wood.ordinal(), 1), 
-		Mountain(1, true, 3, ItemType.Stone.ordinal(), 2);
+		Forest(true, 2, ItemType.Wood.ordinal(), 1),
+		Mountain(true, 3, ItemType.Stone.ordinal(), 2),
+		WoodWall(true, 5, ItemType.Wood.ordinal(), 2),
+		StoneWall(true, 10, ItemType.Stone.ordinal(), 2);
 		
 
-		public final int id;
 		public final int health;
 		public final boolean isBreakable;
 		public final Map<ItemType, Integer> itemDrops;
 		
-		private TileType(int id, boolean isBreakable, int health, int... itemDrops) {
-			this.id = id;
+		private TileType(boolean isBreakable, int health, int... itemDrops) {
 			this.health = health;
 			this.isBreakable = isBreakable;
 			this.itemDrops = new HashMap<>();
@@ -33,7 +33,7 @@ public class WallTile implements Serializable {
 	}
 	
 	public WallTile(TileType type) {
-		id = type.id;
+		id = type.ordinal();
 		isBreakable = type.isBreakable;
 		health = type.health;
 		itemDrops = type.itemDrops;

@@ -8,6 +8,7 @@ import java.util.Random;
 
 import server.Connection;
 import util.Point;
+import world.WallTile.TileType;
 
 @SuppressWarnings("serial")
 public class ServerWorld extends World implements Serializable {
@@ -172,6 +173,13 @@ public class ServerWorld extends World implements Serializable {
 		return walls[x][y];
 	}
 	
+	public void addWallTileAtPosition(int x, int y, TileType tile) {
+		walls[x][y] = new WallTile(tile);
+		synchronized (wallTilesToUpdate) {
+			wallTilesToUpdate.add(new Point(x, y));
+		}
+	}
+
 	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
 		WallTile tile = walls[x][y];
 		if (tile.isBreakable()) {

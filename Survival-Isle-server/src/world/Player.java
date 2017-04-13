@@ -80,6 +80,9 @@ public class Player implements Serializable {
 				System.out.println("Tool selection failed");
 			}
 			break;
+		case UseTool:
+			selectedTool.use(game.getWorld(), position);
+			break;
 		default:
 			break;
 		}
