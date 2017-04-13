@@ -66,6 +66,10 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.NUM_9:
 			buildMenu.setSelectedIndex(keycode - Input.Keys.NUM_1);
 			break;
+		case Input.Keys.ESCAPE:
+			Gdx.app.exit();
+			Thread.currentThread().interrupt();
+			break;
 		default:
 			return false;
 		}
