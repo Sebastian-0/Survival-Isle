@@ -2,13 +2,15 @@ package world;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class World implements Serializable {
 	public static final int TILE_WIDTH = 32;
 	public static final int TILE_HEIGHT = 32;
 	
 	public enum GroundTile {
 		Water(0),
-		Grass(1);
+		Grass(1), 
+		Rock(2);
 		
 		
 		public final int id;

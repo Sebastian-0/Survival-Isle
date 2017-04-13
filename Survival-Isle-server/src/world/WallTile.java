@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("serial")
 public class WallTile implements Serializable {
 	private int id;
 	private int health;
@@ -11,7 +12,8 @@ public class WallTile implements Serializable {
 	private Map<ItemType, Integer> itemDrops;
 	
 	public enum TileType {
-		Forest(0, true, 2, ItemType.wood.ordinal(), 1);
+		Forest(0, true, 2, ItemType.wood.ordinal(), 1), 
+		Mountain(1, true, 3, ItemType.stone.ordinal(), 2);
 		
 
 		public final int id;
