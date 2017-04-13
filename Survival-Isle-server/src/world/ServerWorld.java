@@ -2,7 +2,6 @@ package world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -83,7 +82,7 @@ public class ServerWorld extends World implements Serializable {
 		int minSize = 3;
 		int maxSize = 11;
 		generateLocalEnvironment(random, WallTile.TileType.Forest, 
-				GroundTile.Grass, quantity, minSize, maxSize);
+				GroundTile.Stump, quantity, minSize, maxSize);
 	}
 
 	private void generateMountains(Random random) {
@@ -145,40 +144,44 @@ public class ServerWorld extends World implements Serializable {
 			int index = random.nextInt(coast.size());
 			int x = (int)coast.get(index).x;
 			int y = (int)coast.remove(index).y;
-			int dx = 0;
-			int dy = -1;
 			
-			if (ground[x+1][y] == GroundTile.Grass.id) {
-				dx = 1;
-				dy = 0;
-			} else if (ground[x][y+1] == GroundTile.Grass.id) {
-				dx = 0;
-				dy = 1;
-			} else if (ground[x-1][y] == GroundTile.Grass.id) {
-				dx = -1;
-				dy = 0;
-			} 
-			
-			x += dx;
-			y += dy;
-			
-			while (ground[x][y] != GroundTile.Water.id) {
-				ground[x][y] = GroundTile.Water.id;
-				walls[x][y] = new WallTile(WallTile.TileType.Water);
-				if (random.nextInt(4) < 1) {
-					if (random.nextBoolean()) {
-						int t = -dy;
-						dy = dx;
-						dx = t;
-					} else {
-						int t = dy;
-						dy = -dx;
-						dx = t;
-					}
-				}
+			if (ground[x][y] == GroundTile.Water.id) {
+				int dx = 0;
+				int dy = -1;
+				
+				if (ground[x+1][y] == GroundTile.Grass.id) {
+					dx = 1;
+					dy = 0;
+				} else if (ground[x][y+1] == GroundTile.Grass.id) {
+					dx = 0;
+					dy = 1;
+				} else if (ground[x-1][y] == GroundTile.Grass.id) {
+					dx = -1;
+					dy = 0;
+				} 
+				
 				x += dx;
 				y += dy;
-			}
+				
+				while (ground[x][y] != GroundTile.Water.id) {
+					ground[x][y] = GroundTile.Water.id;
+					walls[x][y] = new WallTile(WallTile.TileType.Water);
+					if (random.nextInt(4) < 1) {
+						if (random.nextBoolean()) {
+							int t = -dy;
+							dy = dx;
+							dx = t;
+						} else {
+							int t = dy;
+							dy = -dx;
+							dx = t;
+						}
+					}
+					x += dx;
+					y += dy;
+				}
+			} else
+				i--;
 		}
 	}
 	
