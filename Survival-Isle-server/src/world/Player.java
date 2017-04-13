@@ -30,7 +30,7 @@ public class Player implements Serializable {
 	private Point attackTarget;
 	private Inventory inv;
 	private AnimationState animationState;
-	private Tool selectedTool;
+	private Tool selectedTool = Tool.Pickaxe;
 	
 	public Player() {
 		id = idCounter++;
