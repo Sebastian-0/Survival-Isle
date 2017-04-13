@@ -47,6 +47,10 @@ public class Player implements Serializable {
 		return position;
 	}
 
+	public Inventory getInventory() {
+		return inv;
+	}
+
 	public void parseMessage(ServerProtocolCoder client, GameInterface game) {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {

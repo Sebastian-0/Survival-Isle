@@ -144,7 +144,7 @@ public class ServerWorld extends World implements Serializable {
 		WallTile tile = walls[x][y];
 		if (tile.isBreakable()) {
 			if (tile.damage(damage)) {
-				//TODO: Give player resources
+				tile.dropItems(source.getInventory());
 				synchronized (wallTilesToUpdate) {
 					wallTilesToUpdate.add(new Point(x, y));
 				}
