@@ -258,7 +258,9 @@ public class ServerWorld extends World implements Serializable {
 	}
 
 	private boolean isValidSpawnPoint(int x, int y) {
-		if (walls[x][y] == null &&
+		
+		if (x >= 2 && x < width-2 && y >= 2 && y < height-2 &&
+			walls[x][y] == null &&
 			walls[x+1][y] == null &&
 			walls[x-1][y] == null &&
 			walls[x][y+1] == null &&
