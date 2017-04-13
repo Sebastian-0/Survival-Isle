@@ -3,7 +3,7 @@ package server;
 import java.io.Serializable;
 
 import world.Inventory;
-import world.Player;
+import world.GameObject;
 import world.ServerWorld;
 import world.WorldObjects;
 
@@ -54,7 +54,7 @@ public class ServerProtocolCoder implements Serializable {
 		worldObjects.sendCreateAll(connection);
 	}
 
-	public void sendSetPlayer(Player newPlayer) {
+	public void sendSetPlayer(GameObject newPlayer) {
 		connection.sendCode(ServerProtocol.SetPlayer);
 		connection.sendInt(newPlayer.getId());
 	}
@@ -64,19 +64,19 @@ public class ServerProtocolCoder implements Serializable {
 		world.sendWallTileUpdate(connection);
 	}
 
-	public void sendCreateObject(Player object) {
+	public void sendCreateObject(GameObject object) {
 		connection.sendCode(ServerProtocol.CreateObjects);
 		connection.sendInt(1);
 		object.sendCreate(connection);
 	}
 
-	public void sendUpdateObject(Player object) {
+	public void sendUpdateObject(GameObject object) {
 		connection.sendCode(ServerProtocol.SendObjects);
 		connection.sendInt(1);
 		object.sendUpdate(connection);
 	}
 
-	public void sendDestroyObject(Player object) {
+	public void sendDestroyObject(GameObject object) {
 		connection.sendCode(ServerProtocol.DestroyObject);
 		connection.sendInt(1);
 		object.sendDestroy(connection);

@@ -3,50 +3,18 @@ package world;
 import java.io.Serializable;
 
 import server.ClientProtocol;
-import server.Connection;
 import server.ServerProtocolCoder;
 import server.Tool;
-import util.Point;
 
 @SuppressWarnings("serial")
-public class Player implements Serializable {
+public class Player extends GameObject implements Serializable {
 	
-	public static int idCounter;
-	
-	public enum AnimationState {
-		Idle(0),
-		Attacking(1);
-		
-		public final int id;
-		
-		AnimationState(int id) {
-			this.id = id;
-		}
-	}
-	
-	private int id;
-	private int textureId;
-	private Point position;
-	private Point attackTarget;
 	private Inventory inv;
-	private AnimationState animationState;
-	private Tool selectedTool = Tool.Pickaxe;
+	private Tool selectedTool;
 	
 	public Player() {
-		id = idCounter++;
-		textureId = 0;
-		position = new Point(0, 0);
-		attackTarget = new Point(0, 0);
 		inv = new Inventory();
-		animationState = AnimationState.Idle;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public Point getPosition() {
-		return position;
+		selectedTool = Tool.Pickaxe;
 	}
 
 	public Inventory getInventory() {
@@ -105,30 +73,5 @@ public class Player implements Serializable {
 				attackTarget.y = position.y+dy;
 			}
 		}
-	}
-		
-	public void sendCreate(Connection connection) {
-		sendUpdate(connection);
-		connection.sendInt(textureId);
-	}
-
-	public void sendUpdate(Connection connection) {
-		connection.sendInt(id);
-		connection.sendInt((int)position.x);
-		connection.sendInt((int)position.y);
-		connection.sendInt(animationState.id);
-		
-		if (animationState == AnimationState.Attacking) {
-			connection.sendInt((int)attackTarget.x);
-			connection.sendInt((int)attackTarget.y);
-		}
-	}
-	
-	public void sendDestroy(Connection connection) {
-		connection.sendInt(id);
-	}
-
-	public void setPosition(Point position) {
-		this.position = position;
 	}
 }
