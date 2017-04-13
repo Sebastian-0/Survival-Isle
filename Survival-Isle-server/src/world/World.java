@@ -13,7 +13,8 @@ public class World implements Serializable {
 		Rock(2),
 		Stump(3),
 		ShallowWater(4),
-		Beach(5);
+		Beach(5),
+		Flowers(6);
 		
 		
 		public final int id;

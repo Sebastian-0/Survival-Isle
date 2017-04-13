@@ -54,15 +54,18 @@ public class ServerWorld extends World implements Serializable {
 			int y = (int) coast.remove(index).y;
 			
 			if (ground[x][y] != GroundTile.Grass.id) {
+				if (random.nextInt(20) == 0)
+					ground[x][y] = GroundTile.Flowers.id;
+				else
 				ground[x][y] = GroundTile.Grass.id;
 
-				if (x >= 2 && ground[x-1][y] != GroundTile.Grass.id)
+				if (x >= 2 && ground[x-1][y] == GroundTile.Water.id)
 					coast.add(new Point(x-1, y));
-				if (x < width-2 && ground[x+1][y] != GroundTile.Grass.id)
+				if (x < width-2 && ground[x+1][y] == GroundTile.Water.id)
 					coast.add(new Point(x+1, y));
-				if (y >= 2 && ground[x][y-1] != GroundTile.Grass.id)
+				if (y >= 2 && ground[x][y-1] == GroundTile.Water.id)
 					coast.add(new Point(x, y-1));
-				if (y < height-2 && ground[x][y+1] != GroundTile.Grass.id)
+				if (y < height-2 && ground[x][y+1] == GroundTile.Water.id)
 					coast.add(new Point(x, y+1));
 			}
 		}
@@ -198,22 +201,12 @@ public class ServerWorld extends World implements Serializable {
 				ground[x][y] = GroundTile.ShallowWater.id;
 				walls[x][y] = null;
 			}
-			
-			
 		}
-		
-		/*
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				if (walls[i][j] != null && )
-			}
-		}
-		*/
-		
 	}
 
 	private void coastifyTile(int x, int y) {
-		if (ground[x][y] == GroundTile.Grass.id && walls[x][y] == null) {
+		if ((ground[x][y] == GroundTile.Grass.id || ground[x][y] == GroundTile.Flowers.id) 
+				&& walls[x][y] == null) {
 			ground[x][y] = GroundTile.Beach.id;
 		} else if (ground[x][y] == GroundTile.Water.id) {
 			ground[x][y] = GroundTile.ShallowWater.id;
