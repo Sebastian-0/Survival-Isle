@@ -17,29 +17,35 @@ public class ClientProtocolCoder {
 		return connection;
 	}
 
-	public synchronized void sendMoveUp() {
-		connection.sendCode(ClientProtocol.TO_PLAYER);
-		connection.sendCode(ClientProtocol.MOVE_UP);
-	}
-
-	public synchronized void sendMoveLeft() {
-		connection.sendCode(ClientProtocol.TO_PLAYER);
-		connection.sendCode(ClientProtocol.MOVE_LEFT);
-	}
-
-	public synchronized void sendMoveDown() {
-		connection.sendCode(ClientProtocol.TO_PLAYER);
-		connection.sendCode(ClientProtocol.MOVE_DOWN);
-	}
-
-	public synchronized void sendMoveRight() {
-		connection.sendCode(ClientProtocol.TO_PLAYER);
-		connection.sendCode(ClientProtocol.MOVE_RIGHT);
-	}
-
 	public ServerProtocol receiveCode() {
 		int code = connection.receiveInt();
 		return ServerProtocol.values()[code];
+	}
+
+	public synchronized void sendMoveUp() {
+		connection.sendCode(ClientProtocol.ToPlayer);
+		connection.sendCode(ClientProtocol.MoveUp);
+	}
+
+	public synchronized void sendMoveLeft() {
+		connection.sendCode(ClientProtocol.ToPlayer);
+		connection.sendCode(ClientProtocol.MoveLeft);
+	}
+
+	public synchronized void sendMoveDown() {
+		connection.sendCode(ClientProtocol.ToPlayer);
+		connection.sendCode(ClientProtocol.MoveDown);
+	}
+
+	public synchronized void sendMoveRight() {
+		connection.sendCode(ClientProtocol.ToPlayer);
+		connection.sendCode(ClientProtocol.MoveRight);
+	}
+	
+	public synchronized void sendSelectTool(int tool) {
+		connection.sendCode(ClientProtocol.ToPlayer);
+		connection.sendCode(ClientProtocol.SelectTool);
+		connection.sendInt(tool);
 	}
 
 	public synchronized void flush() {
