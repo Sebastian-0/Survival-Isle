@@ -16,11 +16,11 @@ public class BuildMenu {
 	
 	public BuildMenu(TextureBase textures) {
 		items = new ArrayList<>();
-		items.add(new BuildItem(0, textures.getTexture("item_1")));
-		items.add(new BuildItem(1, textures.getTexture("item_2")));
-		items.add(new BuildItem(2, textures.getTexture("item_3")));
-		items.add(new BuildItem(3, textures.getTexture("item_4")));
-		items.add(new BuildItem(4, textures.getTexture("item_5")));
+		items.add(new BuildItem(0, textures.getTexture("pickaxe")));
+		items.add(new BuildItem(1, textures.getTexture("buildwoodwall")));
+		items.add(new BuildItem(2, textures.getTexture("buildstonewall")));
+//		items.add(new BuildItem(3, textures.getTexture("item_4")));
+//		items.add(new BuildItem(4, textures.getTexture("item_5")));
 		
 		marker = textures.getTexture("marker");
 		
