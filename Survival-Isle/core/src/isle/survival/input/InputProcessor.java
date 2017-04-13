@@ -70,6 +70,9 @@ public class InputProcessor extends InputAdapter {
 			buildMenu.setSelectedIndex(toolIndex);
 			coder.sendSelectTool(toolIndex);
 			break;
+		case Input.Keys.SPACE:
+			coder.sendUseTool();
+			break;
 		case Input.Keys.ESCAPE:
 			Gdx.app.exit();
 			Thread.currentThread().interrupt();

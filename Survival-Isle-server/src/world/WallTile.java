@@ -30,6 +30,22 @@ public class WallTile implements Serializable {
 				this.itemDrops.put(ItemType.values()[itemDrops[i]], itemDrops[i + 1]);
 			}
 		}
+
+		public boolean payForWith(Inventory inventory) {
+			for (Map.Entry<ItemType, Integer> itemCost : itemDrops.entrySet()) {
+				ItemType item = itemCost.getKey();
+				int cost = itemCost.getValue();
+				if (inventory.getAmount(item) < cost) {
+					return false;
+				}
+			}
+			for (Map.Entry<ItemType, Integer> itemCost : itemDrops.entrySet()) {
+				ItemType item = itemCost.getKey();
+				int cost = itemCost.getValue();
+				inventory.removeItem(item, cost);
+			}
+			return true;
+		}
 	}
 	
 	public WallTile(TileType type) {

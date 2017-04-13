@@ -48,6 +48,11 @@ public class ClientProtocolCoder {
 		connection.sendInt(tool);
 	}
 
+	public void sendUseTool() {
+		connection.sendCode(ClientProtocol.ToPlayer);
+		connection.sendCode(ClientProtocol.UseTool);
+	}
+
 	public synchronized void flush() {
 		connection.flush();
 	}

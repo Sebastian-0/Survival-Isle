@@ -81,7 +81,7 @@ public class Player implements Serializable {
 			}
 			break;
 		case UseTool:
-			selectedTool.use(game.getWorld(), position);
+			selectedTool.use(game.getWorld(), this);
 			break;
 		default:
 			break;

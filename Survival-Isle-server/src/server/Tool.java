@@ -1,6 +1,6 @@
 package server;
 
-import util.Point;
+import world.Player;
 import world.ServerWorld;
 import world.WallTile.TileType;
 
@@ -20,7 +20,7 @@ public enum Tool {
 		this.action = action;
 	}
 	
-	public void use(ServerWorld world, Point playerPosition) {
-		action.execute(world, playerPosition);
+	public void use(ServerWorld world, Player player) {
+		action.execute(world, player);
 	}
 }

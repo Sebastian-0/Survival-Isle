@@ -28,15 +28,12 @@ public class Inventory implements Serializable {
 //	}
 	
 	public boolean removeItem(ItemType item, int amount) {
+		if(getAmount(item) < amount)
+			return false;
+
+		items.put(item, items.get(item) - amount);
 		updated = true;
-		if(items.containsKey(item)) {
-			if(amount >= items.get(item))
-				return false;
-			
-			items.put(item, items.get(item) - amount);
-			return true;
-		}
-		return false;
+		return true;
 	}
 	
 	public int getAmount(ItemType item) {
