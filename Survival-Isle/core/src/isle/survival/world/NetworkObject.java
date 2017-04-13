@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import util.Point;
-import world.World;
 import world.GameObject.AnimationState;
+import world.World;
 
 public class NetworkObject {
 	public static final float MOVEMENT_TIME = 0.3f;
@@ -22,6 +22,7 @@ public class NetworkObject {
 	private float movementInterpolation;
 	private float attackInterpolation;
 	private AnimationState animation;
+	private int facingDirection;
 
 	
 	public NetworkObject(int x, int y, int id, int textureId) {
@@ -39,17 +40,27 @@ public class NetworkObject {
 		currentPosition = previousPosition.interpolateTo(targetPosition, movementInterpolation);
 		drawnPosition = currentPosition;
 		
+		float dx = targetPosition.x - previousPosition.x;
+		float dy = targetPosition.y - previousPosition.y;
+		
 		if (animation == AnimationState.Attacking) {
 			attackInterpolation = Math.min(1, attackInterpolation + deltaTime/ATTACK_TIME);
 			drawnPosition = drawnPosition.interpolateTo(
 					attackTarget, -MathUtils.sin(attackInterpolation*MathUtils.PI2)/2);
 			if (attackInterpolation == 1)
 				animation = AnimationState.Idle;
+			
+			dx = attackTarget.x - previousPosition.x;
+			dy = attackTarget.y - previousPosition.y;
+		}
+		
+		if (Math.abs(dx) >= 0.00001 || Math.abs(dy) >= 0.00001) {
+			facingDirection = Math.max(0,MathUtils.floor(MathUtils.atan2(dy, dx) * 2 / MathUtils.PI + 0.5f) + 1);
 		}
 	}
 	
 	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
-		spriteBatch.draw(textures.getObjectTexture(textureId), 
+		spriteBatch.draw(textures.getObjectTexture(textureId + facingDirection), 
 				drawnPosition.x*World.TILE_WIDTH - xView,
 				drawnPosition.y*World.TILE_HEIGHT - yView);
 	}
