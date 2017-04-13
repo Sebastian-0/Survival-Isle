@@ -189,18 +189,17 @@ public class ServerWorld extends World implements Serializable {
 		for (Point tile : coast) {
 			int x = (int) tile.x;
 			int y = (int) tile.y;
-			if (ground[x+1][y] == GroundTile.Grass.id && walls[x+1][y] == null) {
-				ground[x+1][y] = GroundTile.Beach.id;
+			coastifyTile(x+1, y);
+			coastifyTile(x-1, y);
+			coastifyTile(x, y+1);
+			coastifyTile(x, y-1);
+			
+			if (ground[x][y] == GroundTile.Water.id) {
+				ground[x][y] = GroundTile.ShallowWater.id;
+				walls[x][y] = null;
 			}
-			if (ground[x-1][y] == GroundTile.Grass.id && walls[x-1][y] == null) {
-				ground[x-1][y] = GroundTile.Beach.id;
-			}
-			if (ground[x][y+1] == GroundTile.Grass.id && walls[x][y+1] == null) {
-				ground[x][y+1] = GroundTile.Beach.id;
-			}
-			if (ground[x][y-1] == GroundTile.Grass.id && walls[x][y-1] == null) {
-				ground[x][y-1] = GroundTile.Beach.id;
-			}
+			
+			
 		}
 		
 		/*
@@ -210,6 +209,16 @@ public class ServerWorld extends World implements Serializable {
 			}
 		}
 		*/
+		
+	}
+
+	private void coastifyTile(int x, int y) {
+		if (ground[x][y] == GroundTile.Grass.id && walls[x][y] == null) {
+			ground[x][y] = GroundTile.Beach.id;
+		} else if (ground[x][y] == GroundTile.Water.id) {
+			ground[x][y] = GroundTile.ShallowWater.id;
+			walls[x][y] = null;
+		}
 	}
 
 	public WallTile getWallTileAtPosition(int x, int y) {

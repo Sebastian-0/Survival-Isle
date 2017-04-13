@@ -34,6 +34,7 @@ public class TextureBase {
 		groundTileTextures.put(2, new Texture("rock.png"));
 		groundTileTextures.put(3, new Texture("stump.png"));
 		groundTileTextures.put(4, new Texture("shallow_water.png"));
+		groundTileTextures.put(5, new Texture("beach.png"));
 	}
 	
 	private void setUpWallTileTextures() {
