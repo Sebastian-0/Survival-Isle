@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import util.Point;
-import world.Player.AnimationState;
+import world.GameObject.AnimationState;
 import world.World;
 
 public class NetworkObject {
