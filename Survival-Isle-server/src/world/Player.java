@@ -1,6 +1,7 @@
 package world;
 
 import java.io.Serializable;
+import java.util.function.Consumer;
 
 import server.ClientProtocol;
 import server.Connection;
@@ -54,23 +55,25 @@ public class Player implements Serializable {
 	}
 
 	public void parseMessage(ServerProtocolCoder client, GameInterface game) {
+		Consumer<ServerProtocolCoder> updateObject = c->c.sendUpdateObject(this);
+		
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MoveUp:
 			actOnWorld(game, 0, 1);
-			game.doForEachClient(c->c.sendUpdateObject(this));
+			game.doForEachClient(updateObject);
 			break;
 		case MoveLeft:
 			actOnWorld(game, -1, 0);
-			game.doForEachClient(c->c.sendUpdateObject(this));
+			game.doForEachClient(updateObject);
 			break;
 		case MoveDown:
 			actOnWorld(game, 0, -1);
-			game.doForEachClient(c->c.sendUpdateObject(this));
+			game.doForEachClient(updateObject);
 			break;
 		case MoveRight:
 			actOnWorld(game, 1, 0);
-			game.doForEachClient(c->c.sendUpdateObject(this));
+			game.doForEachClient(updateObject);
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
