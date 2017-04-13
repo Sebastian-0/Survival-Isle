@@ -10,14 +10,11 @@ import java.util.Scanner;
 
 public class Server {
 	
-	private Game game;
+	private Game game = new Game();
 	private ClientAccepter clientAccepter;
 	private ServerUpdater serverUpdater;
 
-	public void init() throws IOException {
-		game = new Game();
-		start();
-		
+	public void readConsoleInput() throws IOException {
 		Scanner in = new Scanner(System.in);
 		while (in.hasNext()) {
 			switch(in.next().toLowerCase()) {
@@ -59,7 +56,7 @@ public class Server {
 		}
 	}
 
-	private void start() {
+	public void start() {
 		clientAccepter = new ClientAccepter(game);
 		new Thread(clientAccepter).start();
 		
@@ -75,6 +72,6 @@ public class Server {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		new Server().init();
+		new Server().readConsoleInput();
 	}
 }
