@@ -2,6 +2,7 @@ package world;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -33,9 +34,10 @@ public class ServerWorld extends World implements Serializable {
 		System.out.println("World seed: " + seed);
 		
 		coast = generateGround(random);
-		generateRivers(random, coast);
 		generateForests(random);
 		generateMountains(random);
+		generateRivers(random, coast);
+		generateCoastline(random, coast);
 	}
 
 	private List<Point> generateGround(Random random) {
@@ -180,6 +182,33 @@ public class ServerWorld extends World implements Serializable {
 		}
 	}
 	
+	private void generateCoastline(Random random, List<Point> coast) {
+		for (Point tile : coast) {
+			int x = (int) tile.x;
+			int y = (int) tile.y;
+			if (ground[x+1][y] == GroundTile.Grass.id && walls[x+1][y] == null) {
+				ground[x+1][y] = GroundTile.Beach.id;
+			}
+			if (ground[x-1][y] == GroundTile.Grass.id && walls[x-1][y] == null) {
+				ground[x-1][y] = GroundTile.Beach.id;
+			}
+			if (ground[x][y+1] == GroundTile.Grass.id && walls[x][y+1] == null) {
+				ground[x][y+1] = GroundTile.Beach.id;
+			}
+			if (ground[x][y-1] == GroundTile.Grass.id && walls[x][y-1] == null) {
+				ground[x][y-1] = GroundTile.Beach.id;
+			}
+		}
+		
+		/*
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (walls[i][j] != null && )
+			}
+		}
+		*/
+	}
+
 	public WallTile getWallTileAtPosition(int x, int y) {
 		return walls[x][y];
 	}

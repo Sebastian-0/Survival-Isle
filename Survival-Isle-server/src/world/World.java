@@ -10,7 +10,9 @@ public class World implements Serializable {
 	public enum GroundTile {
 		Water(0),
 		Grass(1), 
-		Rock(2);
+		Rock(2),
+		ShallowWater(3), 
+		Beach(0);
 		
 		
 		public final int id;
