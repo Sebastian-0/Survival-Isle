@@ -121,4 +121,8 @@ public class Player implements Serializable {
 	public void sendDestroy(Connection connection) {
 		connection.sendInt(id);
 	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
 }

@@ -87,6 +87,7 @@ public class Game implements GameInterface, Serializable {
 		client.sendCreateWorldObjects(worldObjects);
 		clients.add(client);
 		Player newPlayer = players.getOrDefault(client, new Player());
+		newPlayer.setPosition(world.getNewSpawnPoint());
 		addObject(newPlayer);
 		client.sendSetPlayer(newPlayer);
 		players.put(client, newPlayer);
