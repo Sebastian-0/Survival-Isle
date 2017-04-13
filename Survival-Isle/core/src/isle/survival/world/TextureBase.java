@@ -34,8 +34,9 @@ public class TextureBase {
 	}
 	
 	private void setUpWallTileTextures() {
-		wallTileTextures.put(0, new Texture("forest.png"));
-		wallTileTextures.put(1, new Texture("mountain.png"));
+		wallTileTextures.put(0, new Texture("water.png"));
+		wallTileTextures.put(1, new Texture("forest.png"));
+		wallTileTextures.put(2, new Texture("mountain.png"));
 	}
 	
 	private void setUpObjectTextures() {
