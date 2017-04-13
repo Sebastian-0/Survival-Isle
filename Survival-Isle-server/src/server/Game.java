@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import world.GameInterface;
+import world.Inventory;
 import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
@@ -33,9 +34,27 @@ public class Game implements GameInterface, Serializable {
 
 	public synchronized void update(double deltaTime) {
 		updateWallTiles();
+		sendInventoryUpdates();
 		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
+	}
+
+	private void updateWallTiles() {
+		if (world.shouldUpdateWallTiles()) {
+			for (ServerProtocolCoder client : clients) {
+				client.sendUpdateWallTiles(world);
+			}
+			world.clearWallTileUpdateList();
+		}
+	}
+	
+	private void sendInventoryUpdates() {
+		for (ServerProtocolCoder client : clients) {
+			Inventory inventory = players.get(client).getInventory();
+			if (inventory.isUpdated())
+				client.sendInventory(inventory);
+		}
 	}
 
 	private void removeLeavingClients() {
@@ -109,15 +128,6 @@ public class Game implements GameInterface, Serializable {
 		}
 	}
 
-	public void updateWallTiles() {
-		if (world.shouldUpdateWallTiles()) {
-			for (ServerProtocolCoder client : clients) {
-				client.sendUpdateWallTiles(world);
-			}
-			world.clearWallTileUpdateList();
-		}
-	}
-	
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
 		switch (code) {
 		case TO_PLAYER:

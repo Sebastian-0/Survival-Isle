@@ -147,7 +147,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				worldObjects.destroyObjects(coder.getConnection());
 				break;
 			case SetInventory:
-				inventory.setInventory(coder.getConnection());
+				inventory.receiveInventory(coder.getConnection());
 				break;
 			case SendWorldWallTiles:
 				world.receiveWallTiles(coder.getConnection());

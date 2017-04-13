@@ -2,6 +2,7 @@ package server;
 
 import java.io.Serializable;
 
+import world.Inventory;
 import world.Player;
 import world.ServerWorld;
 import world.WorldObjects;
@@ -72,10 +73,9 @@ public class ServerProtocolCoder implements Serializable {
 		object.sendDestroy(connection);
 	}
 	
-	public void sendSetInventory(int id, int amount) {
+	public void sendInventory(Inventory inventory) {
 		connection.sendCode(ServerProtocol.SetInventory);
-		connection.sendInt(id);
-		connection.sendInt(amount);
+		inventory.sendInventory(connection);
 	}
 
 	public synchronized void sendFailedToConnect() {
