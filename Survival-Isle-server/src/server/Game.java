@@ -28,7 +28,7 @@ public class Game implements GameInterface, Serializable {
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 	
 	public Game() {
-		world = new ServerWorld(20, 15);
+		world = new ServerWorld(20, 15, this);
 		world.GenerateTerrain(0);
 		
 		worldObjects = new WorldObjects();

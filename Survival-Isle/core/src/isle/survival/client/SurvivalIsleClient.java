@@ -18,6 +18,7 @@ import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
 import server.Connection;
 import server.ServerProtocol;
+import world.EffectType;
 import world.Inventory;
 import world.World;
 
@@ -149,6 +150,16 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				break;
 			case DestroyObject:
 				worldObjects.destroyObjects(coder.getConnection());
+				break;
+			case CreateEffect:
+				EffectType type = EffectType.values()[coder.getConnection().receiveInt()];
+				if (type == EffectType.TileDestroyed) {
+					int tileX = coder.getConnection().receiveInt();
+					int tileY = coder.getConnection().receiveInt();
+					int playerX = coder.getConnection().receiveInt();
+					int playerY = coder.getConnection().receiveInt();
+					// TODO Spawn effect here!
+				}
 				break;
 			case SetInventory:
 				inventory.receiveInventory(coder.getConnection());

@@ -17,11 +17,13 @@ public class ServerWorld extends World implements Serializable {
 	private List<Point> coast;
 	private Random random;
 	
-	public ServerWorld(int width, int height) {
+	private GameInterface game;
+	
+	public ServerWorld(int width, int height, GameInterface game) {
 		super(width, height);
 		walls = new WallTile[width][height];
 		wallTilesToUpdate = new LinkedList<Point>();
-		
+		this.game = game;
 	}
 	
 	public void GenerateTerrain(long seed) {
@@ -188,7 +190,7 @@ public class ServerWorld extends World implements Serializable {
 		WallTile tile = walls[x][y];
 		if (tile.isBreakable()) {
 			if (tile.damage(damage)) {
-				// spawn stuff
+				game.doForEachClient(client->client.sendCreateEffect(EffectType.TileDestroyed, x, y, (int)source.getPosition().x, (int)source.getPosition().y));
 				tile.dropItems(source.getInventory());
 				wallTilesToUpdate.add(new Point(x, y));
 				walls[x][y] = null;

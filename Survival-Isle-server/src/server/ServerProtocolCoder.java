@@ -2,8 +2,9 @@ package server;
 
 import java.io.Serializable;
 
-import world.Inventory;
+import world.EffectType;
 import world.GameObject;
+import world.Inventory;
 import world.ServerWorld;
 import world.WorldObjects;
 
@@ -80,6 +81,14 @@ public class ServerProtocolCoder implements Serializable {
 		connection.sendCode(ServerProtocol.DestroyObject);
 		connection.sendInt(1);
 		object.sendDestroy(connection);
+	}
+	
+	public void sendCreateEffect(EffectType type, int... data) {
+		connection.sendCode(ServerProtocol.CreateEffect);
+		connection.sendInt(type.ordinal());
+		for (int i : data) {
+			connection.sendInt(i);
+		}
 	}
 	
 	public void sendInventory(Inventory inventory) {
