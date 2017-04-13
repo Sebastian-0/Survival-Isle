@@ -60,48 +60,65 @@ public class ServerWorld extends World implements Serializable {
 	}
 
 	private void generateForests(Random random) {
-		generateLocalEnvironment(random, WallTile.TileType.Forest, GroundTile.Grass);
+		int quantity = width*height/50;
+		int minSize = 3;
+		int maxSize = 11;
+		generateLocalEnvironment(random, WallTile.TileType.Forest, 
+				GroundTile.Grass, quantity, minSize, maxSize);
 	}
 
 	private void generateMountains(Random random) {
-		generateLocalEnvironment(random, WallTile.TileType.Mountain, GroundTile.Rock);
+		int quantity = width*height/200;
+		int minSize = 6;
+		int maxSize = 22;
+		generateLocalEnvironment(random, WallTile.TileType.Mountain, 
+				GroundTile.Rock, quantity, minSize, maxSize);
 	}
 	
-	private void generateLocalEnvironment(Random random, WallTile.TileType wallType, GroundTile groundType) {
-		for (int i = 0; i < width*height/50; i++) {
+	private void generateLocalEnvironment(Random random, WallTile.TileType wallType, 
+			GroundTile groundType, int quantity, int minSize, int maxSize) {
+		List<Point> edge = new ArrayList<>();
+		
+		for (int i = 0; i < quantity; i++) {
 			int x0 = random.nextInt(width-2)+1;
 			int y0 = random.nextInt(height-2)+1;
 			
 			if (ground[x0][y0] == GroundTile.Grass.id && walls[x0][y0] == null) {
 				walls[x0][y0] = new WallTile(wallType);
 				ground[x0][y0] = groundType.id;
+				addWallsToEdgeList(x0,y0, edge);
 				
-				int size = random.nextInt(8) + 3;
-				for (float j = 0; j < size; j += 0.1) {
-					int x = Math.max(0, Math.min(width, x0 + random.nextInt(size) - size/2));
-					int y = Math.max(0, Math.min(height, y0 + random.nextInt(size) - size/2));
+				int size = random.nextInt(maxSize-minSize) + minSize;
+				for (float j = 0; j < size && !edge.isEmpty();) {
+					int index = random.nextInt(edge.size());
+					int x = (int) edge.get(index).x;
+					int y = (int) edge.remove(index).y;
 					
 					if (ground[x][y] == GroundTile.Grass.id && 
-						isNearWallTile(x, y, wallType.id) && 
 						walls[x][y] == null) {
 						walls[x][y] = new WallTile(wallType);
 						ground[x][y] = groundType.id;
-						j += 0.9;
+						j++;
+						
+						addWallsToEdgeList(x,y, edge);
 					}
 				}
 			}
+			edge.clear();
 		}
 	}
 
-	private boolean isNearWallTile(int x, int y, int tileId) {
-		if (x >= 1 && x < width-1 && y >= 1 && y < height-1 && (
-			(walls[x+1][y] != null && walls[x+1][y].getId() == tileId) ||
-			(walls[x-1][y] != null && walls[x-1][y].getId() == tileId) ||
-			(walls[x][y+1] != null && walls[x][y+1].getId() == tileId) ||
-			(walls[x][y-1] != null && walls[x][y-1].getId() == tileId))) {
-			return true;
+	private void addWallsToEdgeList(int x, int y, List<Point> edge) {
+		if (x >= 2 && x < width-2 && y >= 2 && y < height-2) {
+			if (walls[x+1][y] == null && ground[x+1][y] == GroundTile.Grass.id)
+				edge.add(new Point(x+1, y));
+			if (walls[x-1][y] == null && ground[x-1][y] == GroundTile.Grass.id)
+				edge.add(new Point(x-1, y));
+			if (walls[x][y+1] == null && ground[x][y+1] == GroundTile.Grass.id)
+				edge.add(new Point(x, y+1));
+			if (walls[x][y-1] == null && ground[x][y-1] == GroundTile.Grass.id)
+				edge.add(new Point(x, y-1));
 		}
-		return false;
 	}
 
 	private void generateRivers(Random random, List<Point> coast) {
