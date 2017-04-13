@@ -42,7 +42,7 @@ public class NetworkObject {
 		if (animation == AnimationState.Attacking) {
 			attackInterpolation = Math.min(1, attackInterpolation + deltaTime/ATTACK_TIME);
 			drawnPosition = drawnPosition.interpolateTo(
-					attackTarget, -MathUtils.sin(attackInterpolation*MathUtils.PI2));
+					attackTarget, -MathUtils.sin(attackInterpolation*MathUtils.PI2)/2);
 			if (attackInterpolation == 1)
 				animation = AnimationState.Idle;
 		}
