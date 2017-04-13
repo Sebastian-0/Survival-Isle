@@ -58,15 +58,19 @@ public class Player implements Serializable {
 		switch (code) {
 		case MoveUp:
 			actOnWorld(client, game, 0, 1);
+			game.updateObject(this);
 			break;
 		case MoveLeft:
 			actOnWorld(client, game, -1, 0);
+			game.updateObject(this);
 			break;
 		case MoveDown:
 			actOnWorld(client, game, 0, -1);
+			game.updateObject(this);
 			break;
 		case MoveRight:
 			actOnWorld(client, game, 1, 0);
+			game.updateObject(this);
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
@@ -79,7 +83,6 @@ public class Player implements Serializable {
 		default:
 			break;
 		}
-		game.updateObject(this);
 	}
 	
 	private void actOnWorld(ServerProtocolCoder client, GameInterface game, int dx, int dy) {
