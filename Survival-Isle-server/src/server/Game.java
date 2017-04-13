@@ -28,7 +28,7 @@ public class Game implements GameInterface, Serializable {
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 	
 	public Game() {
-		world = new ServerWorld(20, 15, this);
+		world = new ServerWorld(200, 150, this);
 		world.generateTerrain();
 		
 		worldObjects = new WorldObjects();
