@@ -24,9 +24,11 @@ public class ServerWorld extends World implements Serializable {
 		
 	}
 	
-	public void GenerateTerrain(long seed) {
-		Random random = new Random(seed);
-		this.random = random;
+	public void generateTerrain() {
+		random = new Random();
+		long seed = random.nextLong();
+		random.setSeed(seed);
+		System.out.println("World seed: " + seed);
 		
 		coast = generateGround(random);
 		generateRivers(random, coast);

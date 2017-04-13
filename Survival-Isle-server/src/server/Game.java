@@ -29,7 +29,7 @@ public class Game implements GameInterface, Serializable {
 	
 	public Game() {
 		world = new ServerWorld(20, 15);
-		world.GenerateTerrain(0);
+		world.generateTerrain();
 		
 		worldObjects = new WorldObjects();
 	}
