@@ -12,8 +12,8 @@ public class WallTile implements Serializable {
 	private Map<ItemType, Integer> itemDrops;
 	
 	public enum TileType {
-		Forest(0, true, 2, ItemType.wood.ordinal(), 1), 
-		Mountain(1, true, 3, ItemType.stone.ordinal(), 2);
+		Forest(0, true, 2, ItemType.Wood.ordinal(), 1), 
+		Mountain(1, true, 3, ItemType.Stone.ordinal(), 2);
 		
 
 		public final int id;
