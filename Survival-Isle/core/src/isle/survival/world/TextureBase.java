@@ -28,16 +28,17 @@ public class TextureBase {
 	}
 
 	private void setUpGroundTileTextures() {
-		groundTileTextures.put(0, new Texture("water.png"));
+		groundTileTextures.put(0, new Texture("seafloor.png"));
 		groundTileTextures.put(1, new Texture("grass.png"));
 		groundTileTextures.put(2, new Texture("rock.png"));
 	}
 	
 	private void setUpWallTileTextures() {
-		wallTileTextures.put(0, new Texture("forest.png"));
-		wallTileTextures.put(1, new Texture("mountain.png"));
-		wallTileTextures.put(2, new Texture("woodwall.png"));
-		wallTileTextures.put(3, new Texture("stonewall.png"));
+		wallTileTextures.put(0, new Texture("water.png"));
+		wallTileTextures.put(1, new Texture("forest.png"));
+		wallTileTextures.put(2, new Texture("mountain.png"));
+		wallTileTextures.put(3, new Texture("woodwall.png"));
+		wallTileTextures.put(4, new Texture("stonewall.png"));
 	}
 	
 	private void setUpObjectTextures() {

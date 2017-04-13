@@ -21,6 +21,7 @@ public class ServerWorld extends World implements Serializable {
 		super(width, height);
 		walls = new WallTile[width][height];
 		wallTilesToUpdate = new LinkedList<Point>();
+		
 	}
 	
 	public void GenerateTerrain(long seed) {
@@ -61,6 +62,13 @@ public class ServerWorld extends World implements Serializable {
 			}
 		}
 		
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (ground[i][j] == GroundTile.Water.id)
+					walls[i][j] = new WallTile(WallTile.TileType.Water);
+			}
+		}
+		
 		return coast;
 	}
 
@@ -88,7 +96,7 @@ public class ServerWorld extends World implements Serializable {
 			int x0 = random.nextInt(width-2)+1;
 			int y0 = random.nextInt(height-2)+1;
 			
-			if (ground[x0][y0] == GroundTile.Grass.id && walls[x0][y0] == null) {
+			if (walls[x0][y0] == null) {
 				walls[x0][y0] = new WallTile(wallType);
 				ground[x0][y0] = groundType.id;
 				addWallsToEdgeList(x0,y0, edge);
@@ -99,8 +107,7 @@ public class ServerWorld extends World implements Serializable {
 					int x = (int) edge.get(index).x;
 					int y = (int) edge.remove(index).y;
 					
-					if (ground[x][y] == GroundTile.Grass.id && 
-						walls[x][y] == null) {
+					if (walls[x][y] == null) {
 						walls[x][y] = new WallTile(wallType);
 						ground[x][y] = groundType.id;
 						j++;
@@ -115,13 +122,13 @@ public class ServerWorld extends World implements Serializable {
 
 	private void addWallsToEdgeList(int x, int y, List<Point> edge) {
 		if (x >= 2 && x < width-2 && y >= 2 && y < height-2) {
-			if (walls[x+1][y] == null && ground[x+1][y] == GroundTile.Grass.id)
+			if (walls[x+1][y] == null)
 				edge.add(new Point(x+1, y));
-			if (walls[x-1][y] == null && ground[x-1][y] == GroundTile.Grass.id)
+			if (walls[x-1][y] == null)
 				edge.add(new Point(x-1, y));
-			if (walls[x][y+1] == null && ground[x][y+1] == GroundTile.Grass.id)
+			if (walls[x][y+1] == null)
 				edge.add(new Point(x, y+1));
-			if (walls[x][y-1] == null && ground[x][y-1] == GroundTile.Grass.id)
+			if (walls[x][y-1] == null)
 				edge.add(new Point(x, y-1));
 		}
 	}
@@ -133,8 +140,6 @@ public class ServerWorld extends World implements Serializable {
 			int y = (int)coast.remove(index).y;
 			int dx = 0;
 			int dy = -1;
-			
-			System.out.println("River at (" + x + ", " + y + ")");
 			
 			if (ground[x+1][y] == GroundTile.Grass.id) {
 				dx = 1;
@@ -152,6 +157,7 @@ public class ServerWorld extends World implements Serializable {
 			
 			while (ground[x][y] != GroundTile.Water.id) {
 				ground[x][y] = GroundTile.Water.id;
+				walls[x][y] = new WallTile(WallTile.TileType.Water);
 				if (random.nextInt(4) < 1) {
 					if (random.nextBoolean()) {
 						int t = -dy;
@@ -256,11 +262,11 @@ public class ServerWorld extends World implements Serializable {
 	}
 
 	private boolean isValidSpawnPoint(int x, int y) {
-		if (ground[x][y] != GroundTile.Water.id && walls[x][y] == null &&
-			ground[x+1][y] != GroundTile.Water.id && walls[x+1][y] == null &&
-			ground[x-1][y] != GroundTile.Water.id && walls[x-1][y] == null &&
-			ground[x][y+1] != GroundTile.Water.id && walls[x][y+1] == null &&
-			ground[x][y-1] != GroundTile.Water.id && walls[x][y-1] == null)
+		if (walls[x][y] == null &&
+			walls[x+1][y] == null &&
+			walls[x-1][y] == null &&
+			walls[x][y+1] == null &&
+			walls[x][y-1] == null)
 			return true;
 		return false;
 	}
