@@ -1,6 +1,7 @@
 package isle.survival.world;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class TextureBase {
@@ -71,8 +72,12 @@ public class TextureBase {
 			return textures.get(name);
 		}
 		
-		Texture texture = new Texture(name + ".png");
-		textures.put(name, texture);
-		return texture;
+		try {
+			Texture texture = new Texture(name + ".png");
+			textures.put(name, texture);
+			return texture;
+		} catch (GdxRuntimeException e) {
+			return defaultTexture;
+		}
 	}
 }
