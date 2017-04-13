@@ -89,6 +89,7 @@ public class InputProcessor extends InputAdapter {
 			buildMenu.incrementSelection();
 		else
 			buildMenu.decrementSelection();
+		coder.sendSelectTool(buildMenu.getSelectedItemId());
 		return true;
 	}
 	
