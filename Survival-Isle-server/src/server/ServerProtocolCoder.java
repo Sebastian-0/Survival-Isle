@@ -1,6 +1,7 @@
 package server;
 
 import java.io.Serializable;
+import java.net.Socket;
 
 import world.EffectType;
 import world.GameObject;
@@ -13,9 +14,9 @@ public class ServerProtocolCoder implements Serializable {
 	private transient Connection connection;
 	private String name;
 	
-	public ServerProtocolCoder(Connection connection) {
-		this.connection = connection;
-		name = connection.receiveStringParameter();
+	public ServerProtocolCoder(Socket socket) {
+		this.connection = new Connection(socket);
+		name = connection.receiveString();
 	}
 	
 	public Connection getConnection() {
@@ -104,6 +105,11 @@ public class ServerProtocolCoder implements Serializable {
 	public void sendPlaySound(int id) {
 		connection.sendCode(ServerProtocol.PlaySound);
 		connection.sendInt(id);
+	}
+
+	public void acknowledgeClose() {
+		connection.sendCode(ServerProtocol.AckClose);
+		flush();
 	}
 
 	public void flush() {

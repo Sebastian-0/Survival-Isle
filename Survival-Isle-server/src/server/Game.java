@@ -135,6 +135,11 @@ public class Game implements GameInterface, Serializable {
 			Player player = players.get(client);
 			player.parseMessage(client, this);
 			break;
+		case SendClose:
+			client.acknowledgeClose();
+			removeClient(client);
+			Thread.currentThread().interrupt();
+			break;
 		default:
 			break;
 		}

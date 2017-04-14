@@ -10,5 +10,6 @@ public enum ServerProtocol {
 	SetInventory,
 	SendWorldWallTiles,
 	FailedToConnect,
-	PlaySound;
+	PlaySound,
+	AckClose;
 }

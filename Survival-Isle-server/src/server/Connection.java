@@ -7,11 +7,13 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Connection {
-	
+
+	private Socket socket;
 	private InputStream inStream;
 	private OutputStream outStream;
 	
 	public Connection(Socket socket) {
+		this.socket = socket;
 		try {
 			inStream = new BufferedInputStream(socket.getInputStream());
 			outStream = new BufferedOutputStream(socket.getOutputStream());
@@ -64,7 +66,7 @@ public class Connection {
 		return b1 << 24 | b2 << 16 | b3 << 8 | b4;
 	}
 
-	public String receiveStringParameter() {
+	public String receiveString() {
 		int n = receiveInt();
 		if (n < 0) {
 			throw new RuntimeException("String length was less than zero: " + n);
@@ -100,12 +102,9 @@ public class Connection {
 
 	public void close() {
 		try {
-			inStream.close();
+			socket.close();
 		} catch (IOException e) {
-		}
-		try {
-			outStream.close();
-		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

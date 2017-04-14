@@ -53,6 +53,11 @@ public class ClientProtocolCoder {
 		connection.sendCode(ClientProtocol.UseTool);
 	}
 
+	public void sendClose() {
+		connection.sendCode(ClientProtocol.SendClose);
+		flush();
+	}
+
 	public void flush() {
 		connection.flush();
 	}

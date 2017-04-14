@@ -21,7 +21,7 @@ public class ClientAccepter implements Runnable {
 			while (true) {
 				try {
 					Socket socket = serverSocket.accept();
-					ServerProtocolCoder client = new ServerProtocolCoder(new Connection(socket));
+					ServerProtocolCoder client = new ServerProtocolCoder(socket);
 					game.addClient(client);
 				} catch (SocketException e) {
 				}

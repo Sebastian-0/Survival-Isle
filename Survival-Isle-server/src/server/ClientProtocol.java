@@ -8,5 +8,6 @@ public enum ClientProtocol {
 	MoveDown,
 	MoveRight, 
 	SelectTool,
-	UseTool;
+	UseTool,
+	SendClose;
 }

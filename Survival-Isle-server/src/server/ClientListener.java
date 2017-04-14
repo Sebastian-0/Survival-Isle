@@ -12,7 +12,7 @@ public class ClientListener implements Runnable {
 	
 	@Override
 	public void run() {
-		while (true) {
+		while (!Thread.interrupted()) {
 			try {
 				ClientProtocol code = client.receiveCode();
 //				System.out.println("Server received: " + code);
@@ -20,9 +20,11 @@ public class ClientListener implements Runnable {
 			}
 			catch (ConnectionClosedException e) {
 				game.removeClient(client);
-				System.out.println("Client disconnected: " + client);
+				System.out.println("Client closed connection unexpectedly: " + client);
 				return;
 			}
 		}
+		client.disconnect();
+		System.out.println("Client disconnected: " + client);
 	}
 }

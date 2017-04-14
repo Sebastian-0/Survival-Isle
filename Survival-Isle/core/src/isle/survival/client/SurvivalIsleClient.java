@@ -120,12 +120,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		textureBase.dispose();
 		spriteBatch.dispose();
 		soundBase.dispose();
-		if (socket != null) {
-			try {
-				socket.close();
-			} catch (IOException e) {
-				System.err.println("Client could not close socket when terminating.");
-			}
+		
+		synchronized (this) {
+			coder.sendClose();
 		}
 	}
 
@@ -174,6 +171,14 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				break;
 			case PlaySound:
 				soundBase.playSound(coder.getConnection());
+				break;
+			case AckClose:
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Thread.currentThread().interrupt();
 				break;
 			default:
 				break;
