@@ -11,5 +11,6 @@ public enum ServerProtocol {
 	SendWorldWallTiles,
 	FailedToConnect,
 	PlaySound,
+	SendClose,
 	AckClose;
 }

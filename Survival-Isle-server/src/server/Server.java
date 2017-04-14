@@ -42,18 +42,23 @@ public class Server {
 				System.out.println("Game saved");
 				break;
 			case "stop":
-				clientAccepter.stop();
-				serverUpdater.stop();
-				game.stop();
+				stop();
 				break;
 			case "quit":
 			case "exit":
+				stop();
 				in.close();
 				System.exit(0);
 			default:
 				break;
 			}
 		}
+	}
+
+	public void stop() {
+		clientAccepter.stop();
+		serverUpdater.stop();
+		game.stop();
 	}
 
 	public void start() {

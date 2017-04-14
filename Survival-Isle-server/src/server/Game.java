@@ -137,10 +137,13 @@ public class Game implements GameInterface, Serializable {
 			break;
 		case SendClose:
 			client.acknowledgeClose();
-			removeClient(client);
+			Thread.currentThread().interrupt();
+			break;
+		case AckClose:
 			Thread.currentThread().interrupt();
 			break;
 		default:
+			System.out.println("Server received unexpected message: " + code);
 			break;
 		}
 	}
@@ -165,6 +168,6 @@ public class Game implements GameInterface, Serializable {
 	}
 
 	public synchronized void stop() {
-		clients.forEach(client -> client.disconnect());
+		clients.forEach(client -> client.sendClose());
 	}
 }

@@ -107,6 +107,11 @@ public class ServerProtocolCoder implements Serializable {
 		connection.sendInt(id);
 	}
 
+	public void sendClose() {
+		connection.sendCode(ServerProtocol.SendClose);
+		flush();
+	}
+
 	public void acknowledgeClose() {
 		connection.sendCode(ServerProtocol.AckClose);
 		flush();
