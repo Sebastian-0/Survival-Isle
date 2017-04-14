@@ -1,9 +1,11 @@
 package world;
 
+import java.io.Serializable;
+
 import server.Connection;
 import util.Point;
 
-public class GameObject {
+public class GameObject implements Serializable {
 
 	public static int idCounter;
 
