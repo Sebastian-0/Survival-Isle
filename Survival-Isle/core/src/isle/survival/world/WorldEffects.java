@@ -29,7 +29,6 @@ public class WorldEffects {
 			effect.update(deltaTime);
 			if (effect.shouldBeRemoved()) {
 				iter.remove();
-				System.out.println("remove!!!");
 			}
 		}
 	}
