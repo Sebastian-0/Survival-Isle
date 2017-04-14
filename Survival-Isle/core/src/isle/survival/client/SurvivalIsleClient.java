@@ -1,26 +1,29 @@
 package isle.survival.client;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 import isle.survival.input.InputProcessor;
 import isle.survival.ui.Ui;
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
+import isle.survival.world.WorldEffects;
 import isle.survival.world.WorldObjects;
+import isle.survival.world.effects.ResourceEffect;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import server.Connection;
 import server.ServerProtocol;
 import world.EffectType;
 import world.Inventory;
 import world.World;
+
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
 	private String name;
@@ -33,6 +36,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	
 	private ClientWorld world;
 	private WorldObjects worldObjects;
+	private WorldEffects worldEffects;
 	private Inventory inventory;
 	private float xView;
 	private float yView;
@@ -50,6 +54,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		soundBase = new SoundBase();
 		world = new ClientWorld(textureBase, spriteBatch);
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
+		worldEffects = new WorldEffects(textureBase, spriteBatch);
 		inventory = new Inventory();
 		connectToServer();
 
@@ -90,6 +95,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private void update() {
 		float deltaTime = Gdx.graphics.getDeltaTime();
 		worldObjects.update(deltaTime);
+		worldEffects.update(deltaTime);
 		
 		NetworkObject player = worldObjects.getPlayer();
 		if (player != null) {
@@ -108,6 +114,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch.begin();
 		world.drawTerrain(xView, yView);
 		worldObjects.draw(xView, yView);
+		worldEffects.draw(xView, yView);
 		
 		ui.draw(spriteBatch);
 		
@@ -155,9 +162,13 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				if (type == EffectType.TileDestroyed) {
 					int tileX = coder.getConnection().receiveInt();
 					int tileY = coder.getConnection().receiveInt();
-					int playerX = coder.getConnection().receiveInt();
-					int playerY = coder.getConnection().receiveInt();
-					// TODO Spawn effect here!
+					int objectId = coder.getConnection().receiveInt();
+					NetworkObject object = worldObjects.getObject(objectId);
+					if (object != null) {
+						worldEffects.addEffect(new ResourceEffect(tileX, tileY, object));
+					} else {
+						System.out.println("Invalid object id: " + objectId);
+					}
 				}
 				break;
 			case SetInventory:
