@@ -121,8 +121,10 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch.dispose();
 		soundBase.dispose();
 		
-		synchronized (this) {
-			coder.sendClose();
+		if (!socket.isClosed()) {
+			synchronized (this) {
+				coder.sendClose();
+			}
 		}
 	}
 
@@ -166,6 +168,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				break;
 			case FailedToConnect:
 				System.out.println("User name already in use.");
+				closeSocket();
 				Gdx.app.exit();
 				Thread.currentThread().interrupt();
 				break;
@@ -173,16 +176,20 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				soundBase.playSound(coder.getConnection());
 				break;
 			case AckClose:
-				try {
-					socket.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				closeSocket();
 				Thread.currentThread().interrupt();
 				break;
 			default:
 				break;
 			}
+		}
+	}
+
+	private void closeSocket() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
