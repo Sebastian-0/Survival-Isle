@@ -25,6 +25,7 @@ public class ClientListener implements Runnable {
 			}
 		}
 		client.disconnect();
+		game.removeClient(client);
 		System.out.println("Client disconnected: " + client);
 	}
 }

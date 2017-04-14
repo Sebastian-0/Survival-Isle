@@ -1,5 +1,7 @@
 package world;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.function.Consumer;
 
@@ -11,7 +13,7 @@ import server.Tool;
 public class Player extends GameObject implements Serializable {
 	
 	private Inventory inv;
-	private Tool selectedTool;
+	private transient Tool selectedTool;
 	
 	public Player() {
 		inv = new Inventory();
@@ -79,5 +81,10 @@ public class Player extends GameObject implements Serializable {
 				attackTarget.y = position.y+dy;
 			}
 		}
+	}
+	
+	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+		ois.defaultReadObject();
+		selectedTool = Tool.Pickaxe;
 	}
 }

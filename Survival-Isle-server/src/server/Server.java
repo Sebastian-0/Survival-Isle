@@ -2,6 +2,7 @@ package server;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,6 +14,7 @@ public class Server {
 	private Game game = new Game();
 	private ClientAccepter clientAccepter;
 	private ServerUpdater serverUpdater;
+	private boolean running;
 
 	public void readConsoleInput() throws IOException {
 		Scanner in = new Scanner(System.in);
@@ -22,32 +24,31 @@ public class Server {
 				System.out.println("Help is not yet implemented.");
 				break;
 			case "new":
-				game = new Game();
-				start();
+				if (!running) {
+					game = new Game();
+					start();
+				} else {
+					System.out.println("Can not start game if already started");
+				}
 				break;
 			case "load":
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(readFilename(in))));
-				try {
-					game = (Game) ois.readObject();
+				String filename = readFilename(in);
+				if (!running) {
+					load(filename);
 					start();
-				} catch (ClassNotFoundException e) {
-					System.out.println("Failed to load game");
-					e.printStackTrace();
+				} else {
+					System.out.println("Can not load game if already started");
 				}
 				break;
 			case "save":
-				ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(readFilename(in))));
-				out.writeObject(game);
-				out.close();
-				System.out.println("Game saved");
+				save(in);
 				break;
 			case "stop":
-				clientAccepter.stop();
-				serverUpdater.stop();
-				game.stop();
+				stop();
 				break;
 			case "quit":
 			case "exit":
+				stop();
 				in.close();
 				System.exit(0);
 			default:
@@ -56,12 +57,45 @@ public class Server {
 		}
 	}
 
+	public void load(String filename) throws IOException, FileNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filename)));
+		try {
+			game = (Game) ois.readObject();
+			System.out.println("Game loaded");
+		} catch (ClassNotFoundException e) {
+			game = null;
+			System.out.println("Failed to load game");
+			e.printStackTrace();
+		}
+	}
+
+	public void save(Scanner in) throws IOException, FileNotFoundException {
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(readFilename(in))));
+		out.writeObject(game);
+		out.close();
+		System.out.println("Game saved");
+	}
+
 	public void start() {
-		clientAccepter = new ClientAccepter(game);
-		new Thread(clientAccepter).start();
-		
-		serverUpdater = new ServerUpdater(game);
-		new Thread(serverUpdater).start();
+		if (game != null) {
+			running = true;
+
+			clientAccepter = new ClientAccepter(game);
+			new Thread(clientAccepter).start();
+
+			serverUpdater = new ServerUpdater(game);
+			new Thread(serverUpdater).start();
+		}
+	}
+
+	public void stop() {
+		if (running) {
+			running = false;
+			clientAccepter.stop();
+			serverUpdater.stop();
+			game.stop();
+			System.out.println("Game stopped");
+		}
 	}
 
 	private String readFilename(Scanner in) {

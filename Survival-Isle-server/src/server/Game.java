@@ -88,11 +88,16 @@ public class Game implements GameInterface, Serializable {
 		client.sendWorld(world);
 		client.sendCreateWorldObjects(worldObjects);
 		clients.add(client);
-		Player newPlayer = players.getOrDefault(client, new Player());
-		newPlayer.setPosition(world.getNewSpawnPoint());
-		addObject(newPlayer);
-		client.sendSetPlayer(newPlayer);
-		players.put(client, newPlayer);
+		Player player;
+		if (players.containsKey(client)) {
+			player = players.get(client);
+		} else {
+			player = new Player();
+			player.setPosition(world.getNewSpawnPoint());
+		}
+		addObject(player);
+		client.sendSetPlayer(player);
+		players.put(client, player);
 		new Thread(new ClientListener(this, client)).start();
 		System.out.println("Client connected: " + client);
 	}
@@ -137,10 +142,13 @@ public class Game implements GameInterface, Serializable {
 			break;
 		case SendClose:
 			client.acknowledgeClose();
-			removeClient(client);
+			Thread.currentThread().interrupt();
+			break;
+		case AckClose:
 			Thread.currentThread().interrupt();
 			break;
 		default:
+			System.out.println("Server received unexpected message: " + code);
 			break;
 		}
 	}
@@ -165,6 +173,6 @@ public class Game implements GameInterface, Serializable {
 	}
 
 	public synchronized void stop() {
-		clients.forEach(client -> client.disconnect());
+		clients.forEach(client -> client.sendClose());
 	}
 }

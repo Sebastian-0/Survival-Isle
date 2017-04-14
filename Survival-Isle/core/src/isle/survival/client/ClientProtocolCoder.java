@@ -58,6 +58,11 @@ public class ClientProtocolCoder {
 		flush();
 	}
 
+	public void acknowledgeClose() {
+		connection.sendCode(ClientProtocol.AckClose);
+		flush();
+	}
+
 	public void flush() {
 		connection.flush();
 	}

@@ -186,6 +186,13 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 			case PlaySound:
 				soundBase.playSound(coder.getConnection());
 				break;
+			case SendClose:
+				System.out.println("Disconnected from host.");
+				coder.acknowledgeClose();
+				closeSocket();
+				Gdx.app.exit();
+				Thread.currentThread().interrupt();
+				break;
 			case AckClose:
 				closeSocket();
 				Thread.currentThread().interrupt();
