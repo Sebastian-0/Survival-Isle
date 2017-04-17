@@ -40,7 +40,7 @@ public class Game implements GameInterface, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		time.advanceTime(deltaTime);
+		time.advanceTime(this, deltaTime);
 		updateWallTiles();
 		sendInventoryUpdates();
 		removeLeavingClients();

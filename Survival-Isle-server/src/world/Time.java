@@ -6,7 +6,7 @@ public class Time {
 	private double time;
 	private int day;
 	
-	public void advanceTime(double deltaTime) {
+	public void advanceTime(GameInterface game, double deltaTime) {
 		boolean wasDay = isDaytime();
 		
 		time += deltaTime;
@@ -17,11 +17,11 @@ public class Time {
 		}
 
 		if (wasDay && !isDaytime()) {
-			//Send dusk event
+			game.doForEachClient(c->c.sendTimeEvent(false));
 			System.out.println("Dusk of day " + day);
 		}
 		else if (!wasDay && isDaytime()) {
-			//Send dawn event
+			game.doForEachClient(c->c.sendTimeEvent(true));
 			System.out.println("Dawn of day " + day);
 		}
 	}

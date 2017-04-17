@@ -1,6 +1,8 @@
 package isle.survival.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import server.Connection;
@@ -11,19 +13,24 @@ public class ClientWorld extends World {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private int[][] walls;
+	private boolean isDaytime; 
+	private Texture nightTexture;
 	
 	public ClientWorld(TextureBase textureBase, SpriteBatch spriteBatch) {
 		this.textureBase = textureBase;
 		this.spriteBatch = spriteBatch;
 		ground = new int[0][0];
 		walls = new int[0][0];
+		isDaytime = true;
+		
+		nightTexture = new Texture("night.png");
 	}
 
 	public void drawTerrain(float xOffset, float yOffset) {
 		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
 		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
 		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH + 1, width));
-		int endY = (int) (Math.min((yOffset + Gdx.graphics.getWidth()) / TILE_HEIGHT + 1, height));
+		int endY = (int) (Math.min((yOffset + Gdx.graphics.getHeight()) / TILE_HEIGHT + 1, height));
 		
 		for (int i = startX; i < endX; i++) {
 			for (int j = startY; j < endY; j++) {
@@ -38,6 +45,15 @@ public class ClientWorld extends World {
 			}
 		}
 		
+	}
+	
+	public void drawTime() {
+		//TODO: draw dawn, dusk, night
+		if (!isDaytime) {
+			spriteBatch.setColor(1, 1, 1, 0.5f);
+			spriteBatch.draw(nightTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			spriteBatch.setColor(Color.WHITE);
+		}
 	}
 	
 	public void receive(Connection connection) {
@@ -66,6 +82,10 @@ public class ClientWorld extends World {
 			int id = connection.receiveInt();
 			walls[x][y] = id;
 		}
+	}
+
+	public void receiveTimeEvent(Connection connection) {
+		isDaytime = connection.receiveInt() == 1;
 	}
 	
 }

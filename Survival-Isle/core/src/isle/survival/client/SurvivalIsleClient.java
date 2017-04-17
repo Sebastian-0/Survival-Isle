@@ -116,6 +116,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		worldObjects.draw(xView, yView);
 		worldEffects.draw(xView, yView);
 		
+		world.drawTime();
+		
 		ui.draw(spriteBatch);
 		
 		spriteBatch.end();
@@ -173,6 +175,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				break;
 			case SetInventory:
 				inventory.receiveInventory(coder.getConnection());
+				break;
+			case TimeEvent:
+				world.receiveTimeEvent(coder.getConnection());
 				break;
 			case SendWorldWallTiles:
 				world.receiveWallTiles(coder.getConnection());

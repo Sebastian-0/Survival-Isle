@@ -9,6 +9,7 @@ import world.Inventory;
 import world.ServerWorld;
 import world.WorldObjects;
 
+@SuppressWarnings("serial")
 public class ServerProtocolCoder implements Serializable {
 	
 	private transient Connection connection;
@@ -95,6 +96,11 @@ public class ServerProtocolCoder implements Serializable {
 	public void sendInventory(Inventory inventory) {
 		connection.sendCode(ServerProtocol.SetInventory);
 		inventory.sendInventory(connection);
+	}
+
+	public void sendTimeEvent(boolean dawn) {
+		connection.sendCode(ServerProtocol.TimeEvent);
+		connection.sendInt(dawn ? 1 : 0);
 	}
 
 	public void sendFailedToConnect() {
