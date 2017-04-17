@@ -15,6 +15,7 @@ import world.GameObject;
 import world.Inventory;
 import world.Player;
 import world.ServerWorld;
+import world.Time;
 import world.WorldObjects;
 
 @SuppressWarnings("serial")
@@ -26,15 +27,20 @@ public class Game implements GameInterface, Serializable {
 	private ServerWorld world;
 	private transient WorldObjects worldObjects;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
+
+	private Time time;
 	
 	public Game() {
 		world = new ServerWorld(200, 150, this);
 		world.generateTerrain();
 		
 		worldObjects = new WorldObjects();
+		
+		time = new Time();
 	}
 
 	public synchronized void update(double deltaTime) {
+		time.advanceTime(deltaTime);
 		updateWallTiles();
 		sendInventoryUpdates();
 		removeLeavingClients();
