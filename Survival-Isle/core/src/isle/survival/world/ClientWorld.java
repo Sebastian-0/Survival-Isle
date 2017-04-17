@@ -10,11 +10,13 @@ import world.World;
 
 @SuppressWarnings("serial")
 public class ClientWorld extends World {
+	private static final int DUSK_TIME = 3;
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private int[][] walls;
 	private boolean isDaytime; 
 	private Texture nightTexture;
+	private double duskTimer;
 	
 	public ClientWorld(TextureBase textureBase, SpriteBatch spriteBatch) {
 		this.textureBase = textureBase;
@@ -24,6 +26,7 @@ public class ClientWorld extends World {
 		isDaytime = true;
 		
 		nightTexture = new Texture("night.png");
+		duskTimer = 0;
 	}
 
 	public void drawTerrain(float xOffset, float yOffset) {
@@ -48,12 +51,18 @@ public class ClientWorld extends World {
 	}
 	
 	public void drawTime() {
-		//TODO: draw dawn, dusk, night
-		if (!isDaytime) {
-			spriteBatch.setColor(1, 1, 1, 0.5f);
+		if (duskTimer != 0) {
+			spriteBatch.setColor(1, 1, 1, (float)(0.5 * duskTimer / DUSK_TIME));
 			spriteBatch.draw(nightTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			spriteBatch.setColor(Color.WHITE);
 		}
+	}
+	
+	public void update(double deltaTime) {
+		if (!isDaytime && duskTimer < DUSK_TIME)
+			duskTimer = Math.min(DUSK_TIME, duskTimer+deltaTime);
+		else if (isDaytime && duskTimer > 0)
+			duskTimer = Math.max(0, duskTimer-deltaTime);
 	}
 	
 	public void receive(Connection connection) {

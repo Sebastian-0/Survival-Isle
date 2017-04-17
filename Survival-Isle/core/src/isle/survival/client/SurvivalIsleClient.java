@@ -94,6 +94,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	
 	private void update() {
 		float deltaTime = Gdx.graphics.getDeltaTime();
+		world.update(deltaTime);
 		worldObjects.update(deltaTime);
 		worldEffects.update(deltaTime);
 		
