@@ -133,7 +133,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	}
 	
 	private void drawTool(float xOffset, float yOffset) {
-		Tool tool = Tool.values()[ui.getBuildMenu().getSelectedItemId()];
+		Tool tool = ui.getBuildMenu().getSelectedTool();
 		
 		if (tool.getAction() instanceof BuildWallAction) {
 			BuildWallAction action = (BuildWallAction) tool.getAction(); 

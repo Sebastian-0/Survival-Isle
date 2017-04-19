@@ -12,7 +12,7 @@ public class Ui {
 	private InventoryMenu inventoryMenu;
 	
 	public Ui(TextureBase textures, Inventory inventory) {
-		buildMenu = new BuildMenu(textures);
+		buildMenu = new BuildMenu(textures, inventory);
 		inventoryMenu = new InventoryMenu(textures, inventory);
 	}
 

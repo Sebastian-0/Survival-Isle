@@ -29,4 +29,12 @@ public enum Tool {
 	public void playerMoved(ServerWorld world, Player player) {
 		action.playerMoved(world, player);
 	}
+	
+	public boolean hasAnyResource(Inventory inventory) {
+		return action.hasAnyResource(inventory);
+	}
+	
+	public boolean hasAllResources(Inventory inventory) {
+		return action.hasAllResources(inventory);
+	}
 }
