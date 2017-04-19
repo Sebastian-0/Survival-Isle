@@ -1,5 +1,6 @@
 package world;
 
 public enum EffectType {
-	TileDestroyed
+	TileDestroyed,
+	Projectile;
 }
