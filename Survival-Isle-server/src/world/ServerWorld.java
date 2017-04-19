@@ -16,6 +16,7 @@ public class ServerWorld extends World implements Serializable {
 	private WallTile[][] walls;
 	private List<Point> wallTilesToUpdate; 
 	private List<Point> coast;
+	private List<Point> enemySpawnPoints;
 	private Random random;
 	
 	private GameInterface game;
@@ -24,6 +25,7 @@ public class ServerWorld extends World implements Serializable {
 		super(width, height);
 		walls = new WallTile[width][height];
 		wallTilesToUpdate = new LinkedList<Point>();
+		enemySpawnPoints = new ArrayList<Point>();
 		this.game = game;
 	}
 	
@@ -38,6 +40,7 @@ public class ServerWorld extends World implements Serializable {
 		generateMountains(random);
 		generateRivers(random, coast);
 		generateCoastline(random, coast);
+		generateEnemySpawnPoints(random);
 	}
 
 	private List<Point> generateGround(Random random) {
@@ -215,6 +218,21 @@ public class ServerWorld extends World implements Serializable {
 		}
 	}
 
+	private void generateEnemySpawnPoints(Random random) {
+		int quantity = Math.max(1,width*height/500);
+		for (int i = 0; i < quantity; i++) {
+			int x = (int) (width * Math.min(6,Math.max(0,random.nextGaussian()+3)) / 6);
+			int y = (int) (height * Math.min(6,Math.max(0,random.nextGaussian()+3)) / 6);
+			
+			if (walls[x][y] == null) {
+				walls[x][y] = new WallTile(WallTile.TileType.EnemySpawn);
+				enemySpawnPoints.add(new Point(x,y));
+			}
+			else
+				i--;
+		}
+	}
+
 	public WallTile getWallTileAtPosition(int x, int y) {
 		return walls[x][y];
 	}
@@ -311,5 +329,9 @@ public class ServerWorld extends World implements Serializable {
 			walls[x][y-1] == null)
 			return true;
 		return false;
+	}
+	
+	public Point getRandomEnemySpawnPoint() {
+		return enemySpawnPoints.get(random.nextInt(enemySpawnPoints.size()));
 	}
 }

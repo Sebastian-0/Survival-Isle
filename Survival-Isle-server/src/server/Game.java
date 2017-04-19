@@ -54,7 +54,7 @@ public class Game implements GameInterface, Serializable {
 		if (!time.isDaytime() && Math.random() < deltaTime) {
 			Enemy e = new Enemy();
 			worldObjects.addObject(e);
-			e.setPosition(world.getNewSpawnPoint());
+			e.setPosition(world.getRandomEnemySpawnPoint());
 
 			for (ServerProtocolCoder client : clients) {
 				client.sendCreateObject(e);

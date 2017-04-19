@@ -44,6 +44,7 @@ public class TextureBase {
 		wallTileTextures.put(2, new Texture("mountain.png"));
 		wallTileTextures.put(3, new Texture("woodwall.png"));
 		wallTileTextures.put(4, new Texture("stonewall.png"));
+		wallTileTextures.put(5, new Texture("enemy_spawn.png"));
 	}
 	
 	private void setUpObjectTextures() {
