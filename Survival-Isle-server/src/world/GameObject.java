@@ -34,6 +34,8 @@ public class GameObject implements Serializable {
 		attackTarget = new Point(0, 0);
 		animationState = AnimationState.Idle;
 	}
+	
+	public void update() { }
 
 	public int getId() {
 		return id;

@@ -46,6 +46,8 @@ public class Game implements GameInterface, Serializable {
 	public synchronized void update(double deltaTime) {
 		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
+		worldObjects.update();
+		
 		updateWallTiles();
 		sendInventoryUpdates();
 		removeLeavingClients();
@@ -180,6 +182,11 @@ public class Game implements GameInterface, Serializable {
 	@Override
 	public ServerWorld getWorld() {
 		return world;
+	}
+	
+	@Override
+	public PathFinder getPathFinder() {
+		return pathFinder;
 	}
 	
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
