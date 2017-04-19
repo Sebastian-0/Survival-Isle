@@ -22,11 +22,19 @@ public enum Tool {
 		return action;
 	}
 	
-	public void use(ServerWorld world, Player player) {
-		action.execute(world, player);
+	public void use(GameInterface game, Player player) {
+		action.execute(game, player);
 	}
 	
-	public void playerMoved(ServerWorld world, Player player) {
-		action.playerMoved(world, player);
+	public void playerMoved(GameInterface game, Player player) {
+		action.playerMoved(game, player);
+	}
+	
+	public boolean hasAnyResource(Inventory inventory) {
+		return action.hasAnyResource(inventory);
+	}
+	
+	public boolean hasAllResources(Inventory inventory) {
+		return action.hasAllResources(inventory);
 	}
 }

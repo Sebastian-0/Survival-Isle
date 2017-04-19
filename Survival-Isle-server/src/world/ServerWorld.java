@@ -224,7 +224,7 @@ public class ServerWorld extends World implements Serializable {
 			int x = (int) (width * Math.min(6,Math.max(0,random.nextGaussian()+3)) / 6);
 			int y = (int) (height * Math.min(6,Math.max(0,random.nextGaussian()+3)) / 6);
 			
-			if (walls[x][y] == null) {
+			if (x < width && y < height && walls[x][y] == null) {
 				walls[x][y] = new WallTile(WallTile.TileType.EnemySpawn);
 				enemySpawnPoints.add(new Point(x,y));
 			}

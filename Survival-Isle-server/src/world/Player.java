@@ -60,7 +60,7 @@ public class Player extends GameObject implements Serializable {
 			break;
 		case ActivateTool:
 			toolActive = true;
-			selectedTool.use(game.getWorld(), this);
+			selectedTool.use(game, this);
 			break;
 		case DeactivateTool:
 			toolActive = false;
@@ -72,14 +72,14 @@ public class Player extends GameObject implements Serializable {
 
 	public void updateToolAfterPlayerMove(GameInterface game) {
 		if (toolActive)
-			selectedTool.playerMoved(game.getWorld(), this);
+			selectedTool.playerMoved(game, this);
 	}
 	
 	private void actOnWorld(GameInterface game, int dx, int dy) {
 		if (position.x + dx < 0 || 
 			position.y + dy < 0 ||
-			position.x + dx >= game.getWorld().width ||
-			position.y + dy >= game.getWorld().height)
+			position.x + dx >= game.getWorld().getWidth() ||
+			position.y + dy >= game.getWorld().getHeight())
 			return;
 
 		animationState = AnimationState.Idle;

@@ -11,6 +11,12 @@ public class WorldObjects {
 	public WorldObjects() {
 		objects = new ArrayList<>();
 	}
+
+	public void update() {
+		for (GameObject object : objects) {
+			object.update();
+		}
+	}
 	
 	public void addObject(GameObject object) {
 		objects.add(object);

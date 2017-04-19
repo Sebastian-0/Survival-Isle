@@ -14,6 +14,7 @@ import world.Enemy;
 import world.GameInterface;
 import world.GameObject;
 import world.Inventory;
+import world.PathFinder;
 import world.Player;
 import world.ServerWorld;
 import world.Time;
@@ -27,6 +28,7 @@ public class Game implements GameInterface, Serializable {
 
 	private ServerWorld world;
 	private transient WorldObjects worldObjects;
+	private transient PathFinder pathFinder;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 
 	private Time time;
@@ -36,6 +38,7 @@ public class Game implements GameInterface, Serializable {
 		world.generateTerrain();
 		
 		worldObjects = new WorldObjects();
+		pathFinder = new PathFinder(world);
 		
 		time = new Time();
 	}
@@ -43,6 +46,8 @@ public class Game implements GameInterface, Serializable {
 	public synchronized void update(double deltaTime) {
 		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
+		worldObjects.update();
+		
 		updateWallTiles();
 		sendInventoryUpdates();
 		removeLeavingClients();
@@ -179,12 +184,18 @@ public class Game implements GameInterface, Serializable {
 		return world;
 	}
 	
+	@Override
+	public PathFinder getPathFinder() {
+		return pathFinder;
+	}
+	
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
 		ois.defaultReadObject();
 		clients = new ArrayList<>();
 		joiningClients = new ArrayList<>();
 		leavingClients = new ArrayList<>();
 		worldObjects = new WorldObjects();
+		pathFinder = new PathFinder(world);
 		GameObject.idCounter = ois.readInt();
 	}
 	
