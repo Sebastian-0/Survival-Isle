@@ -5,6 +5,7 @@ import java.io.Serializable;
 import server.Connection;
 import util.Point;
 
+@SuppressWarnings("serial")
 public class GameObject implements Serializable {
 
 	public static int idCounter;
@@ -28,7 +29,7 @@ public class GameObject implements Serializable {
 
 	public GameObject() {
 		id = idCounter++;
-		textureId = 0;
+		
 		position = new Point(0, 0);
 		attackTarget = new Point(0, 0);
 		animationState = AnimationState.Idle;

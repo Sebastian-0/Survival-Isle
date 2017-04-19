@@ -13,8 +13,10 @@ public class Player extends GameObject implements Serializable {
 	
 	private Inventory inv;
 	private transient Tool selectedTool;
+	private transient boolean toolActive;
 	
 	public Player() {
+		textureId = 0;
 		inv = new Inventory();
 		selectedTool = Tool.Pickaxe;
 	}
@@ -31,22 +33,22 @@ public class Player extends GameObject implements Serializable {
 		case MoveUp:
 			actOnWorld(game, 0, 1);
 			game.doForEachClient(updateObject);
-			selectedTool.playerMoved(game.getWorld(), this);
+			updateToolAfterPlayerMove(game);
 			break;
 		case MoveLeft:
 			actOnWorld(game, -1, 0);
 			game.doForEachClient(updateObject);
-			selectedTool.playerMoved(game.getWorld(), this);
+			updateToolAfterPlayerMove(game);
 			break;
 		case MoveDown:
 			actOnWorld(game, 0, -1);
 			game.doForEachClient(updateObject);
-			selectedTool.playerMoved(game.getWorld(), this);
+			updateToolAfterPlayerMove(game);
 			break;
 		case MoveRight:
 			actOnWorld(game, 1, 0);
 			game.doForEachClient(updateObject);
-			selectedTool.playerMoved(game.getWorld(), this);
+			updateToolAfterPlayerMove(game);
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
@@ -57,14 +59,20 @@ public class Player extends GameObject implements Serializable {
 			}
 			break;
 		case ActivateTool:
-			selectedTool.activate(game.getWorld(), this);
+			toolActive = true;
+			selectedTool.use(game.getWorld(), this);
 			break;
 		case DeactivateTool:
-			selectedTool.deactivate(game.getWorld(), this);
+			toolActive = false;
 			break;
 		default:
 			break;
 		}
+	}
+
+	public void updateToolAfterPlayerMove(GameInterface game) {
+		if (toolActive)
+			selectedTool.playerMoved(game.getWorld(), this);
 	}
 	
 	private void actOnWorld(GameInterface game, int dx, int dy) {

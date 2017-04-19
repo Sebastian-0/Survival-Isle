@@ -71,8 +71,8 @@ public class WorldObjects {
 			int id = connection.receiveInt();
 			int x = connection.receiveInt();
 			int y = connection.receiveInt();
-			int textureId = connection.receiveInt();
 			int animation = connection.receiveInt();
+			int textureId = connection.receiveInt();
 			NetworkObject object = new NetworkObject(x, y, id, textureId);
 			object.setAnimation(animation);
 			objects.add(object);

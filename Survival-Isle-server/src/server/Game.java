@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import world.Enemy;
 import world.GameInterface;
 import world.GameObject;
 import world.Inventory;
@@ -40,12 +41,25 @@ public class Game implements GameInterface, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
+		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
 		updateWallTiles();
 		sendInventoryUpdates();
 		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
+	}
+
+	private void spawnEnemies(double deltaTime) {
+		if (!time.isDaytime() && Math.random() < deltaTime) {
+			Enemy e = new Enemy();
+			worldObjects.addObject(e);
+			e.setPosition(world.getNewSpawnPoint());
+
+			for (ServerProtocolCoder client : clients) {
+				client.sendCreateObject(e);
+			}
+		}
 	}
 
 	private void updateWallTiles() {

@@ -78,6 +78,14 @@ public class NetworkObject {
 		return currentPosition.y;
 	}
 
+	public int getServerX() {
+		return (int) targetPosition.x;
+	}
+
+	public int getServerY() {
+		return (int) targetPosition.y;
+	}
+
 	public void setPosition(int x, int y) {
 		previousPosition.set(previousPosition.interpolateTo(targetPosition, movementInterpolation));
 		targetPosition.set(x, y);
