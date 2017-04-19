@@ -27,7 +27,7 @@ public class Game implements GameInterface, Serializable {
 	private transient List<ServerProtocolCoder> leavingClients = new ArrayList<>();
 
 	private ServerWorld world;
-	private transient WorldObjects worldObjects;
+	private WorldObjects worldObjects;
 	private transient PathFinder pathFinder;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 
@@ -123,6 +123,7 @@ public class Game implements GameInterface, Serializable {
 		}
 		addObject(player);
 		client.sendSetPlayer(player);
+		client.sendInventory(player.getInventory());
 		players.put(client, player);
 		new Thread(new ClientListener(this, client)).start();
 		System.out.println("Client connected: " + client);
@@ -195,7 +196,6 @@ public class Game implements GameInterface, Serializable {
 		clients = new ArrayList<>();
 		joiningClients = new ArrayList<>();
 		leavingClients = new ArrayList<>();
-		worldObjects = new WorldObjects();
 		pathFinder = new PathFinder(world);
 		GameObject.idCounter = ois.readInt();
 	}

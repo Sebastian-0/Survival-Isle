@@ -1,6 +1,8 @@
 package world;
 
-public class Time {
+import java.io.Serializable;
+
+public class Time implements Serializable {
 	private static final int DAY_DURATION = 10;
 	private static final int NIGHT_DURATION = 10; 
 	private double time;
