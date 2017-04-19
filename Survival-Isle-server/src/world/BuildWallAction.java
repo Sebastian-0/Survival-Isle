@@ -1,7 +1,5 @@
-package server;
+package world;
 
-import world.Player;
-import world.ServerWorld;
 import world.WallTile.TileType;
 
 public class BuildWallAction implements ToolAction {

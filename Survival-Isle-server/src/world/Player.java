@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 
 import server.ClientProtocol;
 import server.ServerProtocolCoder;
-import server.Tool;
 
 @SuppressWarnings("serial")
 public class Player extends GameObject implements Serializable {
