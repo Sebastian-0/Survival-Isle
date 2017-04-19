@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import server.Connection;
 
+@SuppressWarnings("serial")
 public class WorldObjects implements Serializable {
 	
 	private transient List<GameObject> objects;

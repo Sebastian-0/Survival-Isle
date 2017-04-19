@@ -138,14 +138,6 @@ public class Game implements GameInterface, Serializable {
 	}
 	
 	@Override
-	public void removeObject(GameObject object) {
-		worldObjects.removeObject(object);
-		for (ServerProtocolCoder client : clients) {
-			client.sendCreateObject(object);
-		}
-	}
-
-	@Override
 	public void doForEachClient(Consumer<ServerProtocolCoder> function) {
 		clients.forEach(function);
 	}
@@ -159,6 +151,13 @@ public class Game implements GameInterface, Serializable {
 	public void removeClient(ServerProtocolCoder client) {
 		synchronized (leavingClients) {
 			leavingClients.add(client);
+		}
+	}
+
+	private void removeObject(GameObject object) {
+		worldObjects.removeObject(object);
+		for (ServerProtocolCoder client : clients) {
+			client.sendDestroyObject(object);
 		}
 	}
 
