@@ -48,9 +48,14 @@ public class ClientProtocolCoder {
 		connection.sendInt(tool);
 	}
 
-	public void sendUseTool() {
+	public void sendActivateTool() {
 		connection.sendCode(ClientProtocol.ToPlayer);
 		connection.sendCode(ClientProtocol.ActivateTool);
+	}
+
+	public void sendDeactivateTool() {
+		connection.sendCode(ClientProtocol.ToPlayer);
+		connection.sendCode(ClientProtocol.DeactivateTool);
 	}
 
 	public void sendClose() {
