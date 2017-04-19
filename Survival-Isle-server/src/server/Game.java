@@ -46,7 +46,7 @@ public class Game implements GameInterface, Serializable {
 	public synchronized void update(double deltaTime) {
 		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
-		worldObjects.update();
+		worldObjects.update(this);
 		
 		updateWallTiles();
 		sendInventoryUpdates();

@@ -30,9 +30,6 @@ public class Turret extends GameObject implements BuildableObject {
 		WallTile tile = game.getWorld().getWallTileAtPosition((int)position.x, (int)position.y);
 		if (tile == null || tile.getId() != TileType.TurretBase.ordinal()) {
 			shouldBeRemoved = true;
-
-			//game.doForEachClient(c->c.sendDestroyObject(this));
-			//game.removeObject(this);
 		}
 	}
 	

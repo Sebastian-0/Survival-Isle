@@ -19,7 +19,7 @@ public class WorldObjects implements Serializable {
 		objects = new ArrayList<>();
 	}
 
-	public void update() {
+	public void update(GameInterface game) {
 		Iterator<GameObject> iterator = objects.iterator();
 		while (iterator.hasNext()) {
 			GameObject object = iterator.next();
@@ -27,6 +27,7 @@ public class WorldObjects implements Serializable {
 			
 			if (object.shouldBeRemoved()) {
 				iterator.remove();
+				game.doForEachClient(c->c.sendDestroyObject(object));
 			}
 		}
 	}
