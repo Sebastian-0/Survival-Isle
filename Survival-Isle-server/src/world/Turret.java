@@ -24,8 +24,8 @@ public class Turret extends GameObject implements BuildableObject {
 	}
 	
 	@Override
-	public void update() {
-		super.update();
+	public void update(GameInterface game) {
+		super.update(game);
 		
 		WallTile tile = game.getWorld().getWallTileAtPosition((int)position.x, (int)position.y);
 		if (tile == null || tile.getId() != TileType.TurretBase.ordinal()) {

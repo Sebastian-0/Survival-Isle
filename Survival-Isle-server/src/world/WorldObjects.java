@@ -19,11 +19,11 @@ public class WorldObjects implements Serializable {
 		objects = new ArrayList<>();
 	}
 
-	public void update() {
+	public void update(GameInterface game) {
 		Iterator<GameObject> iterator = objects.iterator();
 		while (iterator.hasNext()) {
 			GameObject object = iterator.next();
-			object.update();
+			object.update(game);
 			
 			if (object.shouldBeRemoved()) {
 				iterator.remove();
@@ -48,6 +48,11 @@ public class WorldObjects implements Serializable {
 
 	public GameObject getObject(int id) {
 		return objects.stream().filter(object -> object.getId() == id).findAny().orElse(null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends GameObject> List<T> getObjectsOfType(Class<T> type) {
+		return (List<T>) objects.stream().filter(o -> (type.isInstance(o))).collect(Collectors.toCollection(ArrayList::new));
 	}
 	
 	@SuppressWarnings("unchecked")

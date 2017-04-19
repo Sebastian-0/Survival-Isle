@@ -46,7 +46,7 @@ public class Game implements GameInterface, Serializable {
 	public synchronized void update(double deltaTime) {
 		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
-		worldObjects.update();
+		worldObjects.update(this);
 		
 		updateWallTiles();
 		sendInventoryUpdates();
@@ -184,6 +184,11 @@ public class Game implements GameInterface, Serializable {
 	@Override
 	public ServerWorld getWorld() {
 		return world;
+	}
+	
+	@Override
+	public WorldObjects getObjects() {
+		return worldObjects;
 	}
 	
 	@Override

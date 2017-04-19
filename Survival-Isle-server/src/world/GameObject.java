@@ -36,7 +36,7 @@ public class GameObject implements Serializable {
 		animationState = AnimationState.Idle;
 	}
 	
-	public void update() { }
+	public void update(GameInterface game) { }
 
 	public int getId() {
 		return id;

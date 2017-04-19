@@ -13,4 +13,5 @@ public interface GameInterface {
 	PathFinder getPathFinder();
 	
 	ServerWorld getWorld();
+	WorldObjects getObjects();
 }
