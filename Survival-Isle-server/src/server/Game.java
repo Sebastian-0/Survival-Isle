@@ -123,6 +123,7 @@ public class Game implements GameInterface, Serializable {
 		}
 		addObject(player);
 		client.sendSetPlayer(player);
+		client.sendInventory(player.getInventory());
 		players.put(client, player);
 		new Thread(new ClientListener(this, client)).start();
 		System.out.println("Client connected: " + client);
