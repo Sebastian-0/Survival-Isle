@@ -18,5 +18,10 @@ public class BuildWallAction implements ToolAction {
 			world.addWallTileAtPosition(x, y, tileToBuild);
 		}
 	}
+	
+	@Override
+	public void playerMoved(ServerWorld world, Player player) {
+		execute(world, player);
+	}
 
 }
