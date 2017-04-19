@@ -19,7 +19,6 @@ public class BuildObjectAction implements ToolAction {
 		if (game.getWorld().getWallTileAtPosition(x, y) == null && objectToBuild.payForWith(player.getInventory())) {
 			GameObject object = objectToBuild.instanciate(new Point(x, y), game);
 			game.addObject(object);
-			game.doForEachClient(c->c.sendCreateObject(object));
 		}
 	}
 	
