@@ -1,11 +1,12 @@
 package server;
 
-public class ServerUpdater implements Runnable {
+public class ServerUpdater extends Thread {
 	
 	private Game game;
 	private volatile boolean running;
 	
 	public ServerUpdater(Game game) {
+		super ("Server updater");
 		this.game = game;
 	}
 	
@@ -19,7 +20,7 @@ public class ServerUpdater implements Runnable {
 			long sleepTime = 1000 / 60 - (afterUpdate - beforeUpdate);
 			try {
 				if (sleepTime > 0)
-					Thread.sleep(sleepTime);
+					sleep(sleepTime);
 				else
 					System.out.println("Frame too slow");
 			} catch (InterruptedException e) {
@@ -28,7 +29,7 @@ public class ServerUpdater implements Runnable {
 		}
 	}
 	
-	public void stop() {
+	public void close() {
 		running = false;
 	}
 }

@@ -5,12 +5,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class ClientAccepter implements Runnable {
+public class ClientAccepter extends Thread {
 	
 	private Game game;
 	private ServerSocket serverSocket;
 	
 	public ClientAccepter(Game game) {
+		super ("Client accepter");
 		this.game = game;
 	}
 	
@@ -31,7 +32,7 @@ public class ClientAccepter implements Runnable {
 		}
 	}
 	
-	public void stop() {
+	public void close() {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {

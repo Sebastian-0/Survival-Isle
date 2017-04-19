@@ -57,9 +57,10 @@ public class Game implements GameInterface, Serializable {
 
 	private void spawnEnemies(double deltaTime) {
 		if (!time.isDaytime() && Math.random() < deltaTime) {
-			Enemy e = new Enemy();
+			Enemy e = new Enemy(this);
 			worldObjects.addObject(e);
 			e.setPosition(world.getRandomEnemySpawnPoint());
+			e.pathToCoast();
 
 			for (ServerProtocolCoder client : clients) {
 				client.sendCreateObject(e);
@@ -124,7 +125,7 @@ public class Game implements GameInterface, Serializable {
 		addObject(player);
 		client.sendSetPlayer(player);
 		players.put(client, player);
-		new Thread(new ClientListener(this, client)).start();
+		new ClientListener(this, client).start();
 		System.out.println("Client connected: " + client);
 	}
 	

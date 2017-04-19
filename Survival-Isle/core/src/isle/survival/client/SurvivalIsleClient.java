@@ -75,7 +75,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		try {
 			socket = new Socket("localhost", 1337);
 			coder = new ClientProtocolCoder(name, new Connection(socket));
-			new Thread(new ServerListener(this)).start();
+			new ServerListener(this).start();
 
 			System.out.println("Connected to host.");
 		} catch (UnknownHostException e) {

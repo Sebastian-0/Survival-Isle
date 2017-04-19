@@ -28,16 +28,25 @@ public class Point implements Serializable {
 		this.y = y;
 	}
 	
-	@Override
-	public String toString() {
-		return String.format("(%d, %d)", (int) x, (int) y);
-	}
-
 	public Point interpolateTo(Point target, float i) {
 		if (i == 0)
 			return this;
 		if (i == 1)
 			return target;
 		return new Point(x * (1 - i) + i * target.x, y * (1 - i) + i * target.y);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("(%d, %d)", (int) x, (int) y);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Point) {
+			Point other = (Point) obj;
+			return other.x == x && other.y == y;
+		}
+		return false;
 	}
 }
