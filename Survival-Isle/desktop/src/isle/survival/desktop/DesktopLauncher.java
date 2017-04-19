@@ -13,8 +13,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) throws IOException {
-		Server server = new Server();
-		server.start();
+		//Server server = new Server();
+		//server.start();
 		
 		String name = JOptionPane.showInputDialog("Enter name");
 		if (name != null) {
