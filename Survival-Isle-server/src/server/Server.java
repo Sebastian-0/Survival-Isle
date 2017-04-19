@@ -67,6 +67,7 @@ public class Server {
 			System.out.println("Failed to load game");
 			e.printStackTrace();
 		}
+		ois.close();
 	}
 
 	public void save(Scanner in) throws IOException, FileNotFoundException {

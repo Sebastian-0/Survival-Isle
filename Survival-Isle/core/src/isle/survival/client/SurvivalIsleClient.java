@@ -62,6 +62,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		inputProcessor = new InputProcessor(ui, coder);
 		Gdx.input.setInputProcessor(inputProcessor);
+		
+		if (coder == null)
+			Gdx.app.exit();
 	}
 	
 	private void connectToServer() {
@@ -131,7 +134,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch.dispose();
 		soundBase.dispose();
 		
-		if (!socket.isClosed()) {
+		if (socket != null && !socket.isClosed()) {
 			synchronized (this) {
 				coder.sendClose();
 			}
