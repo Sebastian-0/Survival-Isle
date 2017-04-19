@@ -5,9 +5,9 @@ import java.util.HashMap;
 import util.Point;
 import world.WallTile.TileType;
 
-@SuppressWarnings("serial")
 public class Turret extends BuildableObject {
-	private GameInterface game;
+	
+	private static final long serialVersionUID = 1L;
 	
 	public Turret() {
 		textureId = 8;
@@ -20,7 +20,6 @@ public class Turret extends BuildableObject {
 	public GameObject instanciate(Point position, GameInterface game) {
 		Turret turret = new Turret();
 		turret.position = position;
-		turret.game = game;
 		game.getWorld().addWallTileAtPosition((int)position.x, (int)position.y, TileType.TurretBase);
 		
 		return turret;

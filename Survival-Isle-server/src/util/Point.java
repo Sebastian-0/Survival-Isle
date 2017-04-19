@@ -3,6 +3,9 @@ package util;
 import java.io.Serializable;
 
 public class Point implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	public float x;
 	public float y;
 	

@@ -7,6 +7,8 @@ import util.Point;
 
 public abstract class BuildableObject extends GameObject {
 	
+	private static final long serialVersionUID = 1L;
+	
 	HashMap<ItemType, Integer> resourceCost;
 
 	public boolean payForWith(Inventory inventory) {

@@ -6,8 +6,9 @@ import java.util.List;
 
 import util.Point;
 
-@SuppressWarnings("serial")
 public class Enemy extends GameObject implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;

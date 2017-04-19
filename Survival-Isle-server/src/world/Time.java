@@ -3,6 +3,9 @@ package world;
 import java.io.Serializable;
 
 public class Time implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private static final int DAY_DURATION = 10;
 	private static final int NIGHT_DURATION = 10; 
 	private double time;

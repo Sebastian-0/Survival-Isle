@@ -8,6 +8,8 @@ import server.Connection;
 
 public class Inventory implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private HashMap<ItemType, Integer> items;
 	private boolean updated;
 
