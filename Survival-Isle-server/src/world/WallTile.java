@@ -17,7 +17,8 @@ public class WallTile implements Serializable {
 		Mountain(true, 3, ItemType.Stone.ordinal(), 2),
 		WoodWall(true, 5, ItemType.Wood.ordinal(), 2),
 		StoneWall(true, 10, ItemType.Stone.ordinal(), 2),
-		EnemySpawn(false, 1);
+		EnemySpawn(false, 1), 
+		TurretBase(true, 4, ItemType.Wood.ordinal(), 5, ItemType.Stone.ordinal(), 5);
 		
 
 		public final int health;

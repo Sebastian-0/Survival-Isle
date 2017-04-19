@@ -21,6 +21,7 @@ public class BuildMenu {
 		items.add(new BuildItem(Tool.Pickaxe, textures.getTexture("pickaxe"), inventory));
 		items.add(new BuildItem(Tool.WoodWall, textures.getTexture("buildwoodwall"), inventory));
 		items.add(new BuildItem(Tool.StoneWall, textures.getTexture("buildstonewall"), inventory));
+		items.add(new BuildItem(Tool.Turret, textures.getTexture("buildturret"), inventory));
 		
 		marker = textures.getTexture("marker");
 		

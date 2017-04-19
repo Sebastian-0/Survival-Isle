@@ -1,5 +1,8 @@
 package world;
 
+import util.Point;
+import world.WallTile.TileType;
+
 @SuppressWarnings("serial")
 public class Turret extends GameObject implements BuildableObject {
 	private final int STONE_COST = 5;
@@ -20,8 +23,12 @@ public class Turret extends GameObject implements BuildableObject {
 	}
 
 	@Override
-	public GameObject instanciate() {
-		return new Turret();
+	public GameObject instanciate(Point position, GameInterface game) {
+		Turret turret = new Turret();
+		turret.position = position;
+		game.getWorld().addWallTileAtPosition((int)position.x, (int)position.y, TileType.TurretBase);
+		
+		return turret;
 	}
 
 	@Override
