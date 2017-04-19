@@ -26,7 +26,7 @@ public class Enemy extends GameObject implements Serializable {
 			double minDistance = Float.MAX_VALUE;
 			Player closestPlayer = null;
 			for (Player player : players) {
-				double distance = java.awt.Point.distance(position.x, position.y, player.position.x, player.position.y);
+				double distance = Point.distanceSq(position.x, position.y, player.position.x, player.position.y);
 				if (distance < minDistance) {
 					minDistance = distance;
 					closestPlayer = player;
