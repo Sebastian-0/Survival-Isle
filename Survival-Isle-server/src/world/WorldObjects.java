@@ -1,6 +1,7 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import server.Connection;
@@ -13,8 +14,14 @@ public class WorldObjects {
 	}
 
 	public void update() {
-		for (GameObject object : objects) {
+		Iterator<GameObject> iterator = objects.iterator();
+		while (iterator.hasNext()) {
+			GameObject object = iterator.next();
 			object.update();
+			
+			if (object.shouldBeRemoved()) {
+				iterator.remove();
+			}
 		}
 	}
 	
@@ -25,7 +32,7 @@ public class WorldObjects {
 	public void removeObject(GameObject object) {
 		objects.remove(object);
 	}
-
+	
 	public void sendCreateAll(Connection connection) {
 		connection.sendInt(objects.size());
 		for (GameObject object : objects) {

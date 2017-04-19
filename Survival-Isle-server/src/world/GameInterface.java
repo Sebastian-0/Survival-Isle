@@ -7,6 +7,7 @@ import server.ServerProtocolCoder;
 public interface GameInterface {
 
 	void addObject(GameObject object);
+	void removeObject(GameObject object);
 	void doForEachClient(Consumer<ServerProtocolCoder> function);
 	
 	PathFinder getPathFinder();
