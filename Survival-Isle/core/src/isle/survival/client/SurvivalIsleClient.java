@@ -8,6 +8,8 @@ import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
 import isle.survival.world.WorldEffects;
 import isle.survival.world.WorldObjects;
+import isle.survival.world.effects.ProjectileEffect;
+import isle.survival.world.effects.ProjectileType;
 import isle.survival.world.effects.ResourceEffect;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
@@ -62,7 +65,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		inventory = new Inventory();
 		connectToServer();
 
-		ui = new Ui(textureBase, inventory);
+		ui = new Ui(textureBase, inventory, coder);
 		
 		inputProcessor = new InputProcessor(ui, coder);
 		Gdx.input.setInputProcessor(inputProcessor);
@@ -196,6 +199,17 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 							worldEffects.addEffect(new ResourceEffect(tileX, tileY, object, textureBase.getTexture(item.getTexture())));
 					} else {
 						System.out.println("Invalid object id: " + objectId);
+					}
+				} else if (type == EffectType.Projectile) {
+					ProjectileType projectileType = ProjectileType.values()[coder.getConnection().receiveInt()];
+					int originId = coder.getConnection().receiveInt();
+					int targetId = coder.getConnection().receiveInt();
+					
+					NetworkObject originObject = worldObjects.getObject(originId);
+					NetworkObject targetObject = worldObjects.getObject(targetId);
+					if (originObject != null && targetObject != null) {
+						Texture texture = textureBase.getTexture(projectileType.getTexture());
+						worldEffects.addEffect(new ProjectileEffect(originObject, targetObject, projectileType.getSpeed(), texture));
 					}
 				}
 				break;

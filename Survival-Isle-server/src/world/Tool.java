@@ -6,7 +6,8 @@ public enum Tool {
 
 	Pickaxe,
 	WoodWall(new BuildWallAction(TileType.WoodWall)),
-	StoneWall(new BuildWallAction(TileType.StoneWall));
+	StoneWall(new BuildWallAction(TileType.StoneWall)),
+	Turret(new BuildObjectAction(new Turret()));
 	
 	private ToolAction action;
 	

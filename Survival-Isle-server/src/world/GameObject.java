@@ -26,6 +26,7 @@ public class GameObject implements Serializable {
 	protected Point position;
 	protected Point attackTarget;
 	protected AnimationState animationState;
+	protected boolean shouldBeRemoved;
 
 	public GameObject() {
 		id = idCounter++;
@@ -70,4 +71,7 @@ public class GameObject implements Serializable {
 		connection.sendInt(id);
 	}
 
+	public boolean shouldBeRemoved() {
+		return shouldBeRemoved;
+	}
 }

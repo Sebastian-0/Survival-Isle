@@ -1,5 +1,7 @@
 package world;
 
+import java.util.Map;
+
 import world.WallTile.TileType;
 
 public class BuildWallAction implements ToolAction {
@@ -38,4 +40,8 @@ public class BuildWallAction implements ToolAction {
 		return tileToBuild.hasAllResources(inventory);
 	}
 
+	@Override
+	public Map<ItemType, Integer> getResourceCost() {
+		return tileToBuild.getResourceCost();
+	}
 }

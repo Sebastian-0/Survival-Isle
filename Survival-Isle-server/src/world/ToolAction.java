@@ -1,5 +1,7 @@
 package world;
 
+import java.util.Map;
+
 public interface ToolAction {
 
 	static class NoAction implements ToolAction {
@@ -21,6 +23,11 @@ public interface ToolAction {
 		public boolean hasAllResources(Inventory inventory) {
 			return true;
 		}
+
+		@Override
+		public Map<ItemType, Integer> getResourceCost() {
+			return null;
+		}
 	}
 
 	void execute(GameInterface game, Player player);
@@ -30,4 +37,6 @@ public interface ToolAction {
 	boolean hasAnyResource(Inventory inventory);
 
 	boolean hasAllResources(Inventory inventory);
+	
+	Map<ItemType, Integer> getResourceCost();
 }

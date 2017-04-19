@@ -27,7 +27,7 @@ public class Game implements GameInterface, Serializable {
 	private transient List<ServerProtocolCoder> leavingClients = new ArrayList<>();
 
 	private ServerWorld world;
-	private transient WorldObjects worldObjects;
+	private WorldObjects worldObjects;
 	private transient PathFinder pathFinder;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 
@@ -46,7 +46,7 @@ public class Game implements GameInterface, Serializable {
 	public synchronized void update(double deltaTime) {
 		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
-		worldObjects.update();
+		worldObjects.update(this);
 		
 		updateWallTiles();
 		sendInventoryUpdates();
@@ -124,6 +124,7 @@ public class Game implements GameInterface, Serializable {
 		}
 		addObject(player);
 		client.sendSetPlayer(player);
+		client.sendInventory(player.getInventory());
 		players.put(client, player);
 		new ClientListener(this, client).start();
 		System.out.println("Client connected: " + client);
@@ -142,13 +143,6 @@ public class Game implements GameInterface, Serializable {
 		clients.forEach(function);
 	}
 
-	public void removeObject(GameObject object) {
-		worldObjects.removeObject(object);
-		for (ServerProtocolCoder client : clients) {
-			client.sendDestroyObject(object);
-		}
-	}
-	
 	public void addClient(ServerProtocolCoder client) {
 		synchronized (joiningClients) {
 			joiningClients.add(client);
@@ -158,6 +152,13 @@ public class Game implements GameInterface, Serializable {
 	public void removeClient(ServerProtocolCoder client) {
 		synchronized (leavingClients) {
 			leavingClients.add(client);
+		}
+	}
+
+	private void removeObject(GameObject object) {
+		worldObjects.removeObject(object);
+		for (ServerProtocolCoder client : clients) {
+			client.sendDestroyObject(object);
 		}
 	}
 
@@ -195,7 +196,6 @@ public class Game implements GameInterface, Serializable {
 		clients = new ArrayList<>();
 		joiningClients = new ArrayList<>();
 		leavingClients = new ArrayList<>();
-		worldObjects = new WorldObjects();
 		pathFinder = new PathFinder(world);
 		GameObject.idCounter = ois.readInt();
 	}

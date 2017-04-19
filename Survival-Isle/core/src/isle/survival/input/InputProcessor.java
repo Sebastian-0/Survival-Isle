@@ -51,11 +51,9 @@ public class InputProcessor extends InputAdapter {
 			break;
 		case Input.Keys.Q:
 			buildMenu.decrementSelection();
-			coder.sendSelectTool(buildMenu.getSelectedTool());
 			break;
 		case Input.Keys.E:
 			buildMenu.incrementSelection();
-			coder.sendSelectTool(buildMenu.getSelectedTool());
 			break;
 		case Input.Keys.NUM_1:
 		case Input.Keys.NUM_2:
@@ -68,7 +66,6 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.NUM_9:
 			int toolIndex = keycode - Input.Keys.NUM_1;
 			buildMenu.setSelectedIndex(toolIndex);
-			coder.sendSelectTool(buildMenu.getSelectedTool());
 			break;
 		case Input.Keys.SPACE:
 			coder.sendActivateTool();
@@ -101,7 +98,6 @@ public class InputProcessor extends InputAdapter {
 			buildMenu.incrementSelection();
 		else
 			buildMenu.decrementSelection();
-		coder.sendSelectTool(buildMenu.getSelectedTool());
 		return true;
 	}
 	
