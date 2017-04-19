@@ -166,9 +166,10 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					int tileX = coder.getConnection().receiveInt();
 					int tileY = coder.getConnection().receiveInt();
 					int objectId = coder.getConnection().receiveInt();
+					int texture = coder.getConnection().receiveInt();
 					NetworkObject object = worldObjects.getObject(objectId);
 					if (object != null) {
-						worldEffects.addEffect(new ResourceEffect(tileX, tileY, object));
+						worldEffects.addEffect(new ResourceEffect(tileX, tileY, object, texture));
 					} else {
 						System.out.println("Invalid object id: " + objectId);
 					}
