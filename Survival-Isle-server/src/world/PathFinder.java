@@ -17,7 +17,9 @@ public class PathFinder {
 	
 	public List<Point> search(Point start, Point end) {
 		State state = new State(world.getWidth(), world.getHeight(), end);
-		addNeighbours(state, getTile(state, start));
+		Node startTile = getTile(state, start);
+		addNeighbours(state, startTile);
+		startTile.isClosed = true;
 		
 		while (!state.openNodes.isEmpty()) {
 			Node node = state.openNodes.poll();
