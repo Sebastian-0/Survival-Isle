@@ -64,6 +64,10 @@ public class WallTile implements Serializable {
 			}
 			return true;
 		}
+		
+		public Map<ItemType, Integer> getResourceCost() {
+			return itemDrops;
+		}
 	}
 	
 	public WallTile(TileType type) {

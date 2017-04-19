@@ -1,5 +1,7 @@
 package world;
 
+import java.util.Map;
+
 import util.Point;
 
 public class BuildObjectAction implements ToolAction {
@@ -34,6 +36,11 @@ public class BuildObjectAction implements ToolAction {
 	@Override
 	public boolean hasAllResources(Inventory inventory) {
 		return objectToBuild.hasAllResources(inventory);
+	}
+
+	@Override
+	public Map<ItemType, Integer> getResourceCost() {
+		return objectToBuild.getResourceCost();
 	}
 
 }
