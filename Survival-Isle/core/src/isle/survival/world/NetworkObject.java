@@ -103,4 +103,11 @@ public class NetworkObject {
 		else
 			this.animation = AnimationState.Idle;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof NetworkObject && ((NetworkObject) o).id == id)
+			return true;
+		return false;
+	}
 }
