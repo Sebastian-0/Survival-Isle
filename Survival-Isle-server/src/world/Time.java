@@ -17,11 +17,11 @@ public class Time {
 		}
 
 		if (wasDay && !isDaytime()) {
-			game.doForEachClient(c->c.sendTimeEvent(false));
+			game.doForEachClient(c->c.sendTimeEvent(0));
 			System.out.println("Dusk of day " + day);
 		}
 		else if (!wasDay && isDaytime()) {
-			game.doForEachClient(c->c.sendTimeEvent(true));
+			game.doForEachClient(c->c.sendTimeEvent(1));
 			System.out.println("Dawn of day " + day);
 		}
 	}

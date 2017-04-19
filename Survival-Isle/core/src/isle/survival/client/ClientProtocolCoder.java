@@ -50,7 +50,7 @@ public class ClientProtocolCoder {
 
 	public void sendUseTool() {
 		connection.sendCode(ClientProtocol.ToPlayer);
-		connection.sendCode(ClientProtocol.UseTool);
+		connection.sendCode(ClientProtocol.ActivateTool);
 	}
 
 	public void sendClose() {

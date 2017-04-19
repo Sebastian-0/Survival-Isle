@@ -1,7 +1,5 @@
-package server;
+package world;
 
-import world.Player;
-import world.ServerWorld;
 import world.WallTile.TileType;
 
 public class BuildWallAction implements ToolAction {
@@ -19,6 +17,11 @@ public class BuildWallAction implements ToolAction {
 		if (world.getWallTileAtPosition(x, y) == null && tileToBuild.payForWith(player.getInventory())) {
 			world.addWallTileAtPosition(x, y, tileToBuild);
 		}
+	}
+	
+	@Override
+	public void playerMoved(ServerWorld world, Player player) {
+		execute(world, player);
 	}
 
 }

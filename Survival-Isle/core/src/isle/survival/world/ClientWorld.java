@@ -94,7 +94,10 @@ public class ClientWorld extends World {
 	}
 
 	public void receiveTimeEvent(Connection connection) {
-		isDaytime = connection.receiveInt() == 1;
+		int t = connection.receiveInt();
+		isDaytime = t == 1;
+		if (t == 2)
+			duskTimer = DUSK_TIME;
 	}
 	
 }

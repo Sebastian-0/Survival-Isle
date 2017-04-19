@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 
 import server.ClientProtocol;
 import server.ServerProtocolCoder;
-import server.Tool;
 
 @SuppressWarnings("serial")
 public class Player extends GameObject implements Serializable {
@@ -32,18 +31,22 @@ public class Player extends GameObject implements Serializable {
 		case MoveUp:
 			actOnWorld(game, 0, 1);
 			game.doForEachClient(updateObject);
+			selectedTool.playerMoved(game.getWorld(), this);
 			break;
 		case MoveLeft:
 			actOnWorld(game, -1, 0);
 			game.doForEachClient(updateObject);
+			selectedTool.playerMoved(game.getWorld(), this);
 			break;
 		case MoveDown:
 			actOnWorld(game, 0, -1);
 			game.doForEachClient(updateObject);
+			selectedTool.playerMoved(game.getWorld(), this);
 			break;
 		case MoveRight:
 			actOnWorld(game, 1, 0);
 			game.doForEachClient(updateObject);
+			selectedTool.playerMoved(game.getWorld(), this);
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
@@ -53,8 +56,11 @@ public class Player extends GameObject implements Serializable {
 				System.out.println("Tool selection failed");
 			}
 			break;
-		case UseTool:
-			selectedTool.use(game.getWorld(), this);
+		case ActivateTool:
+			selectedTool.activate(game.getWorld(), this);
+			break;
+		case DeactivateTool:
+			selectedTool.deactivate(game.getWorld(), this);
 			break;
 		default:
 			break;

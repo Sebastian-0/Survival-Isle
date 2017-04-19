@@ -93,6 +93,7 @@ public class Game implements GameInterface, Serializable {
 	private void initNewClient(ServerProtocolCoder client) {
 		client.sendWorld(world);
 		client.sendCreateWorldObjects(worldObjects);
+		client.sendTimeEvent(time.isDaytime() ? 1 : 2);
 		clients.add(client);
 		Player player;
 		if (players.containsKey(client)) {

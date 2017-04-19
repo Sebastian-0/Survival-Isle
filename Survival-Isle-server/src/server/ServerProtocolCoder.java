@@ -98,9 +98,12 @@ public class ServerProtocolCoder implements Serializable {
 		inventory.sendInventory(connection);
 	}
 
-	public void sendTimeEvent(boolean dawn) {
+	/**
+	 * @param dawnState 0=dusk, 1=dawn, 2=force night
+	 */
+	public void sendTimeEvent(int dawnState) {
 		connection.sendCode(ServerProtocol.TimeEvent);
-		connection.sendInt(dawn ? 1 : 0);
+		connection.sendInt(dawnState);
 	}
 
 	public void sendFailedToConnect() {
