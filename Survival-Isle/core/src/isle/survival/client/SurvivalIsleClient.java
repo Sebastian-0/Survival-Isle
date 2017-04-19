@@ -65,7 +65,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		inventory = new Inventory();
 		connectToServer();
 
-		ui = new Ui(textureBase, inventory);
+		ui = new Ui(textureBase, inventory, coder);
 		
 		inputProcessor = new InputProcessor(ui, coder);
 		Gdx.input.setInputProcessor(inputProcessor);

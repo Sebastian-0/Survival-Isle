@@ -1,23 +1,27 @@
 package isle.survival.ui;
 
+import isle.survival.client.ClientProtocolCoder;
 import isle.survival.world.TextureBase;
 import world.Inventory;
 import world.Tool;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 
 public class BuildMenu {
-	private List<BuildItem> items;
-	private int selectedItem;
+	private Array<BuildItem> items;
+	private BuildItem selectedItem;
 	private Texture marker;
+	private ClientProtocolCoder coder;
 	
-	public BuildMenu(TextureBase textures, Inventory inventory) {
+	public BuildMenu(TextureBase textures, Inventory inventory, ClientProtocolCoder coder) {
+		this.coder = coder;
+		
 		BuildItem.whiteTexture = textures.getTexture("white");
-		items = new ArrayList<>();
+		items = new Array<>();
 		items.add(new BuildItem(Tool.Pickaxe, textures.getTexture("pickaxe"), inventory));
 		items.add(new BuildItem(Tool.WoodWall, textures.getTexture("buildwoodwall"), inventory));
 		items.add(new BuildItem(Tool.StoneWall, textures.getTexture("buildstonewall"), inventory));
@@ -25,55 +29,88 @@ public class BuildMenu {
 		
 		marker = textures.getTexture("marker");
 		
-		positionItems();
 		setSelectedIndex(0);
+		positionItems();
 	}
 	
-	private void positionItems() {
+	public void positionItems() {
+		if (!selectedItem.isVisible())
+			decrementSelection();
+		
 		final int offset = 20;
-		for (int i = 0; i < items.size(); i++) {
-			int x = i * (BuildItem.WIDTH + offset);
-			items.get(i).setPosition(x, 8);
+		int i = 0;
+		for (BuildItem item : items) {
+			if (item.isVisible()) {
+				int x = i++ * (BuildItem.WIDTH + offset);
+				item.setPosition(x, 8);
+			}
 		}
 	}
 	
-	
 	public void incrementSelection() {
-		setSelectedIndex(selectedItem + 1);
+		Iterator<BuildItem> it = items.iterator();
+		while (it.hasNext() && it.next() != selectedItem)
+			;
+		
+		while (it.hasNext()) {
+			BuildItem item = it.next();
+			if (item.isVisible()) {
+				setSelectedItem(item);
+				return;
+			}
+		}
 	}
 	
 	public void decrementSelection() {
-		setSelectedIndex(selectedItem - 1);
-	}
-	
-	public void setSelectedIndex(int index) {
-		if (index >= 0 && index < items.size()) {
-			items.get(selectedItem).setIsSelected(false);
-			selectedItem = index;
-			items.get(selectedItem).setIsSelected(true);
+		int index = items.indexOf(selectedItem, true);
+		
+		while (--index >= 0) {
+			if (items.get(index).isVisible()) {
+				setSelectedItem(items.get(index));
+				return;
+			}
 		}
 	}
 	
+	public void setSelectedIndex(int index) {
+		int i = 0;
+		for (BuildItem item : items) {
+			if (item.isVisible()) {
+				if (i++ == index) {
+					setSelectedItem(item);
+				}
+			}
+		}
+	}
+
+	private void setSelectedItem(BuildItem item) {
+		if (selectedItem != null)
+			selectedItem.setIsSelected(false);
+		selectedItem = item;
+		selectedItem.setIsSelected(true);
+		coder.sendSelectTool(selectedItem.getTool());
+	}
 	
 	public int getWidth() {
-		return (int) (items.get(items.size()-1).getPosition().x + BuildItem.WIDTH);
+		int index = items.size;
+		while (--index >= 0 && !items.get(index).isVisible())
+			;
+		return (int) (items.get(index).getPosition().x + BuildItem.WIDTH);
 	}
 	
 	public Tool getSelectedTool() {
-		return items.get(selectedItem).getTool();
+		return selectedItem.getTool();
 	}
-	
 
 	public void draw(SpriteBatch spriteBatch) {
 		for (BuildItem buildItem : items) {
 			if (buildItem.isVisible())
 				buildItem.draw(spriteBatch);
 		}
-		BuildItem selected = items.get(selectedItem);
 		spriteBatch.draw(
 				marker, 
-				selected.getPosition().x - 6, 
-				selected.getPosition().y - 6, 
+				selectedItem.getPosition().x - 6, 
+				selectedItem.getPosition().y - 6, 
 				BuildItem.WIDTH + 12, 
 				BuildItem.HEIGHT + 12);
 	}
