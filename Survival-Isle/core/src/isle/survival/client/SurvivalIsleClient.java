@@ -18,6 +18,7 @@ import server.Connection;
 import server.ServerProtocol;
 import world.EffectType;
 import world.Inventory;
+import world.ItemType;
 import world.World;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -169,10 +170,13 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					int tileX = coder.getConnection().receiveInt();
 					int tileY = coder.getConnection().receiveInt();
 					int objectId = coder.getConnection().receiveInt();
-					int texture = coder.getConnection().receiveInt();
+					int amount = coder.getConnection().receiveInt();
+					int itemId = coder.getConnection().receiveInt();
 					NetworkObject object = worldObjects.getObject(objectId);
 					if (object != null) {
-						worldEffects.addEffect(new ResourceEffect(tileX, tileY, object, texture));
+						ItemType item = ItemType.values()[itemId];
+						for(int i = 0; i < amount; i++)
+							worldEffects.addEffect(new ResourceEffect(tileX, tileY, object, textureBase.getTexture(item.getTexture())));
 					} else {
 						System.out.println("Invalid object id: " + objectId);
 					}

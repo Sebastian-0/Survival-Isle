@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import server.Connection;
@@ -227,7 +228,10 @@ public class ServerWorld extends World implements Serializable {
 		WallTile tile = walls[x][y];
 		if (tile.isBreakable()) {
 			if (tile.damage(damage)) {
-				game.doForEachClient(client->client.sendCreateEffect(EffectType.TileDestroyed, x, y, source.getId(), tile.getId()));
+				for (Map.Entry<ItemType, Integer> itemDrop : tile.getItemDrops().entrySet()) {
+					game.doForEachClient(client->client.sendCreateEffect(EffectType.TileDestroyed, x, y, source.getId(),
+										itemDrop.getValue(), itemDrop.getKey().ordinal()));
+				}
 				tile.dropItems(source.getInventory());
 				wallTilesToUpdate.add(new Point(x, y));
 				walls[x][y] = null;

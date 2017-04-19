@@ -82,4 +82,8 @@ public class WallTile implements Serializable {
 			inventory.addItem(itemDrop.getKey(), itemDrop.getValue());
 		}
 	}
+	
+	public Map<ItemType, Integer> getItemDrops() {
+		return itemDrops;
+	}
 }
