@@ -9,8 +9,9 @@ import world.Inventory;
 import world.ServerWorld;
 import world.WorldObjects;
 
-@SuppressWarnings("serial")
 public class ServerProtocolCoder implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private transient Connection connection;
 	private String name;

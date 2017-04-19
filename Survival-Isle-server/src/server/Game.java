@@ -20,8 +20,10 @@ import world.ServerWorld;
 import world.Time;
 import world.WorldObjects;
 
-@SuppressWarnings("serial")
 public class Game implements GameInterface, Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private transient List<ServerProtocolCoder> clients = new ArrayList<>();
 	private transient List<ServerProtocolCoder> joiningClients = new ArrayList<>();
 	private transient List<ServerProtocolCoder> leavingClients = new ArrayList<>();

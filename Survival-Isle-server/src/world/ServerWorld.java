@@ -11,8 +11,10 @@ import server.Connection;
 import util.Point;
 import world.WallTile.TileType;
 
-@SuppressWarnings("serial")
 public class ServerWorld extends World implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private WallTile[][] walls;
 	private List<Point> wallTilesToUpdate; 
 	private List<Point> coast;

@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 import server.ClientProtocol;
 import server.ServerProtocolCoder;
 
-@SuppressWarnings("serial")
 public class Player extends GameObject implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Inventory inv;
 	private transient Tool selectedTool;
 	private transient boolean toolActive;

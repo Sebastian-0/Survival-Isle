@@ -5,9 +5,10 @@ import java.io.Serializable;
 import server.Connection;
 import util.Point;
 
-@SuppressWarnings("serial")
 public class GameObject implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static int idCounter;
 
 	public enum AnimationState {

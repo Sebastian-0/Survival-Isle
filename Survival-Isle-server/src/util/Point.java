@@ -3,6 +3,9 @@ package util;
 import java.io.Serializable;
 
 public class Point implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	public float x;
 	public float y;
 	
@@ -48,5 +51,11 @@ public class Point implements Serializable {
 			return other.x == x && other.y == y;
 		}
 		return false;
+	}
+
+	public static double distanceSq(double x1, double y1, double x2, double y2)	{
+		x1 -= x2;
+		y1 -= y2;
+		return (x1 * x1 + y1 * y1);
 	}
 }

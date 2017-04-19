@@ -6,8 +6,9 @@ import java.util.List;
 
 import util.Point;
 
-@SuppressWarnings("serial")
 public class Enemy extends GameObject implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
@@ -22,18 +23,18 @@ public class Enemy extends GameObject implements Serializable {
 		
 		if (path.isEmpty()) {
 			List<Player> players = game.getObjects().getObjectsOfType(Player.class);
-
-			double minDistance = Float.MAX_VALUE;
-			Player closestPlayer = null;
-			for (Player player : players) {
-				double distance = java.awt.Point.distance(position.x, position.y, player.position.x, player.position.y);
-				if (distance < minDistance) {
-					minDistance = distance;
-					closestPlayer = player;
+			if (!players.isEmpty()) {
+				double minDistance = Float.MAX_VALUE;
+				Player closestPlayer = null;
+				for (Player player : players) {
+					double distance = Point.distanceSq(position.x, position.y, player.position.x, player.position.y);
+					if (distance < minDistance) {
+						minDistance = distance;
+						closestPlayer = player;
+					}
 				}
+				path = game.getPathFinder().search(position, closestPlayer.position);
 			}
-
-			path = game.getPathFinder().search(position, closestPlayer.position);
 		}
 
 		movementCounter += deltaTime;
