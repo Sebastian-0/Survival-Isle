@@ -41,7 +41,17 @@ public class Game implements GameInterface, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		if (!time.isDaytime() && Math.random() < 0.1) {
+		spawnEnemies(deltaTime);
+		time.advanceTime(this, deltaTime);
+		updateWallTiles();
+		sendInventoryUpdates();
+		removeLeavingClients();
+		initNewClients();
+		clients.forEach(client -> client.flush());
+	}
+
+	private void spawnEnemies(double deltaTime) {
+		if (!time.isDaytime() && Math.random() < deltaTime) {
 			Enemy e = new Enemy();
 			worldObjects.addObject(e);
 			e.setPosition(world.getNewSpawnPoint());
@@ -50,13 +60,6 @@ public class Game implements GameInterface, Serializable {
 				client.sendCreateObject(e);
 			}
 		}
-		
-		time.advanceTime(this, deltaTime);
-		updateWallTiles();
-		sendInventoryUpdates();
-		removeLeavingClients();
-		initNewClients();
-		clients.forEach(client -> client.flush());
 	}
 
 	private void updateWallTiles() {
