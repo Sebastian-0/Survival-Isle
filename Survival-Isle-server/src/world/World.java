@@ -36,4 +36,12 @@ public class World implements Serializable {
 	
 	protected World() {
 	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
 }
