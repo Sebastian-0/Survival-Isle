@@ -18,6 +18,10 @@ public enum Tool {
 		this.action = action;
 	}
 	
+	public ToolAction getAction() {
+		return action;
+	}
+	
 	public void use(ServerWorld world, Player player) {
 		action.execute(world, player);
 	}

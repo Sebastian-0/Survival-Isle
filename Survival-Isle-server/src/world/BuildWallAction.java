@@ -9,6 +9,10 @@ public class BuildWallAction implements ToolAction {
 	public BuildWallAction(TileType tileToBuild) {
 		this.tileToBuild = tileToBuild;
 	}
+	
+	public TileType getTileToBuild() {
+		return tileToBuild;
+	}
 
 	@Override
 	public void execute(ServerWorld world, Player player) {

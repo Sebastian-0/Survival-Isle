@@ -16,11 +16,11 @@ import java.net.UnknownHostException;
 
 import server.Connection;
 import server.ServerProtocol;
+import world.BuildWallAction;
 import world.EffectType;
 import world.Inventory;
 import world.ItemType;
 import world.Tool;
-import world.WallTile;
 import world.World;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -134,19 +134,15 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	
 	private void drawTool(float xOffset, float yOffset) {
 		Tool tool = Tool.values()[ui.getBuildMenu().getSelectedItemId()];
-		switch (tool) {
-		case WoodWall:
-		case StoneWall:
+		
+		if (tool.getAction() instanceof BuildWallAction) {
+			BuildWallAction action = (BuildWallAction) tool.getAction(); 
 			int x = worldObjects.getPlayer().getServerX();
 			int y = worldObjects.getPlayer().getServerY();
 			spriteBatch.setColor(1, 1, 1, 0.5f);
-			spriteBatch.draw(textureBase.getWallTileTexture(WallTile.TileType.StoneWall.ordinal()),
+			spriteBatch.draw(textureBase.getWallTileTexture(action.getTileToBuild().ordinal()),
 					 x * World.TILE_WIDTH - xOffset, y * World.TILE_HEIGHT - yOffset);
 			spriteBatch.setColor(Color.WHITE);
-			break;
-
-		default:
-			break;
 		}
 	}
 	
