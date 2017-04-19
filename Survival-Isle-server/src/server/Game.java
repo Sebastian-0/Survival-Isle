@@ -27,7 +27,7 @@ public class Game implements GameInterface, Serializable {
 	private transient List<ServerProtocolCoder> leavingClients = new ArrayList<>();
 
 	private ServerWorld world;
-	private transient WorldObjects worldObjects;
+	private WorldObjects worldObjects;
 	private transient PathFinder pathFinder;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
 
@@ -194,7 +194,6 @@ public class Game implements GameInterface, Serializable {
 		clients = new ArrayList<>();
 		joiningClients = new ArrayList<>();
 		leavingClients = new ArrayList<>();
-		worldObjects = new WorldObjects();
 		pathFinder = new PathFinder(world);
 		GameObject.idCounter = ois.readInt();
 	}
