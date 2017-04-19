@@ -63,8 +63,8 @@ public class Player extends GameObject implements Serializable {
 	private void actOnWorld(GameInterface game, int dx, int dy) {
 		if (position.x + dx < 0 || 
 			position.y + dy < 0 ||
-			position.x + dx >= game.getWorld().width ||
-			position.y + dy >= game.getWorld().height)
+			position.x + dx >= game.getWorld().getWidth() ||
+			position.y + dy >= game.getWorld().getHeight())
 			return;
 
 		animationState = AnimationState.Idle;
