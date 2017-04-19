@@ -71,11 +71,23 @@ public class InputProcessor extends InputAdapter {
 			coder.sendSelectTool(toolIndex);
 			break;
 		case Input.Keys.SPACE:
-			coder.sendUseTool();
+			coder.sendActivateTool();
 			break;
 		case Input.Keys.ESCAPE:
 			Gdx.app.exit();
 			Thread.currentThread().interrupt();
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean keyUp(int keycode) {
+		switch (keycode) {
+		case Input.Keys.SPACE:
+			coder.sendDeactivateTool();
 			break;
 		default:
 			return false;

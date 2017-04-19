@@ -14,11 +14,13 @@ public class ResourceEffect extends Effect {
 	private Vector2 position;
 	private NetworkObject target;
 	private Vector2 speed;
+	private Texture texture;
 	
-	public ResourceEffect(int x, int y, NetworkObject target) {
+	public ResourceEffect(int x, int y, NetworkObject target, Texture texture) {
 		this.position = new Vector2(x, y);
 		this.target = target;
 		speed = new Vector2(0.15f, 0).setAngle(MathUtils.random() * 360);
+		this.texture = texture;
 	}
 
 	@Override
@@ -39,11 +41,11 @@ public class ResourceEffect extends Effect {
 
 	@Override
 	public void draw(SpriteBatch spriteBatch, TextureBase textures,
-			float xView, float yView) {
-		Texture texture = textures.getTexture("gather_effect");
+		float xView, float yView) {
 		spriteBatch.draw(
 				texture, 
-				(position.x+0.5f)*World.TILE_WIDTH - texture.getWidth()/2 - xView, 
-				(position.y+0.5f)*World.TILE_WIDTH - texture.getHeight()/2 - yView);
+				(position.x+0.5f)*World.TILE_WIDTH - texture.getWidth()/4 - xView, 
+				(position.y+0.5f)*World.TILE_WIDTH - texture.getHeight()/4 - yView, 
+				texture.getWidth()/2, texture.getHeight()/2);
 	}
 }

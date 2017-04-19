@@ -16,12 +16,16 @@ import java.net.UnknownHostException;
 
 import server.Connection;
 import server.ServerProtocol;
+import world.BuildWallAction;
 import world.EffectType;
 import world.Inventory;
+import world.ItemType;
+import world.Tool;
 import world.World;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -117,6 +121,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		spriteBatch.begin();
 		world.drawTerrain(xView, yView);
+		drawTool(xView, yView);
 		worldObjects.draw(xView, yView);
 		worldEffects.draw(xView, yView);
 		
@@ -127,6 +132,19 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch.end();
 	}
 	
+	private void drawTool(float xOffset, float yOffset) {
+		Tool tool = Tool.values()[ui.getBuildMenu().getSelectedItemId()];
+		
+		if (tool.getAction() instanceof BuildWallAction) {
+			BuildWallAction action = (BuildWallAction) tool.getAction(); 
+			int x = worldObjects.getPlayer().getServerX();
+			int y = worldObjects.getPlayer().getServerY();
+			spriteBatch.setColor(1, 1, 1, 0.5f);
+			spriteBatch.draw(textureBase.getWallTileTexture(action.getTileToBuild().ordinal()),
+					 x * World.TILE_WIDTH - xOffset, y * World.TILE_HEIGHT - yOffset);
+			spriteBatch.setColor(Color.WHITE);
+		}
+	}
 	
 	@Override
 	public void dispose() {
@@ -169,9 +187,13 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					int tileX = coder.getConnection().receiveInt();
 					int tileY = coder.getConnection().receiveInt();
 					int objectId = coder.getConnection().receiveInt();
+					int amount = coder.getConnection().receiveInt();
+					int itemId = coder.getConnection().receiveInt();
 					NetworkObject object = worldObjects.getObject(objectId);
 					if (object != null) {
-						worldEffects.addEffect(new ResourceEffect(tileX, tileY, object));
+						ItemType item = ItemType.values()[itemId];
+						for(int i = 0; i < amount; i++)
+							worldEffects.addEffect(new ResourceEffect(tileX, tileY, object, textureBase.getTexture(item.getTexture())));
 					} else {
 						System.out.println("Invalid object id: " + objectId);
 					}

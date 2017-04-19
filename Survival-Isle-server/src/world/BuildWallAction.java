@@ -9,6 +9,10 @@ public class BuildWallAction implements ToolAction {
 	public BuildWallAction(TileType tileToBuild) {
 		this.tileToBuild = tileToBuild;
 	}
+	
+	public TileType getTileToBuild() {
+		return tileToBuild;
+	}
 
 	@Override
 	public void execute(ServerWorld world, Player player) {
@@ -17,6 +21,11 @@ public class BuildWallAction implements ToolAction {
 		if (world.getWallTileAtPosition(x, y) == null && tileToBuild.payForWith(player.getInventory())) {
 			world.addWallTileAtPosition(x, y, tileToBuild);
 		}
+	}
+	
+	@Override
+	public void playerMoved(ServerWorld world, Player player) {
+		execute(world, player);
 	}
 
 }

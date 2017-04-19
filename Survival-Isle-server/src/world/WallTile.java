@@ -17,7 +17,7 @@ public class WallTile implements Serializable {
 		Mountain(true, 3, ItemType.Stone.ordinal(), 2),
 		WoodWall(true, 5, ItemType.Wood.ordinal(), 2),
 		StoneWall(true, 10, ItemType.Stone.ordinal(), 2),
-		ShallowWater(false, 1);
+		EnemySpawn(false, 1);
 		
 
 		public final int health;
@@ -81,5 +81,9 @@ public class WallTile implements Serializable {
 		for (Map.Entry<ItemType, Integer> itemDrop : itemDrops.entrySet()) {
 			inventory.addItem(itemDrop.getKey(), itemDrop.getValue());
 		}
+	}
+	
+	public Map<ItemType, Integer> getItemDrops() {
+		return itemDrops;
 	}
 }
