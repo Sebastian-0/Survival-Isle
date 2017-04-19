@@ -15,14 +15,16 @@ import java.lang.Math.*;
 public class ProjectileEffect extends Effect {
 	
 	private Vector2 position;
-	private NetworkObject target;
+	private float target_x;
+	private float target_y;
 	private Vector2 velocity;
 	private Texture texture;
 	private float angle;
 	
 	public ProjectileEffect(NetworkObject origin, NetworkObject target, float speed, Texture texture) {
 		this.position = new Vector2(origin.getX(), origin.getY());
-		this.target = target;
+		this.target_x = target.getX();
+		this.target_y = target.getY();
 		this.angle = (float) Math.atan2(target.getX()-origin.getX(), target.getServerY()-origin.getY());
 		this.velocity = new Vector2(speed, 0).setAngle(angle);
 		this.texture = texture;
@@ -32,7 +34,7 @@ public class ProjectileEffect extends Effect {
 	public void update(float deltaTime) {
 		position.add(velocity);
 		
-		if (position.epsilonEquals(target.getX(), target.getY(), 0.1f)) {
+		if (position.epsilonEquals(target_x, target_y, 0.1f)) {
 			scheduleForRemoval();
 		}
 	}
