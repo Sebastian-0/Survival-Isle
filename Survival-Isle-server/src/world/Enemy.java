@@ -23,13 +23,12 @@ public class Enemy extends GameObject implements Serializable {
 	public void pathToCoast() {
 		Point target = new Point(game.getWorld().getNewSpawnPoint());
 		positions = game.getPathFinder().search(getPosition(), target);
-		System.out.println("target " + target + " -- " + getPosition());
 		millis = System.currentTimeMillis();
 	}
 	
 	@Override
 	public void update() {
-		if (System.currentTimeMillis() - millis > 500) {
+		if (System.currentTimeMillis() - millis > 250) {
 			millis = System.currentTimeMillis();
 			if (!positions.isEmpty()) {
 				setPosition(positions.remove(0));
