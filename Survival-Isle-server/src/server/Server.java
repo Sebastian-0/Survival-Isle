@@ -82,18 +82,18 @@ public class Server {
 			running = true;
 
 			clientAccepter = new ClientAccepter(game);
-			new Thread(clientAccepter).start();
+			clientAccepter.start();
 
 			serverUpdater = new ServerUpdater(game);
-			new Thread(serverUpdater).start();
+			serverUpdater.start();
 		}
 	}
 
 	public void stop() {
 		if (running) {
 			running = false;
-			clientAccepter.stop();
-			serverUpdater.stop();
+			clientAccepter.close();
+			serverUpdater.close();
 			game.stop();
 			System.out.println("Game stopped");
 		}

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import server.Connection;
 
+@SuppressWarnings("serial")
 public class WorldObjects implements Serializable {
 	
 	private transient List<GameObject> objects;
@@ -19,14 +20,15 @@ public class WorldObjects implements Serializable {
 		objects = new ArrayList<>();
 	}
 
-	public void update(GameInterface game) {
+	public void update(GameInterface game, double deltaTime) {
 		Iterator<GameObject> iterator = objects.iterator();
 		while (iterator.hasNext()) {
 			GameObject object = iterator.next();
-			object.update(game);
+			object.update(game, deltaTime);
 			
 			if (object.shouldBeRemoved()) {
 				iterator.remove();
+				game.doForEachClient(c->c.sendDestroyObject(object));
 			}
 		}
 	}

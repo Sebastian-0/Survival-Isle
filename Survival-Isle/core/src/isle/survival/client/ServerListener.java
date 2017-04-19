@@ -2,17 +2,18 @@ package isle.survival.client;
 
 import server.ConnectionClosedException;
 
-public class ServerListener implements Runnable {
+public class ServerListener extends Thread {
 	
 	private ClientInterface client;
 
 	public ServerListener(ClientInterface client) {
+		super ("Server listener");
 		this.client = client;
 	}
 	
 	@Override
 	public void run() {
-		while (!Thread.interrupted()) {
+		while (!interrupted()) {
 			try {
 				client.parseServerMessage();
 			} catch (ConnectionClosedException e) {

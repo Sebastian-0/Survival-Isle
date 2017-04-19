@@ -1,18 +1,19 @@
 package server;
 
-public class ClientListener implements Runnable {
+public class ClientListener extends Thread {
 	
 	private Game game;
 	private ServerProtocolCoder client;
 
 	public ClientListener(Game game, ServerProtocolCoder client) {
+		super ("Client listener");
 		this.game = game;
 		this.client = client;
 	}
 	
 	@Override
 	public void run() {
-		while (!Thread.interrupted()) {
+		while (!interrupted()) {
 			try {
 				ClientProtocol code = client.receiveCode();
 //				System.out.println("Server received: " + code);

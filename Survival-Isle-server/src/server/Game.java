@@ -46,7 +46,7 @@ public class Game implements GameInterface, Serializable {
 	public synchronized void update(double deltaTime) {
 		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
-		worldObjects.update(this);
+		worldObjects.update(this, deltaTime);
 		
 		updateWallTiles();
 		sendInventoryUpdates();
@@ -125,7 +125,7 @@ public class Game implements GameInterface, Serializable {
 		client.sendSetPlayer(player);
 		client.sendInventory(player.getInventory());
 		players.put(client, player);
-		new Thread(new ClientListener(this, client)).start();
+		new ClientListener(this, client).start();
 		System.out.println("Client connected: " + client);
 	}
 	
@@ -137,14 +137,6 @@ public class Game implements GameInterface, Serializable {
 		}
 	}
 	
-	@Override
-	public void removeObject(GameObject object) {
-		worldObjects.removeObject(object);
-		for (ServerProtocolCoder client : clients) {
-			client.sendCreateObject(object);
-		}
-	}
-
 	@Override
 	public void doForEachClient(Consumer<ServerProtocolCoder> function) {
 		clients.forEach(function);
@@ -159,6 +151,13 @@ public class Game implements GameInterface, Serializable {
 	public void removeClient(ServerProtocolCoder client) {
 		synchronized (leavingClients) {
 			leavingClients.add(client);
+		}
+	}
+
+	private void removeObject(GameObject object) {
+		worldObjects.removeObject(object);
+		for (ServerProtocolCoder client : clients) {
+			client.sendDestroyObject(object);
 		}
 	}
 

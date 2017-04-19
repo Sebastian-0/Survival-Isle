@@ -1,16 +1,19 @@
 package world;
 
+import java.util.HashMap;
+
 import util.Point;
 import world.WallTile.TileType;
 
 @SuppressWarnings("serial")
-public class Turret extends GameObject implements BuildableObject {
-	private final int STONE_COST = 5;
-	private final int WOOD_COST = 5;
+public class Turret extends BuildableObject {
 	private GameInterface game;
 	
 	public Turret() {
 		textureId = 8;
+		resourceCost = new HashMap<ItemType, Integer>();
+		resourceCost.put(ItemType.Stone, 5);
+		resourceCost.put(ItemType.Wood, 5);
 	}
 	
 	@Override
@@ -24,8 +27,8 @@ public class Turret extends GameObject implements BuildableObject {
 	}
 	
 	@Override
-	public void update(GameInterface game) {
-		super.update(game);
+	public void update(GameInterface game, double deltaTime) {
+		super.update(game, deltaTime);
 		
 		WallTile tile = game.getWorld().getWallTileAtPosition((int)position.x, (int)position.y);
 		if (tile == null || tile.getId() != TileType.TurretBase.ordinal()) {
@@ -35,27 +38,4 @@ public class Turret extends GameObject implements BuildableObject {
 			//game.removeObject(this);
 		}
 	}
-	
-	
-
-	@Override
-	public boolean payForWith(Inventory inventory) {
-		if (hasAllResources(inventory)) {
-			inventory.removeItem(ItemType.Stone, STONE_COST);
-			inventory.removeItem(ItemType.Wood, WOOD_COST);
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean hasAnyResource(Inventory inventory) {
-		return inventory.getAmount(ItemType.Stone) > 0 || inventory.getAmount(ItemType.Wood) > 0;
-	}
-
-	@Override
-	public boolean hasAllResources(Inventory inventory) {
-		return inventory.getAmount(ItemType.Stone) >= STONE_COST && inventory.getAmount(ItemType.Wood) >= WOOD_COST;
-	}
-
 }

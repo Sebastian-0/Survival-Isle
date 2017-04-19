@@ -10,14 +10,16 @@ import util.Point;
 public class Enemy extends GameObject implements Serializable {
 	
 	private List<Point> path = new ArrayList<>();
-//	private double movementCounter = 0;
+	private double movementCounter = 0;
 	
 	public Enemy() {
 		textureId = 4;
 	}
 	
 	@Override
-	public void update(GameInterface game) {
+	public void update(GameInterface game, double deltaTime) {
+		super.update(game, deltaTime);
+		
 		if (path.isEmpty()) {
 			List<Player> players = game.getObjects().getObjectsOfType(Player.class);
 
@@ -32,6 +34,15 @@ public class Enemy extends GameObject implements Serializable {
 			}
 
 			path = game.getPathFinder().search(position, closestPlayer.position);
+		}
+
+		movementCounter += deltaTime;
+		if (movementCounter > .3) {
+			movementCounter = 0;
+			if (!path.isEmpty()) {
+				setPosition(path.remove(0));
+				game.doForEachClient(c -> c.sendUpdateObject(this));
+			}
 		}
 	}
 	
