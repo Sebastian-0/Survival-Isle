@@ -27,5 +27,15 @@ public class BuildWallAction implements ToolAction {
 	public void playerMoved(GameInterface game, Player player) {
 		execute(game, player);
 	}
+	
+	@Override
+	public boolean hasAnyResource(Inventory inventory) {
+		return tileToBuild.hasAnyResource(inventory);
+	}
+	
+	@Override
+	public boolean hasAllResources(Inventory inventory) {
+		return tileToBuild.hasAllResources(inventory);
+	}
 
 }

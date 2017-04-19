@@ -3,6 +3,7 @@ package isle.survival.client;
 import server.ClientProtocol;
 import server.Connection;
 import server.ServerProtocol;
+import world.Tool;
 
 public class ClientProtocolCoder {
 	
@@ -42,10 +43,10 @@ public class ClientProtocolCoder {
 		connection.sendCode(ClientProtocol.MoveRight);
 	}
 	
-	public void sendSelectTool(int tool) {
+	public void sendSelectTool(Tool tool) {
 		connection.sendCode(ClientProtocol.ToPlayer);
 		connection.sendCode(ClientProtocol.SelectTool);
-		connection.sendInt(tool);
+		connection.sendInt(tool.ordinal());
 	}
 
 	public void sendActivateTool() {

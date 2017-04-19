@@ -34,17 +34,32 @@ public class WallTile implements Serializable {
 		}
 
 		public boolean payForWith(Inventory inventory) {
-			for (Map.Entry<ItemType, Integer> itemCost : itemDrops.entrySet()) {
-				ItemType item = itemCost.getKey();
-				int cost = itemCost.getValue();
-				if (inventory.getAmount(item) < cost) {
-					return false;
-				}
-			}
+			if (!hasAllResources(inventory))
+				return false;
+			
 			for (Map.Entry<ItemType, Integer> itemCost : itemDrops.entrySet()) {
 				ItemType item = itemCost.getKey();
 				int cost = itemCost.getValue();
 				inventory.removeItem(item, cost);
+			}
+			return true;
+		}
+		
+		public boolean hasAnyResource(Inventory inventory) {
+			for (Map.Entry<ItemType, Integer> itemCost : itemDrops.entrySet()) {
+				ItemType item = itemCost.getKey();
+				if (inventory.getAmount(item) > 0)
+					return true;
+			}
+			return false;
+		}
+		
+		public boolean hasAllResources(Inventory inventory) {
+			for (Map.Entry<ItemType, Integer> itemCost : itemDrops.entrySet()) {
+				ItemType item = itemCost.getKey();
+				int cost = itemCost.getValue();
+				if (inventory.getAmount(item) < cost)
+					return false;
 			}
 			return true;
 		}
