@@ -23,18 +23,8 @@ public class Enemy extends GameObject implements Serializable {
 		
 		if (path.isEmpty()) {
 			List<Player> players = game.getObjects().getObjectsOfType(Player.class);
-			if (!players.isEmpty()) {
-				double minDistance = Float.MAX_VALUE;
-				Player closestPlayer = null;
-				for (Player player : players) {
-					double distance = Point.distanceSq(position.x, position.y, player.position.x, player.position.y);
-					if (distance < minDistance) {
-						minDistance = distance;
-						closestPlayer = player;
-					}
-				}
-				path = game.getPathFinder().search(position, closestPlayer.position);
-			}
+			GameObject closestPlayer = getClosestObject(game, players);
+			path = game.getPathFinder().search(position, closestPlayer.position);
 		}
 
 		movementCounter += deltaTime;
@@ -50,6 +40,12 @@ public class Enemy extends GameObject implements Serializable {
 	@Override
 	protected int getMaxHp() {
 		return 100;
+	}
+	
+	@Override
+	protected void die() {
+		super.die();
+		shouldBeRemoved = true;
 	}
 	
 	/*

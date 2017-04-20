@@ -1,6 +1,7 @@
 package world;
 
 import java.io.Serializable;
+import java.util.List;
 
 import server.Connection;
 import util.Point;
@@ -79,6 +80,8 @@ public abstract class GameObject implements Serializable {
 	public boolean shouldBeRemoved() {
 		return shouldBeRemoved;
 	}
+
+	protected abstract int getMaxHp();
 	
 	public void damage(float amount) {
 		hp -= amount;
@@ -91,5 +94,19 @@ public abstract class GameObject implements Serializable {
 		isDead = true;
 	}
 	
-	protected abstract int getMaxHp();
+	protected GameObject getClosestObject(GameInterface game, List<? extends GameObject> objects) {
+		if (!objects.isEmpty()) {
+			double minDistance = Float.MAX_VALUE;
+			GameObject closestObject = null;
+			for (GameObject object : objects) {
+				double distance = Point.distanceSq(position.x, position.y, object.position.x, object.position.y);
+				if (distance < minDistance) {
+					minDistance = distance;
+					closestObject = object;
+				}
+			}
+			return closestObject;
+		}
+		return null;
+	}
 }
