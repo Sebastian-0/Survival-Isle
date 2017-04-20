@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import server.ClientProtocol;
 import server.ServerProtocolCoder;
+import util.Point;
 
 public class Player extends GameObject implements Serializable {
 	
@@ -83,10 +84,10 @@ public class Player extends GameObject implements Serializable {
 			return;
 
 		animationState = AnimationState.Idle;
-		WallTile tile = game.getWorld().getWallTileAtPosition((int) position.x + dx, (int) position.y + dy);
+		Point newPosition = new Point(position.x + dx, position.y + dy);
+		WallTile tile = game.getWorld().getWallTileAtPosition(newPosition);
 		if (tile == null) {
-			position.x += dx;
-			position.y += dy;
+			position = newPosition;
 		}
 		else if (tile.isBreakable() && selectedTool == Tool.Pickaxe) {
 			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, 1, this)) {

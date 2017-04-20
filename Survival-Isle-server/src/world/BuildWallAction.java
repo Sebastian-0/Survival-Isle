@@ -18,10 +18,8 @@ public class BuildWallAction implements ToolAction {
 
 	@Override
 	public void execute(GameInterface game, Player player) {
-		int x = (int) player.getPosition().x;
-		int y = (int) player.getPosition().y;
-		if (game.getWorld().getWallTileAtPosition(x, y) == null && tileToBuild.payForWith(player.getInventory())) {
-			game.getWorld().addWallTileAtPosition(x, y, tileToBuild);
+		if (game.getWorld().getWallTileAtPosition(player.getPosition()) == null && tileToBuild.payForWith(player.getInventory())) {
+			game.getWorld().addWallTileAtPosition(player.getPosition(), tileToBuild);
 		}
 	}
 	

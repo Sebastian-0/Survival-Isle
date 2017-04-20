@@ -65,7 +65,7 @@ public class PathFinder {
 		boolean isInBounds = position.x >= 0 && position.y >= 0 && 
 				position.x < state.tiles.length && position.y < state.tiles[0].length;
 		if (isInBounds) {
-			return world.getWallTileAtPosition((int) position.x, (int) position.y) == null;
+			return world.getWallTileAtPosition(position) == null;
 		}
 		return false;
 	}
