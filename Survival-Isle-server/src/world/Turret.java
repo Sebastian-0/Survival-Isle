@@ -24,7 +24,7 @@ public class Turret extends BuildableObject {
 	public GameObject instanciate(Point position, GameInterface game) {
 		Turret turret = new Turret();
 		turret.position = position;
-		game.getWorld().addWallTileAtPosition((int)position.x, (int)position.y, TileType.TurretBase);
+		game.getWorld().addWallTileAtPosition(position, TileType.TurretBase);
 		
 		return turret;
 	}
@@ -33,7 +33,7 @@ public class Turret extends BuildableObject {
 	public void update(GameInterface game, double deltaTime) {
 		super.update(game, deltaTime);
 		
-		WallTile tile = game.getWorld().getWallTileAtPosition((int)position.x, (int)position.y);
+		WallTile tile = game.getWorld().getWallTileAtPosition(position);
 		if (tile == null || tile.getId() != TileType.TurretBase.ordinal()) {
 			shouldBeRemoved = true;
 		}

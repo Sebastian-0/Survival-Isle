@@ -2,8 +2,6 @@ package world;
 
 import java.util.Map;
 
-import util.Point;
-
 public class BuildObjectAction implements ToolAction {
 	
 	private BuildableObject objectToBuild;
@@ -14,10 +12,8 @@ public class BuildObjectAction implements ToolAction {
 
 	@Override
 	public void execute(GameInterface game, Player player) {
-		int x = (int) player.getPosition().x;
-		int y = (int) player.getPosition().y;
-		if (game.getWorld().getWallTileAtPosition(x, y) == null && objectToBuild.payForWith(player.getInventory())) {
-			GameObject object = objectToBuild.instanciate(new Point(x, y), game);
+		if (game.getWorld().getWallTileAtPosition(player.getPosition()) == null && objectToBuild.payForWith(player.getInventory())) {
+			GameObject object = objectToBuild.instanciate(player.getPosition(), game);
 			game.addObject(object);
 		}
 	}
