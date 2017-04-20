@@ -101,4 +101,9 @@ public class Player extends GameObject implements Serializable {
 		ois.defaultReadObject();
 		selectedTool = Tool.Pickaxe;
 	}
+
+	@Override
+	protected int getMaxHp() {
+		return 100;
+	}
 }

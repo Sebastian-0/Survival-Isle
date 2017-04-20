@@ -5,7 +5,7 @@ import java.io.Serializable;
 import server.Connection;
 import util.Point;
 
-public class GameObject implements Serializable {
+public abstract class GameObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -30,7 +30,6 @@ public class GameObject implements Serializable {
 	protected boolean shouldBeRemoved;
 	protected boolean isDead;
 	protected float hp;
-	protected int maxHp;
 
 	public GameObject() {
 		id = idCounter++;
@@ -39,7 +38,7 @@ public class GameObject implements Serializable {
 		attackTarget = new Point(0, 0);
 		animationState = AnimationState.Idle;
 		
-		hp = maxHp;
+		hp = getMaxHp();
 	}
 	
 	public void update(GameInterface game, double deltaTime) { }
@@ -91,4 +90,6 @@ public class GameObject implements Serializable {
 	protected void die() {
 		isDead = true;
 	}
+	
+	protected abstract int getMaxHp();
 }

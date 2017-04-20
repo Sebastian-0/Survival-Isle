@@ -46,6 +46,11 @@ public class Enemy extends GameObject implements Serializable {
 			}
 		}
 	}
+
+	@Override
+	protected int getMaxHp() {
+		return 100;
+	}
 	
 	/*
 	private void actOnWorld(GameInterface game, int dx, int dy) {

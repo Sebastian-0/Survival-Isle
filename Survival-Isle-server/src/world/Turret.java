@@ -37,4 +37,10 @@ public class Turret extends BuildableObject {
 			//game.removeObject(this);
 		}
 	}
+	
+
+	@Override
+	protected int getMaxHp() {
+		return 0;
+	}
 }
