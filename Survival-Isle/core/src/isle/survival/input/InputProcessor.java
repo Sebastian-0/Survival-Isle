@@ -1,19 +1,19 @@
 package isle.survival.input;
 
-import isle.survival.client.ClientProtocolCoder;
-import isle.survival.ui.BuildMenu;
-import isle.survival.ui.Ui;
-import isle.survival.world.NetworkObject;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+
+import isle.survival.client.GameProtocolCoder;
+import isle.survival.ui.BuildMenu;
+import isle.survival.ui.Ui;
+import isle.survival.world.NetworkObject;
 
 public class InputProcessor extends InputAdapter {
 	
 	private static final float MOVEMENT_TIME = NetworkObject.MOVEMENT_TIME;
 	
-	private ClientProtocolCoder coder;
+	private GameProtocolCoder coder;
 	private BuildMenu buildMenu;
 	
 	private float movingUpCounter;
@@ -21,7 +21,7 @@ public class InputProcessor extends InputAdapter {
 	private float movingDownCounter;
 	private float movingRightCounter;
 
-	public InputProcessor(Ui ui, ClientProtocolCoder coder) {
+	public InputProcessor(Ui ui, GameProtocolCoder coder) {
 		this.buildMenu = ui.getBuildMenu();
 		this.coder = coder;
 	}

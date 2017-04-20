@@ -1,23 +1,23 @@
 package isle.survival.ui;
 
-import isle.survival.client.ClientProtocolCoder;
-import isle.survival.world.TextureBase;
-import world.Inventory;
-import world.Tool;
-
 import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
+import isle.survival.client.GameProtocolCoder;
+import isle.survival.world.TextureBase;
+import world.Inventory;
+import world.Tool;
+
 public class BuildMenu {
 	private Array<BuildItem> items;
 	private BuildItem selectedItem;
 	private Texture marker;
-	private ClientProtocolCoder coder;
+	private GameProtocolCoder coder;
 	
-	public BuildMenu(TextureBase textures, Inventory inventory, ClientProtocolCoder coder) {
+	public BuildMenu(TextureBase textures, Inventory inventory, GameProtocolCoder coder) {
 		this.coder = coder;
 		
 		BuildItem.whiteTexture = textures.getTexture("white");

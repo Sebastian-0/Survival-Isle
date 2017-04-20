@@ -1,18 +1,17 @@
 package isle.survival.ui;
 
-import world.Inventory;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import isle.survival.client.ClientProtocolCoder;
+import isle.survival.client.GameProtocolCoder;
 import isle.survival.world.TextureBase;
+import world.Inventory;
 
 public class Ui {
 	private BuildMenu buildMenu;
 	private InventoryMenu inventoryMenu;
 	
-	public Ui(TextureBase textures, Inventory inventory, ClientProtocolCoder coder) {
+	public Ui(TextureBase textures, Inventory inventory, GameProtocolCoder coder) {
 		buildMenu = new BuildMenu(textures, inventory, coder);
 		inventoryMenu = new InventoryMenu(textures, inventory);
 	}
