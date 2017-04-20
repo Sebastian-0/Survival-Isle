@@ -16,18 +16,20 @@ public class PathFinder {
 	}
 	
 	public List<Point> search(Point start, Point end) {
-		State state = new State(world.getWidth(), world.getHeight(), end);
-		Node startTile = getTile(state, start);
-		addNeighbours(state, startTile);
-		startTile.isClosed = true;
-		
-		while (!state.openNodes.isEmpty()) {
-			Node node = state.openNodes.poll();
-			node.isClosed = true;
-			if (node.position.equals(end)) {
-				return constructPath(node);
+		if (!start.equals(end)) {
+			State state = new State(world.getWidth(), world.getHeight(), end);
+			Node startTile = getTile(state, start);
+			addNeighbours(state, startTile);
+			startTile.isClosed = true;
+			
+			while (!state.openNodes.isEmpty()) {
+				Node node = state.openNodes.poll();
+				node.isClosed = true;
+				if (node.position.equals(end)) {
+					return constructPath(node);
+				}
+				addNeighbours(state, node);
 			}
-			addNeighbours(state, node);
 		}
 		
 		return new LinkedList<Point>();
