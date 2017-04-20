@@ -28,6 +28,9 @@ public class GameObject implements Serializable {
 	protected Point attackTarget;
 	protected AnimationState animationState;
 	protected boolean shouldBeRemoved;
+	protected boolean isDead;
+	protected float hp;
+	protected int maxHp;
 
 	public GameObject() {
 		id = idCounter++;
@@ -35,6 +38,8 @@ public class GameObject implements Serializable {
 		position = new Point(0, 0);
 		attackTarget = new Point(0, 0);
 		animationState = AnimationState.Idle;
+		
+		hp = maxHp;
 	}
 	
 	public void update(GameInterface game, double deltaTime) { }
@@ -74,5 +79,16 @@ public class GameObject implements Serializable {
 
 	public boolean shouldBeRemoved() {
 		return shouldBeRemoved;
+	}
+	
+	public void damage(float amount) {
+		hp -= amount;
+		if (hp <= 0 && !isDead) {
+			die();
+		}
+	}
+
+	protected void die() {
+		isDead = true;
 	}
 }
