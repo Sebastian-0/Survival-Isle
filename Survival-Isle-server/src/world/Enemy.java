@@ -8,6 +8,8 @@ import util.Point;
 
 public class Enemy extends GameObject implements Serializable {
 	
+	private static final double MOVEMENT_TIME = .3;
+
 	private static final long serialVersionUID = 1L;
 	
 	private List<Point> path = new ArrayList<>();
@@ -34,15 +36,22 @@ public class Enemy extends GameObject implements Serializable {
 					}
 				}
 				path = game.getPathFinder().search(position, closestPlayer.position);
+				if (!path.isEmpty())
+					path.remove(0);
 			}
 		}
-
+		
 		movementCounter += deltaTime;
-		if (movementCounter > .3) {
+		if (movementCounter > MOVEMENT_TIME) {
 			movementCounter = 0;
 			if (!path.isEmpty()) {
-				setPosition(path.remove(0));
-				game.doForEachClient(c -> c.sendUpdateObject(this));
+				Point nextPosition = path.remove(0);
+				if (game.getWorld().getWallTileAtPosition(nextPosition) == null) {
+					setPosition(nextPosition);
+					game.doForEachClient(c -> c.sendUpdateObject(this));
+				} else {
+					path.clear();
+				}
 			}
 		}
 	}
