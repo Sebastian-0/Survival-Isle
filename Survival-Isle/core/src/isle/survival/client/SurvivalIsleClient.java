@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
+import server.ConnectionClosedException;
 import server.ServerProtocol;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
@@ -23,6 +24,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	private ClientGame game;
 	
 	private String name; //TODO: move to where game should be created
+	private TitleScreen titleScreen;
 	
 	public SurvivalIsleClient(String name) {
 		this.name = name;
@@ -34,10 +36,12 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		textureBase = new TextureBase();
 		soundBase = new SoundBase();
 		
+		titleScreen = new TitleScreen(spriteBatch);
+
 		game = new ClientGame(name, spriteBatch, textureBase, soundBase);	// TODO: move to where the game should be created
 		connectToServer(); 			 										//
 		if (coder == null)													//
-			Gdx.app.exit();													//
+			game = null;
 	}
 	
 	private void connectToServer() {
@@ -62,40 +66,54 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	
 	@Override
 	public void render() {
-		synchronized (this) {
-			game.update();
-			game.draw();	
+		if (game == null) {
+			titleScreen.draw();
+		} else {
+			synchronized (this) {
+				game.update();
+				game.draw();	
+			}
 		}
 	}
 	
 	@Override
 	public void parseServerMessage() {
-		ServerProtocol code = coder.receiveCode();
-//		System.out.println("Client received: " + code);
-		
-		synchronized (this) {
-			switch (code) {
-			case FailedToConnect:
-				System.out.println("User name already in use.");
-				closeSocket();
-				Gdx.app.exit();
-				Thread.currentThread().interrupt();
-				break;
-			case SendClose:
-				System.out.println("Disconnected from host.");
-				coder.acknowledgeClose();
-				closeSocket();
-				Gdx.app.exit();
-				Thread.currentThread().interrupt();
-				break;
-			case AckClose:
-				closeSocket();
-				Thread.currentThread().interrupt();
-				break;
-			default:
-				game.parseServerMessage(code);
-				break;
+		try {
+			ServerProtocol code = coder.receiveCode();
+	//		System.out.println("Client received: " + code);
+			
+			synchronized (this) {
+				switch (code) {
+				case FailedToConnect:
+					System.out.println("User name already in use.");
+					closeSocket();
+					game = null;
+					Gdx.app.exit();
+					Thread.currentThread().interrupt();
+					break;
+				case SendClose:
+					System.out.println("Disconnected from host.");
+					coder.acknowledgeClose();
+					closeSocket();
+					game = null;
+					Gdx.app.exit();
+					Thread.currentThread().interrupt();
+					break;
+				case AckClose:
+					closeSocket();
+					game = null;
+					Thread.currentThread().interrupt();
+					break;
+				default:
+					game.parseServerMessage(code);
+					break;
+				}
 			}
+		} catch (ConnectionClosedException e) {
+			System.out.println("Host lost.");
+			closeSocket();
+			game = null;
+			Thread.currentThread().interrupt();
 		}
 	}
 	
