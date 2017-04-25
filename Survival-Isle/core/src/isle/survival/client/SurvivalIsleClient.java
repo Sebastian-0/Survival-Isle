@@ -13,7 +13,7 @@ import isle.survival.world.TextureBase;
 import server.ConnectionClosedException;
 import server.ServerProtocol;
 
-public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface {
+public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface, TitleScreenBackend {
 	private SpriteBatch spriteBatch;
 	private TextureBase textureBase;
 	private SoundBase soundBase;
@@ -36,17 +36,24 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		textureBase = new TextureBase();
 		soundBase = new SoundBase();
 		
-		titleScreen = new TitleScreen(spriteBatch);
+		titleScreen = new TitleScreen(this, spriteBatch);
 
-		game = new ClientGame(name, spriteBatch, textureBase, soundBase);	// TODO: move to where the game should be created
-		connectToServer(); 			 										//
-		if (coder == null)													//
+		startNewGame("localhost", 1337);
+	}
+
+	@Override
+	public void startNewGame(String ip, int port) {
+		game = new ClientGame(name, spriteBatch, textureBase, soundBase);
+		connectToServer(ip, port);
+		if (coder == null) {
 			game = null;
+			Gdx.input.setInputProcessor(titleScreen);
+		}
 	}
 	
-	private void connectToServer() {
+	private void connectToServer(String ip, int port) {
 		try {
-			socket = new Socket("localhost", 1337);
+			socket = new Socket(ip, port);
 			coder = game.connectToServer(socket);
 			new ServerListener(this).start();
 			
@@ -88,7 +95,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					System.out.println("User name already in use.");
 					closeSocket();
 					game = null;
-					Gdx.app.exit();
+					Gdx.input.setInputProcessor(titleScreen);
+					terminateProgram();
 					Thread.currentThread().interrupt();
 					break;
 				case SendClose:
@@ -96,12 +104,14 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					coder.acknowledgeClose();
 					closeSocket();
 					game = null;
-					Gdx.app.exit();
+					Gdx.input.setInputProcessor(titleScreen);
+					terminateProgram();
 					Thread.currentThread().interrupt();
 					break;
 				case AckClose:
 					closeSocket();
 					game = null;
+					Gdx.input.setInputProcessor(titleScreen);
 					Thread.currentThread().interrupt();
 					break;
 				default:
@@ -113,8 +123,22 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 			System.out.println("Host lost.");
 			closeSocket();
 			game = null;
+			Gdx.input.setInputProcessor(titleScreen);
 			Thread.currentThread().interrupt();
 		}
+	}
+
+	private void closeSocket() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void terminateProgram() {
+		Gdx.app.exit();
 	}
 	
 	@Override
@@ -128,15 +152,6 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				coder.sendClose();
 			}
 			closeSocket();
-		}
-	}
-
-
-	private void closeSocket() {
-		try {
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
