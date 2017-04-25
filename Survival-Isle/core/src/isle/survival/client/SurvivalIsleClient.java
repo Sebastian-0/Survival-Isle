@@ -38,11 +38,11 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		titleScreen = new TitleScreen(this, spriteBatch);
 
-		startNewGame("localhost", 1337);
+		startNewGame(name, "localhost", 1337);
 	}
 
 	@Override
-	public void startNewGame(String ip, int port) {
+	public void startNewGame(String name, String ip, int port) {
 		game = new ClientGame(name, spriteBatch, textureBase, soundBase);
 		connectToServer(ip, port);
 		if (coder == null) {

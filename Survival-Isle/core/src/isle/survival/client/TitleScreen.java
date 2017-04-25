@@ -16,6 +16,7 @@ public class TitleScreen extends InputAdapter {
 	private TitleScreenBackend backend;
 	private SpriteBatch spriteBatch;
 	private Texture texture;
+	private TextField nameField;
 	private TextField ipField;
 	private TextField portField;
 	private Button startButton;
@@ -26,8 +27,9 @@ public class TitleScreen extends InputAdapter {
 		this.spriteBatch = spriteBatch;
 		
 		BitmapFont font = new BitmapFont(Gdx.files.internal("dragonslapper.fnt"));
-		ipField = new TextField(new Point(160, 240), new Point(320, 26), font, "localhost");
-		portField = new TextField(new Point(160, 200), new Point(320, 26), font, "1337");
+		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, "player" + (int)Math.floor(Math.random()*100));
+		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, "localhost");
+		portField = new TextField(new Point(160, 160), new Point(320, 26), font, "1337");
 		startButton = new Button(new Point(256, 100), new Point(128, 28), font, " Join Game");
 	}
 	
@@ -38,6 +40,7 @@ public class TitleScreen extends InputAdapter {
 		spriteBatch.begin();
 		
 		spriteBatch.draw(texture, 0, 0);
+		nameField.draw(spriteBatch);
 		ipField.draw(spriteBatch);
 		portField.draw(spriteBatch);
 		startButton.draw(spriteBatch);
@@ -54,6 +57,7 @@ public class TitleScreen extends InputAdapter {
 	
 	@Override
 	public boolean keyTyped(char character) {
+		nameField.keyTyped(character); 
 		ipField.keyTyped(character); 
 		portField.keyTyped(character);
 		return true;
@@ -61,11 +65,12 @@ public class TitleScreen extends InputAdapter {
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		nameField.touchDown(screenX, screenY, pointer, button); 
 		ipField.touchDown(screenX, screenY, pointer, button); 
 		portField.touchDown(screenX, screenY, pointer, button);
 		if (startButton.touchDown(screenX, screenY, pointer, button)) {
 			try {
-			backend.startNewGame(ipField.getText(), Integer.parseInt(portField.getText()));
+			backend.startNewGame(nameField.getText(), ipField.getText(), Integer.parseInt(portField.getText()));
 			} catch (NumberFormatException e) {
 				System.out.println("Illegal port number.");
 			}
