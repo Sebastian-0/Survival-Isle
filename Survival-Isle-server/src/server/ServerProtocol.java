@@ -13,5 +13,6 @@ public enum ServerProtocol {
 	FailedToConnect,
 	PlaySound,
 	SendClose,
-	AckClose;
+	AckClose,
+	SendChatMessage;
 }

@@ -106,6 +106,7 @@ public class InputProcessor extends InputAdapter {
 		if (character == 13) { // Enter
 			if (chatBox.isEnabled()) {
 				String text = chatBox.getTextClearClose();
+				coder.sendChatMessage(text);
 			} else {
 				chatBox.enable();
 			}
