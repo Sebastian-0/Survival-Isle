@@ -13,11 +13,13 @@ public class InventoryMenu {
 	private static final int OFFSET = 5;
 	
 	private Array<InventoryItem> items;
+
+	private BitmapFont font;
 	
 	public InventoryMenu(TextureBase textures, Inventory inventory) {
 		items = new Array<>();
 		
-		BitmapFont font = new BitmapFont(Gdx.files.internal("font32.fnt"));
+		font = new BitmapFont(Gdx.files.internal("font32.fnt"));
 		items.add(new InventoryItem(textures.getTexture("wood_icon"), "Wood: ", font, inventory, ItemType.Wood));
 		items.add(new InventoryItem(textures.getTexture("stone_icon"), "Stone: ", font, inventory, ItemType.Stone));
 		
@@ -39,5 +41,9 @@ public class InventoryMenu {
 		for (InventoryItem item : items) {
 			item.draw(spriteBatch);
 		}
+	}
+
+	public void dispose() {
+		font.dispose();
 	}
 }

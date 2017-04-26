@@ -184,4 +184,8 @@ public class ClientGame {
 			}
 		}
 	}
+
+	public void dispose() {
+		ui.dispose();
+	}
 }

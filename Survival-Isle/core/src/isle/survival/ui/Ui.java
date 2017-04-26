@@ -41,4 +41,8 @@ public class Ui {
 	public ChatBox getChatBox() {
 		return chatBox;
 	}
+
+	public void dispose() {
+		inventoryMenu.dispose();
+	}
 }
