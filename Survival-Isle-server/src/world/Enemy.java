@@ -11,6 +11,8 @@ public class Enemy extends GameObject implements Serializable {
 	private static final double MOVEMENT_TIME = .3;
 
 	private static final long serialVersionUID = 1L;
+
+	private static final int ATTACK_DAMAGE = 5;
 	
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
@@ -22,11 +24,11 @@ public class Enemy extends GameObject implements Serializable {
 	@Override
 	public void update(GameInterface game, double deltaTime) {
 		super.update(game, deltaTime);
+
+		List<Player> players = game.getObjects().getObjectsOfType(Player.class);
+		GameObject closestPlayer = getClosestObject(game, players);
 		
 		if (path.isEmpty()) {
-			List<Player> players = game.getObjects().getObjectsOfType(Player.class);
-
-			GameObject closestPlayer = getClosestObject(game, players);
 			path = game.getPathFinder().search(position, closestPlayer.position);
 			if (!path.isEmpty())
 				path.remove(0);
@@ -35,7 +37,9 @@ public class Enemy extends GameObject implements Serializable {
 		movementCounter += deltaTime;
 		if (movementCounter > MOVEMENT_TIME) {
 			movementCounter = 0;
-			if (!path.isEmpty()) {
+			if (closestPlayer.position.equals(position)) {
+				closestPlayer.damage(ATTACK_DAMAGE);
+			} else if (!path.isEmpty()) {
 				Point nextPosition = path.remove(0);
 				if (game.getWorld().getWallTileAtPosition(nextPosition) == null) {
 					setPosition(nextPosition);
