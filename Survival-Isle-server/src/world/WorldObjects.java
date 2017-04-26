@@ -44,9 +44,7 @@ public class WorldObjects implements Serializable {
 	
 	public void sendCreateAll(Connection connection) {
 		connection.sendInt(objects.size());
-		for (GameObject object : objects) {
-			object.sendCreate(connection);
-		}
+		objects.forEach((o)->o.sendCreate(connection));
 	}
 
 	public GameObject getObject(int id) {

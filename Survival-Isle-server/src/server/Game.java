@@ -20,7 +20,7 @@ import world.ServerWorld;
 import world.Time;
 import world.WorldObjects;
 
-public class Game implements GameInterface, Serializable {
+public class Game implements GameInterface, TimeInterface, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -134,9 +134,7 @@ public class Game implements GameInterface, Serializable {
 	@Override
 	public void addObject(GameObject object) {
 		worldObjects.addObject(object);
-		for (ServerProtocolCoder client : clients) {
-			client.sendCreateObject(object);
-		}
+		clients.forEach((c)->c.sendCreateObject(object));
 	}
 	
 	@Override
@@ -158,9 +156,21 @@ public class Game implements GameInterface, Serializable {
 
 	private void removeObject(GameObject object) {
 		worldObjects.removeObject(object);
-		for (ServerProtocolCoder client : clients) {
-			client.sendDestroyObject(object);
-		}
+		clients.forEach((c)->c.sendDestroyObject(object));
+	}
+	
+	@Override
+	public void dayBegun(int day) {
+		doForEachClient(c->c.sendTimeEvent(1));
+		System.out.println("Dawn of day " + day);
+		List<Enemy> enemies = worldObjects.getObjectsOfType(Enemy.class);
+		enemies.forEach((e)->removeObject(e));
+	}
+	
+	@Override
+	public void nightBegun(int day) {
+		doForEachClient(c->c.sendTimeEvent(0));
+		System.out.println("Dusk of day " + day);
 	}
 
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {

@@ -2,6 +2,8 @@ package world;
 
 import java.io.Serializable;
 
+import server.TimeInterface;
+
 public class Time implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -11,7 +13,7 @@ public class Time implements Serializable {
 	private double time;
 	private int day;
 	
-	public void advanceTime(GameInterface game, double deltaTime) {
+	public void advanceTime(TimeInterface timeInterface, double deltaTime) {
 		boolean wasDay = isDaytime();
 		
 		time += deltaTime;
@@ -22,12 +24,10 @@ public class Time implements Serializable {
 		}
 
 		if (wasDay && !isDaytime()) {
-			game.doForEachClient(c->c.sendTimeEvent(0));
-			System.out.println("Dusk of day " + day);
+			timeInterface.nightBegun(day);
 		}
 		else if (!wasDay && isDaytime()) {
-			game.doForEachClient(c->c.sendTimeEvent(1));
-			System.out.println("Dawn of day " + day);
+			timeInterface.dayBegun(day);
 		}
 	}
 	
