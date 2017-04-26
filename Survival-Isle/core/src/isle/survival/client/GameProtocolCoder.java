@@ -47,4 +47,9 @@ public class GameProtocolCoder extends ClientProtocolCoder {
 		connection.sendCode(ClientProtocol.DeactivateTool);
 	}
 
+	public void sendChatMessage(String message) {
+		connection.sendCode(ClientProtocol.SendChatMessage);
+		connection.sendString(message);
+	}
+
 }

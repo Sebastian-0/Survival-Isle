@@ -186,6 +186,10 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		case AckClose:
 			Thread.currentThread().interrupt();
 			break;
+		case SendChatMessage:
+			String message = client.getConnection().receiveString();
+			doForEachClient(c -> c.sendChatMessage(client.getName(), message));
+			break;
 		default:
 			System.out.println("Server received unexpected message: " + code);
 			break;

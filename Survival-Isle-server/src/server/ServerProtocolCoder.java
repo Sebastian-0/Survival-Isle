@@ -24,6 +24,10 @@ public class ServerProtocolCoder implements Serializable {
 	public Connection getConnection() {
 		return connection;
 	}
+	
+	public String getName() {
+		return name;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -133,5 +137,11 @@ public class ServerProtocolCoder implements Serializable {
 
 	public void disconnect() {
 		connection.close();
+	}
+
+	public void sendChatMessage(String senderName, String message) {
+		connection.sendCode(ServerProtocol.SendChatMessage);
+		connection.sendString(senderName);
+		connection.sendString(message);
 	}
 }

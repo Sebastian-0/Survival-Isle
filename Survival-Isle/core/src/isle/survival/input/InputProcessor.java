@@ -105,7 +105,9 @@ public class InputProcessor extends InputAdapter {
 	public boolean keyTyped(char character) {
 		if (character == 13) { // Enter
 			if (chatBox.isEnabled()) {
-				String text = chatBox.getTextClearClose();
+				String text = chatBox.getTextClearClose().trim();
+				if (text != "")
+					coder.sendChatMessage(text);
 			} else {
 				chatBox.enable();
 			}

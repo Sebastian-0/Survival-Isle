@@ -1,5 +1,7 @@
 package world;
 
+import java.util.Map;
+
 import world.WallTile.TileType;
 
 public enum Tool {
@@ -37,5 +39,9 @@ public enum Tool {
 	
 	public boolean hasAllResources(Inventory inventory) {
 		return action.hasAllResources(inventory);
+	}
+	
+	public Map<ItemType, Integer> getResourceCost() {
+		return action.getResourceCost();
 	}
 }

@@ -1,14 +1,21 @@
 package isle.survival.ui;
 
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
 import isle.survival.client.GameProtocolCoder;
 import isle.survival.world.TextureBase;
 import world.Inventory;
+import world.ItemType;
 import world.Tool;
 
 public class BuildMenu {
@@ -16,6 +23,9 @@ public class BuildMenu {
 	private BuildItem selectedItem;
 	private Texture marker;
 	private GameProtocolCoder coder;
+	private TextureBase textureBase;
+	
+	private BitmapFont font;
 	
 	public BuildMenu(TextureBase textures, Inventory inventory, GameProtocolCoder coder) {
 		this.coder = coder;
@@ -28,6 +38,11 @@ public class BuildMenu {
 		items.add(new BuildItem(Tool.Turret, textures.getTexture("buildturret"), inventory));
 		
 		marker = textures.getTexture("marker");
+		textureBase = textures;
+		
+	
+		BitmapFont font = new BitmapFont(Gdx.files.internal("font14.fnt"));
+		this.font = font;
 		
 		setSelectedIndex(0);
 		positionItems();
@@ -113,5 +128,41 @@ public class BuildMenu {
 				selectedItem.getPosition().y - 6, 
 				BuildItem.WIDTH + 12, 
 				BuildItem.HEIGHT + 12);
+		
+		Map costs = selectedItem.getTool().getResourceCost();
+		if(costs != null) {
+			Set<Map.Entry<ItemType, Integer>> entries = costs.entrySet();
+			float scale = 0.5f;		//Scaling to get icons to 16px
+			float iconSize = 16; 	//Pixels of icons
+			float fontSize = 14;	//Size of font. < iconSize
+			float padding = 2;		//Padding in between icons. iconSize - fontSize
+			
+			spriteBatch.setColor(0.25f, 0.25f, 0.25f, 0.5f);
+			spriteBatch.draw(BuildItem.whiteTexture,
+							selectedItem.getPosition().x,
+							selectedItem.getPosition().y + 70,
+							BuildItem.WIDTH,
+							2 + entries.size()*(iconSize + padding));
+			
+			float offset = 0;
+			for(Map.Entry<ItemType, Integer> resource : entries) {
+				
+				float x = selectedItem.getPosition().x - 6;
+				offset += (iconSize + 2);
+				float y = selectedItem.getPosition().y + 46 + offset;
+				Texture image = textureBase.getTexture(resource.getKey().getTexture());
+				spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.5f);
+				spriteBatch.draw(
+						image, 
+						x - (scale - 1) * image.getWidth()/2, 
+						y - (scale - 1) * image.getHeight()/2,
+						image.getWidth() * scale, 
+						image.getHeight() * scale);
+
+				spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.8f);
+				font.draw(spriteBatch, resource.getValue().toString(), x + 26, y + iconSize + padding*2);
+				spriteBatch.setColor(Color.WHITE);
+			}
+		}
 	}
 }

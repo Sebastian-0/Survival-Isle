@@ -9,13 +9,15 @@ import util.Point;
 public class ChatBox {
 	
 	private TextField textField;
+	private Point position;
+	private Point size;
 	private boolean enabled;
 	
 	public ChatBox() {
 		BitmapFont font = new BitmapFont(Gdx.files.internal("font32.fnt"));
-		int x = Gdx.graphics.getWidth() / 2;
-		int y = Gdx.graphics.getHeight() / 2;
-		textField = new TextField(new Point(x / 2, y), new Point(x, 26), font, "");
+		position = new Point();
+		size = new Point();
+		textField = new TextField(position, size, font, "");
 		textField.setFocus(true);
 	}
 	
@@ -35,6 +37,8 @@ public class ChatBox {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
+		position.set(Gdx.graphics.getWidth() / 4, Gdx.graphics.getHeight() / 2);
+		size.set(Gdx.graphics.getWidth() / 2, 26);
 		textField.draw(spriteBatch);
 	}
 
