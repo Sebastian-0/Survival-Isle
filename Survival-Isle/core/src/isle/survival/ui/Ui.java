@@ -10,10 +10,12 @@ import world.Inventory;
 public class Ui {
 	private BuildMenu buildMenu;
 	private InventoryMenu inventoryMenu;
+	private ChatBox chatBox;
 	
 	public Ui(TextureBase textures, Inventory inventory, GameProtocolCoder coder) {
 		buildMenu = new BuildMenu(textures, inventory, coder);
 		inventoryMenu = new InventoryMenu(textures, inventory);
+		chatBox = new ChatBox();
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
@@ -27,9 +29,16 @@ public class Ui {
 		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(0, y, 0));
 		inventoryMenu.draw(spriteBatch);
 		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(0, -y, 0));
+		
+		if (chatBox.isEnabled())
+			chatBox.draw(spriteBatch);
 	}
 	
 	public BuildMenu getBuildMenu() {
 		return buildMenu;
+	}
+
+	public ChatBox getChatBox() {
+		return chatBox;
 	}
 }

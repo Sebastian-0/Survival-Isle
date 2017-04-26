@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 
 import isle.survival.client.GameProtocolCoder;
 import isle.survival.ui.BuildMenu;
+import isle.survival.ui.ChatBox;
 import isle.survival.ui.Ui;
 import isle.survival.world.NetworkObject;
 
@@ -15,6 +16,7 @@ public class InputProcessor extends InputAdapter {
 	
 	private GameProtocolCoder coder;
 	private BuildMenu buildMenu;
+	private ChatBox chatBox;
 	
 	private float movingUpCounter;
 	private float movingLeftCounter;
@@ -23,11 +25,15 @@ public class InputProcessor extends InputAdapter {
 
 	public InputProcessor(Ui ui, GameProtocolCoder coder) {
 		this.buildMenu = ui.getBuildMenu();
+		this.chatBox = ui.getChatBox();
 		this.coder = coder;
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
+		if (chatBox.isEnabled())
+			return true;
+		
 		switch (keycode) {
 		case Input.Keys.W:
 		case Input.Keys.UP:
@@ -82,11 +88,30 @@ public class InputProcessor extends InputAdapter {
 	
 	@Override
 	public boolean keyUp(int keycode) {
+		if (chatBox.isEnabled())
+			return true;
+		
 		switch (keycode) {
 		case Input.Keys.SPACE:
 			coder.sendDeactivateTool();
 			break;
 		default:
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean keyTyped(char character) {
+		if (character == 13) { // Enter
+			if (chatBox.isEnabled()) {
+				String text = chatBox.getTextClearClose();
+			} else {
+				chatBox.enable();
+			}
+		} else if (chatBox.isEnabled()) {
+			chatBox.keyTyped(character);
+		} else {
 			return false;
 		}
 		return true;
@@ -102,6 +127,9 @@ public class InputProcessor extends InputAdapter {
 	}
 	
 	public void update(float deltaTime) {
+		if (chatBox.isEnabled())
+			return;
+		
 		if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))
 			movingUpCounter -= deltaTime;
 		if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))
