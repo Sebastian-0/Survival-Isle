@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.Point;
+import world.GameObject.AnimationState;
 
 public class Enemy extends GameObject implements Serializable {
 	
@@ -12,7 +13,7 @@ public class Enemy extends GameObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int ATTACK_DAMAGE = 5;
+	private static final int ATTACK_DAMAGE = 10;
 	
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
@@ -35,12 +36,17 @@ public class Enemy extends GameObject implements Serializable {
 					path.remove(0);
 			}
 		}
-		
+
+		animationState = AnimationState.Idle;
 		movementCounter += deltaTime;
 		if (movementCounter > MOVEMENT_TIME) {
 			movementCounter = 0;
-			if (closestPlayer.position.equals(position)) {
+			if (closestPlayer != null && closestPlayer.position.equals(position)) {
 				closestPlayer.damage(ATTACK_DAMAGE);
+				animationState = AnimationState.Attacking;
+				attackTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
+				attackTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
+				game.doForEachClient(c -> c.sendUpdateObject(this));
 			} else if (!path.isEmpty()) {
 				Point nextPosition = path.remove(0);
 				if (game.getWorld().getWallTileAtPosition(nextPosition) == null) {
