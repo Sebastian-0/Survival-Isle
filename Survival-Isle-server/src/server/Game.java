@@ -32,6 +32,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	private WorldObjects worldObjects;
 	private transient PathFinder pathFinder;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
+	private transient List<Player> deadPlayers = new ArrayList<>();
 
 	private Time time;
 	
@@ -49,6 +50,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		spawnEnemies(deltaTime);
 		time.advanceTime(this, deltaTime);
 		worldObjects.update(this, deltaTime);
+		updateDeadPlayers(deltaTime);
 		
 		updateWallTiles();
 		sendInventoryUpdates();
@@ -65,6 +67,19 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 
 			for (ServerProtocolCoder client : clients) {
 				client.sendCreateObject(e);
+			}
+		}
+	}
+
+	private void updateDeadPlayers(double deltaTime) {
+		for (int i = 0; i < deadPlayers.size(); i++) {
+			Player player = deadPlayers.get(i);
+			if (player.revive(deltaTime)) {
+				player.setPosition(world.getNewSpawnPoint());
+				addObject(player);
+				players.entrySet().stream().filter((entry)->(entry.getValue() == player)).findAny().orElse(null).getKey().sendSetPlayer(player);
+				deadPlayers.remove(i);
+				i--;
 			}
 		}
 	}
@@ -120,7 +135,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		if (players.containsKey(client)) {
 			player = players.get(client);
 		} else {
-			player = new Player();
+			player = new Player(this);
 			player.setPosition(world.getNewSpawnPoint());
 		}
 		addObject(player);
@@ -227,5 +242,10 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 
 	public synchronized void stop() {
 		clients.forEach(client -> client.sendClose());
+	}
+
+	@Override
+	public void playerDied(Player player) {
+		deadPlayers.add(player);
 	}
 }
