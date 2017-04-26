@@ -107,4 +107,11 @@ public class Player extends GameObject implements Serializable {
 	protected int getMaxHp() {
 		return 100;
 	}
+
+	@Override
+	protected void die() {
+		System.out.println("DEAD!");
+//		super.die();
+//		shouldBeRemoved = true;
+	}
 }

@@ -20,13 +20,14 @@ public class TitleScreen extends InputAdapter {
 	private TextField ipField;
 	private TextField portField;
 	private Button startButton;
+	private BitmapFont font;
 	
 	public TitleScreen(TitleScreenBackend backend, SpriteBatch spriteBatch) {
 		this.backend = backend;
 		texture = new Texture("title_screen.png");
 		this.spriteBatch = spriteBatch;
 		
-		BitmapFont font = new BitmapFont(Gdx.files.internal("dragonslapper.fnt"));
+		font = new BitmapFont(Gdx.files.internal("dragonslapper.fnt"));
 		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, "player" + (int)Math.floor(Math.random()*100));
 		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, "localhost");
 		portField = new TextField(new Point(160, 160), new Point(320, 26), font, "1337");
@@ -76,5 +77,10 @@ public class TitleScreen extends InputAdapter {
 			}
 		}
 		return true;
+	}
+	
+	
+	public void dispose() {
+		font.dispose();
 	}
 }
