@@ -26,12 +26,14 @@ public class Enemy extends GameObject implements Serializable {
 		super.update(game, deltaTime);
 
 		List<Player> players = game.getObjects().getObjectsOfType(Player.class);
-		GameObject closestPlayer = getClosestObject(game, players);
+		GameObject closestPlayer = getClosestObject(players);
 		
 		if (path.isEmpty()) {
-			path = game.getPathFinder().search(position, closestPlayer.position);
-			if (!path.isEmpty())
-				path.remove(0);
+			if (closestPlayer != null) {
+				path = game.getPathFinder().search(position, closestPlayer.position);
+				if (!path.isEmpty())
+					path.remove(0);
+			}
 		}
 		
 		movementCounter += deltaTime;
