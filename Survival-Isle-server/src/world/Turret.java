@@ -41,7 +41,7 @@ public class Turret extends BuildableObject {
 		if (reloadTimer > 0)
 			reloadTimer -= deltaTime;
 		else {
-			GameObject enemy = getClosestObject(game, game.getObjects().getObjectsOfType(Enemy.class));
+			GameObject enemy = getClosestObject(game.getObjects().getObjectsOfType(Enemy.class));
 			if (enemy != null && squareDistanceTo(enemy) < ATTACK_RANGE*ATTACK_RANGE) {
 				reloadTimer = RELOAD_TIME;
 				enemy.damage(ATTACK_DAMAGE);
