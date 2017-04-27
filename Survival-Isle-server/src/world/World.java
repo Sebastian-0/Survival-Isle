@@ -9,21 +9,14 @@ public class World implements Serializable {
 	public static final int TILE_WIDTH = 32;
 	public static final int TILE_HEIGHT = 32;
 	
-	public enum GroundTile {
-		Water(0), 
-		Grass(1), 
-		Rock(2),
-		Stump(3),
-		ShallowWater(4),
-		Beach(5),
-		Flowers(6);
-		
-		
-		public final int id;
-		
-		private GroundTile(int id) {
-			this.id = id;
-		}
+	public enum GroundType {
+		Water, 
+		Grass, 
+		Rock,
+		Stump,
+		ShallowWater,
+		Beach,
+		Flowers;
 	}
 	
 	protected int[][] ground;

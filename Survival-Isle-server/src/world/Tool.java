@@ -2,13 +2,13 @@ package world;
 
 import java.util.Map;
 
-import world.WallTile.TileType;
+import world.WallTile.WallType;
 
 public enum Tool {
 
 	Pickaxe,
-	WoodWall(new BuildWallAction(TileType.WoodWall)),
-	StoneWall(new BuildWallAction(TileType.StoneWall)),
+	WoodWall(new BuildWallAction(WallType.WoodWall)),
+	StoneWall(new BuildWallAction(WallType.StoneWall)),
 	Turret(new BuildObjectAction(new Turret()));
 	
 	private ToolAction action;

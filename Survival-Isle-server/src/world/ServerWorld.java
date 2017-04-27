@@ -9,7 +9,7 @@ import java.util.Random;
 
 import server.Connection;
 import util.Point;
-import world.WallTile.TileType;
+import world.WallTile.WallType;
 
 public class ServerWorld extends World implements Serializable {
 	
@@ -48,7 +48,7 @@ public class ServerWorld extends World implements Serializable {
 	private List<Point> generateGround(Random random) {
 		List<Point> coast = new ArrayList<>();
 		
-		ground[width/2][height/2] = GroundTile.Grass.id;
+		ground[width/2][height/2] = GroundType.Grass.ordinal();
 		coast.add(new Point(width/2+1, height/2));
 		coast.add(new Point(width/2-1, height/2));
 		coast.add(new Point(width/2, height/2+1));
@@ -59,27 +59,27 @@ public class ServerWorld extends World implements Serializable {
 			int x = (int) coast.get(index).x;
 			int y = (int) coast.remove(index).y;
 			
-			if (ground[x][y] != GroundTile.Grass.id) {
+			if (!isTileOfType(x, y, GroundType.Grass)) {
 				if (random.nextInt(20) == 0)
-					ground[x][y] = GroundTile.Flowers.id;
+					ground[x][y] = GroundType.Flowers.ordinal();
 				else
-				ground[x][y] = GroundTile.Grass.id;
+				ground[x][y] = GroundType.Grass.ordinal();
 
-				if (x >= 2 && ground[x-1][y] == GroundTile.Water.id)
+				if (x >= 2 && isTileOfType(x-1, y, GroundType.Water))
 					coast.add(new Point(x-1, y));
-				if (x < width-2 && ground[x+1][y] == GroundTile.Water.id)
+				if (x < width-2 && isTileOfType(x+1, y, GroundType.Water))
 					coast.add(new Point(x+1, y));
-				if (y >= 2 && ground[x][y-1] == GroundTile.Water.id)
+				if (y >= 2 && isTileOfType(x, y-1, GroundType.Water))
 					coast.add(new Point(x, y-1));
-				if (y < height-2 && ground[x][y+1] == GroundTile.Water.id)
+				if (y < height-2 && isTileOfType(x, y+1, GroundType.Water))
 					coast.add(new Point(x, y+1));
 			}
 		}
 		
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (ground[i][j] == GroundTile.Water.id)
-					walls[i][j] = new WallTile(WallTile.TileType.Water);
+				if (isTileOfType(i, j, GroundType.Water))
+					walls[i][j] = new WallTile(WallTile.WallType.Water);
 			}
 		}
 		
@@ -90,20 +90,20 @@ public class ServerWorld extends World implements Serializable {
 		int quantity = Math.max(1,width*height/200);
 		int minSize = 3;
 		int maxSize = 11;
-		generateLocalEnvironment(random, WallTile.TileType.Forest, 
-				GroundTile.Stump, quantity, minSize, maxSize);
+		generateLocalEnvironment(random, WallTile.WallType.Forest, 
+				GroundType.Stump, quantity, minSize, maxSize);
 	}
 
 	private void generateMountains(Random random) {
 		int quantity = Math.max(1,width*height/800);
 		int minSize = 12;
 		int maxSize = 28;
-		generateLocalEnvironment(random, WallTile.TileType.Mountain, 
-				GroundTile.Rock, quantity, minSize, maxSize);
+		generateLocalEnvironment(random, WallTile.WallType.Mountain, 
+				GroundType.Rock, quantity, minSize, maxSize);
 	}
 	
-	private void generateLocalEnvironment(Random random, WallTile.TileType wallType, 
-			GroundTile groundType, int quantity, int minSize, int maxSize) {
+	private void generateLocalEnvironment(Random random, WallTile.WallType wallType, 
+			GroundType groundType, int quantity, int minSize, int maxSize) {
 		List<Point> edge = new ArrayList<>();
 		
 		for (int i = 0; i < quantity;) {
@@ -112,7 +112,7 @@ public class ServerWorld extends World implements Serializable {
 			
 			if (walls[x0][y0] == null) {
 				walls[x0][y0] = new WallTile(wallType);
-				ground[x0][y0] = groundType.id;
+				ground[x0][y0] = groundType.ordinal();
 				addWallsToEdgeList(x0,y0, edge);
 				
 				int size = random.nextInt(maxSize-minSize) + minSize;
@@ -123,7 +123,7 @@ public class ServerWorld extends World implements Serializable {
 					
 					if (walls[x][y] == null) {
 						walls[x][y] = new WallTile(wallType);
-						ground[x][y] = groundType.id;
+						ground[x][y] = groundType.ordinal();
 						j++;
 						
 						addWallsToEdgeList(x,y, edge);
@@ -154,17 +154,17 @@ public class ServerWorld extends World implements Serializable {
 			int x = (int)coast.get(index).x;
 			int y = (int)coast.remove(index).y;
 			
-			if (ground[x][y] == GroundTile.Water.id) {
+			if (isTileOfType(x, y, GroundType.Water)) {
 				int dx = 0;
 				int dy = -1;
 				
-				if (ground[x+1][y] == GroundTile.Grass.id) {
+				if (isTileOfType(x+1, y, GroundType.Grass)) {
 					dx = 1;
 					dy = 0;
-				} else if (ground[x][y+1] == GroundTile.Grass.id) {
+				} else if (isTileOfType(x, y+1, GroundType.Grass)) {
 					dx = 0;
 					dy = 1;
-				} else if (ground[x-1][y] == GroundTile.Grass.id) {
+				} else if (isTileOfType(x-1, y, GroundType.Grass)) {
 					dx = -1;
 					dy = 0;
 				} 
@@ -172,9 +172,9 @@ public class ServerWorld extends World implements Serializable {
 				x += dx;
 				y += dy;
 				
-				while (ground[x][y] != GroundTile.Water.id) {
-					ground[x][y] = GroundTile.Water.id;
-					walls[x][y] = new WallTile(WallTile.TileType.Water);
+				while (!isTileOfType(x, y, GroundType.Water)) {
+					ground[x][y] = GroundType.Water.ordinal();
+					walls[x][y] = new WallTile(WallTile.WallType.Water);
 					if (random.nextInt(4) < 1) {
 						if (random.nextBoolean()) {
 							int t = -dy;
@@ -203,21 +203,25 @@ public class ServerWorld extends World implements Serializable {
 			coastifyTile(x, y+1);
 			coastifyTile(x, y-1);
 			
-			if (ground[x][y] == GroundTile.Water.id) {
-				ground[x][y] = GroundTile.ShallowWater.id;
+			if (isTileOfType(x, y, GroundType.Water)) {
+				ground[x][y] = GroundType.ShallowWater.ordinal();
 				walls[x][y] = null;
 			}
 		}
 	}
 
 	private void coastifyTile(int x, int y) {
-		if ((ground[x][y] == GroundTile.Grass.id || ground[x][y] == GroundTile.Flowers.id) 
+		if ((isTileOfType(x, y, GroundType.Grass) || isTileOfType(x, y, GroundType.Flowers)) 
 				&& walls[x][y] == null) {
-			ground[x][y] = GroundTile.Beach.id;
-		} else if (ground[x][y] == GroundTile.Water.id) {
-			ground[x][y] = GroundTile.ShallowWater.id;
+			ground[x][y] = GroundType.Beach.ordinal();
+		} else if (isTileOfType(x, y, GroundType.Water)) {
+			ground[x][y] = GroundType.ShallowWater.ordinal();
 			walls[x][y] = null;
 		}
+	}
+	
+	private boolean isTileOfType(int x, int y, GroundType type) {
+		return ground[x][y] == type.ordinal();
 	}
 
 	private void generateEnemySpawnPoints(Random random) {
@@ -227,7 +231,7 @@ public class ServerWorld extends World implements Serializable {
 			int y = (int) (height * Math.min(6,Math.max(0,random.nextGaussian()+3)) / 6);
 			
 			if (x < width && y < height && walls[x][y] == null) {
-				walls[x][y] = new WallTile(WallTile.TileType.EnemySpawn);
+				walls[x][y] = new WallTile(WallTile.WallType.EnemySpawn);
 				enemySpawnPoints.add(new Point(x,y));
 			}
 			else
@@ -239,7 +243,7 @@ public class ServerWorld extends World implements Serializable {
 		return walls[(int) position.x][(int) position.y];
 	}
 
-	public void addWallTileAtPosition(Point position, TileType tile) {
+	public void addWallTileAtPosition(Point position, WallType tile) {
 		walls[(int) position.x][(int) position.y] = new WallTile(tile);
 		wallTilesToUpdate.add(position);
 	}
