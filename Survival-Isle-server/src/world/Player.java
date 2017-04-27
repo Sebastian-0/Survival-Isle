@@ -22,7 +22,7 @@ public class Player extends GameObject implements Serializable {
 	public Player(GameInterface game) {
 		type = ObjectType.Player;
 		inventory = new Inventory();
-		inventory.addItem(ItemType.Respawn, 1);
+		inventory.addItem(ItemType.RespawnCrystal, 1);
 		selectedTool = Tool.Pickaxe;
 		this.game = game;
 	}
@@ -133,8 +133,8 @@ public class Player extends GameObject implements Serializable {
 			game.playerDied(this);
 			shouldBeRemoved = true;
 			
-			if (inventory.getAmount(ItemType.Respawn) > 0)
-				inventory.removeItem(ItemType.Respawn, inventory.getAmount(ItemType.Respawn));
+			if (inventory.getAmount(ItemType.RespawnCrystal) > 0)
+				inventory.removeItem(ItemType.RespawnCrystal, inventory.getAmount(ItemType.RespawnCrystal));
 			
 			super.die();
 		}

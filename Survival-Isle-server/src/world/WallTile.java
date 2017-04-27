@@ -20,7 +20,8 @@ public class WallTile implements Serializable {
 		WoodWall(true, 5, ItemType.Wood.ordinal(), 2),
 		StoneWall(true, 10, ItemType.Stone.ordinal(), 2),
 		EnemySpawn(false, 1), 
-		TurretBase(true, 4, ItemType.Wood.ordinal(), 5, ItemType.Stone.ordinal(), 5);
+		TurretBase(true, 4, ItemType.Wood.ordinal(), 5, ItemType.Stone.ordinal(), 5), 
+		RespawnCrystal(true, 10, ItemType.RespawnCrystal.ordinal(), 1);
 		
 
 		public final int health;

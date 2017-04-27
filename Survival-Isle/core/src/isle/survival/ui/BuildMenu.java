@@ -35,6 +35,7 @@ public class BuildMenu {
 		items.add(new BuildItem(Tool.WoodWall, textures.getTexture("buildwoodwall"), inventory));
 		items.add(new BuildItem(Tool.StoneWall, textures.getTexture("buildstonewall"), inventory));
 		items.add(new BuildItem(Tool.Turret, textures.getTexture("buildturret"), inventory));
+		items.add(new BuildItem(Tool.RespawnCrystal, textures.getTexture("buildcrystal"), inventory));
 		this.inventory = inventory;
 		
 		marker = textures.getTexture("marker");

@@ -46,6 +46,7 @@ public class TextureBase {
 		wallTileTextures.put(4, new Texture("stonewall.png"));
 		wallTileTextures.put(5, new Texture("enemy_spawn.png"));
 		wallTileTextures.put(6, new Texture("turret_base.png"));
+		wallTileTextures.put(7, new Texture("respawn_crystal.png"));
 	}
 	
 	private void setUpObjectTextures() {

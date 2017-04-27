@@ -9,7 +9,8 @@ public enum Tool {
 	Pickaxe,
 	WoodWall(new BuildWallAction(WallType.WoodWall)),
 	StoneWall(new BuildWallAction(WallType.StoneWall)),
-	Turret(new BuildObjectAction(new Turret()));
+	Turret(new BuildObjectAction(new Turret())),
+	RespawnCrystal(new BuildObjectAction(new RespawnCrystal()));
 	
 	private ToolAction action;
 	
