@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import util.Point;
 
 public class PathFinder {
-	private static final int STEP_COST = 1;
+	private static final int STEP_COST = 100;
 	
 	private ServerWorld world;
 
@@ -47,13 +47,14 @@ public class PathFinder {
 		if (isValidPosition(state, neighbour)) {
 			Node tile = getTile(state, neighbour);
 			if (!tile.isClosed) {
+				int stepCost = getStepCost(neighbour);
 				int oldCost = tile.fCost;
-				tile.fCost = Math.min(oldCost, node.gCost + STEP_COST + getHeuristic(state, neighbour));
+				tile.fCost = Math.min(oldCost, node.gCost + stepCost + getHeuristic(state, neighbour));
 				if (tile.fCost < oldCost) {
 					if (tile.isInList)
 						state.openNodes.remove(tile);
 					state.openNodes.add(tile);
-					tile.gCost = node.gCost + STEP_COST;
+					tile.gCost = node.gCost + stepCost;
 					tile.parent = node;
 					tile.isInList = true;
 				}
@@ -64,10 +65,7 @@ public class PathFinder {
 	private boolean isValidPosition(State state, Point position) {
 		boolean isInBounds = position.x >= 0 && position.y >= 0 && 
 				position.x < state.tiles.length && position.y < state.tiles[0].length;
-		if (isInBounds) {
-			return world.getWallTileAtPosition(position) == null;
-		}
-		return false;
+		return isInBounds;
 	}
 	
 	private Node getTile(State state, Point position) {
@@ -77,6 +75,14 @@ public class PathFinder {
 			state.tiles[(int) position.x][(int) position.y] = node;
 		}
 		return node;
+	}
+	
+	private int getStepCost(Point position) {
+		WallTile tile = world.getWallTileAtPosition(position);
+		if (tile != null) {
+			return (int) (tile.getPathMultiplier() * STEP_COST);
+		}
+		return STEP_COST;
 	}
 	
 	private int getHeuristic(State state, Point position) {
