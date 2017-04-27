@@ -15,33 +15,42 @@ public class ProjectileEffect extends Effect {
 	private float target_x;
 	private float target_y;
 	private Vector2 velocity;
-	private Texture texture;
+	private String textureName;
 	private float angle;
+	private float speed;
+	private float distanceLeft;
+	private TextureBase textureBase;
 	
-	public ProjectileEffect(NetworkObject origin, NetworkObject target, float speed, Texture texture) {
+	public ProjectileEffect(NetworkObject origin, NetworkObject target, ProjectileType type, TextureBase textureBase) {
 		this.position = new Vector2(origin.getX(), origin.getY());
 		this.target_x = target.getX();
 		this.target_y = target.getY();
-		this.angle = (float) Math.atan2(target.getX()-origin.getX(), target.getServerY()-origin.getY());
-		this.velocity = new Vector2(speed, 0).setAngle(angle);
-		this.texture = texture;
+		this.angle = (float) Math.atan2(target.getX()-origin.getX(), target.getY()-origin.getY()) - (float) Math.PI/2;
+		this.distanceLeft = (float) Math.hypot(target.getX()-origin.getX(), target.getY()-origin.getY());
+		this.angle = -this.angle;
+		this.speed = type.getSpeed();
+		this.velocity = new Vector2(type.getSpeed(), 0).setAngleRad(angle);
+		this.textureName = type.getTexture();
+		this.textureBase = textureBase;
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		position.add(velocity);
+		distanceLeft -= speed;
 		
-		if (position.epsilonEquals(target_x, target_y, 0.1f)) {
+		if (distanceLeft < 0) {
 			scheduleForRemoval();
 		}
 	}
 
 	@Override
 	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
+		Texture texture = textureBase.getTexture(textureName);
 		spriteBatch.draw(
 				texture, 
 				(position.x+0.5f)*World.TILE_WIDTH - texture.getWidth()/4 - xView, 
 				(position.y+0.5f)*World.TILE_WIDTH - texture.getHeight()/4 - yView, 
-				(float)texture.getWidth()/2, (float)texture.getHeight()/2);
+				(float)texture.getWidth(), (float)texture.getHeight());
 	}
 }

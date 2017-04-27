@@ -1,10 +1,9 @@
 package isle.survival.world.effects;
 
 public enum ProjectileType {
-	// bullet("bullet",10) //Exempel
-	;
+	bullet("bullet", 0.5f);
 	
-	private String texture;
+	private String texture; 
 	private float speed;
 	
 	ProjectileType(String texture, float speed) {
