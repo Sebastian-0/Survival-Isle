@@ -49,7 +49,7 @@ public class WorldObjects {
 								object.getY() * World.TILE_HEIGHT,
 								xOffset,
 								yOffset)) {
-				object.draw(spriteBatch, textureBase, xOffset, yOffset); //TODO: add offset.
+				object.draw(spriteBatch, textureBase, xOffset, yOffset);
 			}
 		}
 	}
@@ -102,7 +102,6 @@ public class WorldObjects {
 		int amount = connection.receiveInt();
 		for (int i = 0; i < amount; i++) {
 			int id = connection.receiveInt();
-
 			objects.removeValue(new NetworkObject(0, 0, id, 0), false);
 		}
 	}

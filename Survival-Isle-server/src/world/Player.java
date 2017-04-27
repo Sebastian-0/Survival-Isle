@@ -12,14 +12,18 @@ import util.Point;
 public class Player extends GameObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	private static final double REVIVE_TIME = 5;
 	private Inventory inv;
 	private transient Tool selectedTool;
 	private transient boolean toolActive;
+	private GameInterface game;
+	private double reviveCountdown;
 	
-	public Player() {
+	public Player(GameInterface game) {
 		type = ObjectType.Player;
 		inv = new Inventory();
 		selectedTool = Tool.Pickaxe;
+		this.game = game;
 	}
 
 	public Inventory getInventory() {
@@ -32,36 +36,48 @@ public class Player extends GameObject implements Serializable {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MoveUp:
-			actOnWorld(game, 0, 1);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, 0, 1);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case MoveLeft:
-			actOnWorld(game, -1, 0);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, -1, 0);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case MoveDown:
-			actOnWorld(game, 0, -1);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, 0, -1);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case MoveRight:
-			actOnWorld(game, 1, 0);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, 1, 0);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
-			try {
-				selectedTool = Tool.values()[toolIndex];
-			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println("Tool selection failed");
+			if (!shouldBeRemoved) {
+				try {
+					selectedTool = Tool.values()[toolIndex];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					System.out.println("Tool selection failed");
+				}
 			}
 			break;
 		case ActivateTool:
-			toolActive = true;
-			selectedTool.use(game, this);
+			if (!shouldBeRemoved) {
+				toolActive = true;
+				selectedTool.use(game, this);
+			}
 			break;
 		case DeactivateTool:
 			toolActive = false;
@@ -110,8 +126,25 @@ public class Player extends GameObject implements Serializable {
 
 	@Override
 	protected void die() {
-		System.out.println("DEAD!");
-//		super.die();
-//		shouldBeRemoved = true;
+		if (!isDead) {
+			reviveCountdown = REVIVE_TIME;
+			System.out.println("DEAD!");
+			game.playerDied(this);
+			shouldBeRemoved = true;
+			super.die();
+		}
+	}
+
+	public boolean revive(double deltaTime) {
+		reviveCountdown -= deltaTime;
+		if (reviveCountdown <= 0) {
+			System.out.println("REVIVED!");
+			shouldBeRemoved = false;
+			isDead = false;
+			hp = getMaxHp();
+			animationState = AnimationState.Idle;
+			return true;
+		}
+		return false;
 	}
 }

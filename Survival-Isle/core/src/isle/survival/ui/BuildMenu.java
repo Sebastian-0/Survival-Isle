@@ -23,8 +23,8 @@ public class BuildMenu {
 	private Texture marker;
 	private GameProtocolCoder coder;
 	private TextureBase textureBase;
-	
 	private BitmapFont font;
+	private Inventory inventory;
 	
 	public BuildMenu(TextureBase textures, Inventory inventory, GameProtocolCoder coder) {
 		this.coder = coder;
@@ -35,16 +35,20 @@ public class BuildMenu {
 		items.add(new BuildItem(Tool.WoodWall, textures.getTexture("buildwoodwall"), inventory));
 		items.add(new BuildItem(Tool.StoneWall, textures.getTexture("buildstonewall"), inventory));
 		items.add(new BuildItem(Tool.Turret, textures.getTexture("buildturret"), inventory));
+		this.inventory = inventory;
 		
 		marker = textures.getTexture("marker");
 		textureBase = textures;
-		
 	
 		BitmapFont font = new BitmapFont(Gdx.files.internal("font14.fnt"));
 		this.font = font;
 		
 		setSelectedIndex(0);
 		positionItems();
+	}
+	
+	public void dispose(){
+		font.dispose();
 	}
 	
 	public void positionItems() {
@@ -161,10 +165,16 @@ public class BuildMenu {
 						y - (scale - 1) * image.getHeight()/2,
 						image.getWidth() * scale, 
 						image.getHeight() * scale);
-
-				spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.8f);
-				font.draw(spriteBatch, resource.getValue().toString(), x + 26, y + iconSize + padding*2);
 				spriteBatch.setColor(Color.WHITE);
+				
+				if(inventory.getAmount(resource.getKey()) < resource.getValue())
+					font.setColor(0.8f, 0.2f, 0.2f, 0.8f);
+				else
+					font.setColor(1.0f, 1.0f, 1.0f, 0.8f);
+				
+				String text = inventory.getAmount(resource.getKey()) + "/" + resource.getValue().toString();
+				
+				font.draw(spriteBatch, text, x + 26, y + iconSize + padding*2);
 			}
 		}
 	}

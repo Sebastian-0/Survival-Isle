@@ -85,6 +85,7 @@ public class ClientGame {
 		}
 		
 		inputProcessor.update(deltaTime);
+		ui.update(deltaTime);
 		coder.flush();
 	}
 	
@@ -180,6 +181,11 @@ public class ClientGame {
 				break;
 			case PlaySound:
 				soundBase.playSound(coder.getConnection());
+				break;
+			case SendChatMessage:
+				String sender = coder.getConnection().receiveString();
+				String message = coder.getConnection().receiveString();
+				ui.getChatHistory().addMessage(sender, message);
 				break;
 			default:
 				break;
