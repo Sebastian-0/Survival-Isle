@@ -36,36 +36,48 @@ public class Player extends GameObject implements Serializable {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MoveUp:
-			actOnWorld(game, 0, 1);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, 0, 1);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case MoveLeft:
-			actOnWorld(game, -1, 0);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, -1, 0);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case MoveDown:
-			actOnWorld(game, 0, -1);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, 0, -1);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case MoveRight:
-			actOnWorld(game, 1, 0);
-			game.doForEachClient(updateObject);
-			updateToolAfterPlayerMove(game);
+			if (!shouldBeRemoved) {
+				actOnWorld(game, 1, 0);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
-			try {
-				selectedTool = Tool.values()[toolIndex];
-			} catch (ArrayIndexOutOfBoundsException e) {
-				System.out.println("Tool selection failed");
+			if (!shouldBeRemoved) {
+				try {
+					selectedTool = Tool.values()[toolIndex];
+				} catch (ArrayIndexOutOfBoundsException e) {
+					System.out.println("Tool selection failed");
+				}
 			}
 			break;
 		case ActivateTool:
-			toolActive = true;
-			selectedTool.use(game, this);
+			if (!shouldBeRemoved) {
+				toolActive = true;
+				selectedTool.use(game, this);
+			}
 			break;
 		case DeactivateTool:
 			toolActive = false;

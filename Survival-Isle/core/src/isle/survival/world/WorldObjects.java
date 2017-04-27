@@ -102,8 +102,6 @@ public class WorldObjects {
 		int amount = connection.receiveInt();
 		for (int i = 0; i < amount; i++) {
 			int id = connection.receiveInt();
-			System.out.println(id);
-
 			objects.removeValue(new NetworkObject(0, 0, id, 0), false);
 		}
 	}
