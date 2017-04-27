@@ -14,22 +14,24 @@ public class WallTile implements Serializable {
 	private Map<ItemType, Integer> itemDrops;
 	
 	public enum WallType {
-		Water(false, 3),
-		Forest(true, 2, ItemType.Wood.ordinal(), 1), 
-		Mountain(true, 3, ItemType.Stone.ordinal(), 2),
-		WoodWall(true, 5, ItemType.Wood.ordinal(), 2),
-		StoneWall(true, 10, ItemType.Stone.ordinal(), 2),
-		EnemySpawn(false, 1), 
-		TurretBase(true, 4, ItemType.Wood.ordinal(), 5, ItemType.Stone.ordinal(), 5);
+		Water(false, 3, 1000000),
+		Forest(true, 2, 1000000, ItemType.Wood.ordinal(), 1), 
+		Mountain(true, 3, 1000000, ItemType.Stone.ordinal(), 2),
+		WoodWall(true, 5, 10, ItemType.Wood.ordinal(), 2),
+		StoneWall(true, 10, 10, ItemType.Stone.ordinal(), 2),
+		EnemySpawn(false, 1, 1000000), 
+		TurretBase(true, 4, 10, ItemType.Wood.ordinal(), 5, ItemType.Stone.ordinal(), 5);
 		
 
-		public final int health;
 		public final boolean isBreakable;
+		public final int health;
+		public final float pathMultiplier;
 		public final Map<ItemType, Integer> itemDrops;
 		
-		private WallType(boolean isBreakable, int health, int... itemDrops) {
-			this.health = health;
+		private WallType(boolean isBreakable, int health, float pathMultiplier, int... itemDrops) {
 			this.isBreakable = isBreakable;
+			this.health = health;
+			this.pathMultiplier = pathMultiplier;
 			this.itemDrops = new HashMap<>();
 			for (int i = 0; i < itemDrops.length; i += 2) {
 				this.itemDrops.put(ItemType.values()[itemDrops[i]], itemDrops[i + 1]);
@@ -107,5 +109,14 @@ public class WallTile implements Serializable {
 	
 	public Map<ItemType, Integer> getItemDrops() {
 		return itemDrops;
+	}
+
+
+	public float getPathMultiplier() {
+		float healthMultiplier = 1;
+		if (isBreakable) {
+			healthMultiplier = health / (float)type.health;
+		}
+		return Math.max(type.pathMultiplier * healthMultiplier, 1);
 	}
 }
