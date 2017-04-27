@@ -169,7 +169,9 @@ public class BuildMenu {
 				else
 					font.setColor(1.0f, 1.0f, 1.0f, 0.8f);
 				
-				font.draw(spriteBatch, resource.getValue().toString(), x + 26, y + iconSize + padding*2);
+				String text = inventory.getAmount(resource.getKey()) + "/" + resource.getValue().toString();
+				
+				font.draw(spriteBatch, text, x + 26, y + iconSize + padding*2);
 			}
 		}
 	}
