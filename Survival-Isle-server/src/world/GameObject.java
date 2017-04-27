@@ -24,7 +24,7 @@ public abstract class GameObject implements Serializable {
 	}
 
 	protected int id;
-	protected int textureId;
+	protected ObjectType type;
 	protected Point position;
 	protected Point attackTarget;
 	protected AnimationState animationState;
@@ -58,7 +58,7 @@ public abstract class GameObject implements Serializable {
 
 	public void sendCreate(Connection connection) {
 		sendUpdate(connection);
-		connection.sendInt(textureId);
+		connection.sendInt(type.ordinal());
 	}
 
 	public void sendUpdate(Connection connection) {

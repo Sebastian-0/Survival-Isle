@@ -13,21 +13,22 @@ public class Player extends GameObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private static final double REVIVE_TIME = 5;
-	private Inventory inv;
+	private Inventory inventory;
 	private transient Tool selectedTool;
 	private transient boolean toolActive;
 	private GameInterface game;
 	private double reviveCountdown;
 	
 	public Player(GameInterface game) {
-		textureId = 0;
-		inv = new Inventory();
+		type = ObjectType.Player;
+		inventory = new Inventory();
+		inventory.addItem(ItemType.Respawn, 1);
 		selectedTool = Tool.Pickaxe;
 		this.game = game;
 	}
 
 	public Inventory getInventory() {
-		return inv;
+		return inventory;
 	}
 
 	public void parseMessage(ServerProtocolCoder client, GameInterface game) {
@@ -131,6 +132,10 @@ public class Player extends GameObject implements Serializable {
 			System.out.println("DEAD!");
 			game.playerDied(this);
 			shouldBeRemoved = true;
+			
+			if (inventory.getAmount(ItemType.Respawn) > 0)
+				inventory.removeItem(ItemType.Respawn, inventory.getAmount(ItemType.Respawn));
+			
 			super.die();
 		}
 	}

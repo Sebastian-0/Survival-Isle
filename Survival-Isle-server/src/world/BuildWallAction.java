@@ -2,18 +2,14 @@ package world;
 
 import java.util.Map;
 
-import world.WallTile.TileType;
+import world.WallTile.WallType;
 
 public class BuildWallAction implements ToolAction {
 	
-	private TileType tileToBuild;
+	private WallType tileToBuild;
 	
-	public BuildWallAction(TileType tileToBuild) {
+	public BuildWallAction(WallType tileToBuild) {
 		this.tileToBuild = tileToBuild;
-	}
-	
-	public TileType getTileToBuild() {
-		return tileToBuild;
 	}
 
 	@Override

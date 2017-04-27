@@ -11,10 +11,15 @@ import java.util.Scanner;
 
 public class Server {
 	
+	private final int port;
 	private Game game = new Game();
 	private ClientAccepter clientAccepter;
 	private ServerUpdater serverUpdater;
 	private boolean running;
+
+	public Server(int port) {
+		this.port = port;
+	}
 
 	public void readConsoleInput() throws IOException {
 		Scanner in = new Scanner(System.in);
@@ -81,7 +86,7 @@ public class Server {
 		if (game != null) {
 			running = true;
 
-			clientAccepter = new ClientAccepter(game);
+			clientAccepter = new ClientAccepter(game, port);
 			clientAccepter.start();
 
 			serverUpdater = new ServerUpdater(game);
@@ -107,6 +112,9 @@ public class Server {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		new Server().readConsoleInput();
+		int port = 1337;
+		if (args.length >= 1)
+			port = Integer.parseInt(args[0]);
+		new Server(port).readConsoleInput();
 	}
 }

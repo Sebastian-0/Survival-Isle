@@ -54,13 +54,16 @@ public class NetworkObject {
 			dy = attackTarget.y - previousPosition.y;
 		}
 		
-		if (Math.abs(dx) >= 0.00001 || Math.abs(dy) >= 0.00001) {
-			facingDirection = Math.max(0,MathUtils.floor(MathUtils.atan2(dy, dx) * 2 / MathUtils.PI + 0.5f) + 1);
+		if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
+			facingDirection = MathUtils.floor(MathUtils.atan2(dy, dx) * 2 / MathUtils.PI + 0.5f) + 1;
+			if (facingDirection < 0)
+				facingDirection = 3;
 		}
 	}
 	
 	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
-		spriteBatch.draw(textures.getObjectTexture(textureId + facingDirection), 
+		// TODO NetworkObject; Remove the constant '4' from here, it will probably break something in the future
+		spriteBatch.draw(textures.getObjectTexture(textureId*4 + facingDirection), 
 				drawnPosition.x*World.TILE_WIDTH - xView,
 				drawnPosition.y*World.TILE_HEIGHT - yView);
 	}

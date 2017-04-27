@@ -7,17 +7,19 @@ import java.net.SocketException;
 
 public class ClientAccepter extends Thread {
 	
-	private Game game;
 	private ServerSocket serverSocket;
+	private Game game;
+	private int port;
 	
-	public ClientAccepter(Game game) {
+	public ClientAccepter(Game game, int port) {
 		super ("Client accepter");
 		this.game = game;
+		this.port = port;
 	}
 	
 	@Override
 	public void run() {
-		try (ServerSocket serverSocket = new ServerSocket(1337)) {
+		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			this.serverSocket = serverSocket;
 			while (true) {
 				try {

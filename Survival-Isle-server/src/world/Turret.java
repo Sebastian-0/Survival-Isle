@@ -3,7 +3,7 @@ package world;
 import java.util.HashMap;
 
 import util.Point;
-import world.WallTile.TileType;
+import world.WallTile.WallType;
 
 public class Turret extends BuildableObject {
 	
@@ -14,7 +14,7 @@ public class Turret extends BuildableObject {
 	private double reloadTimer = 0;
 	
 	public Turret() {
-		textureId = 8;
+		type = ObjectType.Turret;
 		resourceCost = new HashMap<ItemType, Integer>();
 		resourceCost.put(ItemType.Stone, 5);
 		resourceCost.put(ItemType.Wood, 5);
@@ -24,7 +24,7 @@ public class Turret extends BuildableObject {
 	public GameObject instanciate(Point position, GameInterface game) {
 		Turret turret = new Turret();
 		turret.position = position;
-		game.getWorld().addWallTileAtPosition(position, TileType.TurretBase);
+		game.getWorld().addWallTileAtPosition(position, WallType.TurretBase);
 		
 		return turret;
 	}
@@ -34,7 +34,7 @@ public class Turret extends BuildableObject {
 		super.update(game, deltaTime);
 		
 		WallTile tile = game.getWorld().getWallTileAtPosition(position);
-		if (tile == null || tile.getId() != TileType.TurretBase.ordinal()) {
+		if (tile == null || tile.getType() != WallType.TurretBase) {
 			shouldBeRemoved = true;
 		}
 		
