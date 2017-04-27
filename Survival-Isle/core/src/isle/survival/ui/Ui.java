@@ -57,5 +57,6 @@ public class Ui {
 
 	public void dispose() {
 		inventoryMenu.dispose();
+		buildMenu.dispose();
 	}
 }

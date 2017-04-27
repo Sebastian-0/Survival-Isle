@@ -24,7 +24,6 @@ public class BuildMenu {
 	private Texture marker;
 	private GameProtocolCoder coder;
 	private TextureBase textureBase;
-	
 	private BitmapFont font;
 	
 	public BuildMenu(TextureBase textures, Inventory inventory, GameProtocolCoder coder) {
@@ -39,13 +38,16 @@ public class BuildMenu {
 		
 		marker = textures.getTexture("marker");
 		textureBase = textures;
-		
 	
 		BitmapFont font = new BitmapFont(Gdx.files.internal("font14.fnt"));
 		this.font = font;
 		
 		setSelectedIndex(0);
 		positionItems();
+	}
+	
+	public void dispose(){
+		font.dispose();
 	}
 	
 	public void positionItems() {
