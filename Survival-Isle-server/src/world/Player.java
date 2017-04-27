@@ -20,7 +20,7 @@ public class Player extends GameObject implements Serializable {
 	private double reviveCountdown;
 	
 	public Player(GameInterface game) {
-		textureId = 0;
+		type = ObjectType.Player;
 		inventory = new Inventory();
 		inventory.addItem(ItemType.Respawn, 1);
 		selectedTool = Tool.Pickaxe;

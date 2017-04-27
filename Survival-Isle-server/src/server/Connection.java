@@ -96,7 +96,7 @@ public class Connection {
 		try {
 			outStream.flush();
 		} catch (IOException e) {
-			throw new ConnectionClosedException();
+			e.printStackTrace();
 		}
 	}
 

@@ -5,21 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.Point;
-import world.GameObject.AnimationState;
 
 public class Enemy extends GameObject implements Serializable {
 	
+	private static final long serialVersionUID = 1L; 
+
 	private static final double MOVEMENT_TIME = .3;
-
-	private static final long serialVersionUID = 1L;
-
 	private static final int ATTACK_DAMAGE = 10;
 	
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
 	
 	public Enemy() {
-		textureId = 4;
+		type = ObjectType.Enemy;
 	}
 	
 	@Override

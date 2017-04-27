@@ -21,7 +21,6 @@ import isle.survival.world.effects.ProjectileType;
 import isle.survival.world.effects.ResourceEffect;
 import server.Connection;
 import server.ServerProtocol;
-import world.BuildWallAction;
 import world.EffectType;
 import world.Inventory;
 import world.ItemType;
@@ -110,13 +109,16 @@ public class ClientGame {
 	private void drawTool(float xOffset, float yOffset) {
 		Tool tool = ui.getBuildMenu().getSelectedTool();
 		
-		if (tool.getAction() instanceof BuildWallAction) {
-			BuildWallAction action = (BuildWallAction) tool.getAction(); 
+		if (tool != Tool.Pickaxe) { 
 			int x = worldObjects.getPlayer().getServerX();
 			int y = worldObjects.getPlayer().getServerY();
 			spriteBatch.setColor(1, 1, 1, 0.5f);
-			spriteBatch.draw(textureBase.getWallTileTexture(action.getTileToBuild().ordinal()),
-					 x * World.TILE_WIDTH - xOffset, y * World.TILE_HEIGHT - yOffset);
+			spriteBatch.draw(
+					ui.getBuildMenu().getSelectedToolIcon(),
+					x * World.TILE_WIDTH - xOffset,
+					y * World.TILE_HEIGHT - yOffset, 
+					World.TILE_WIDTH,
+					World.TILE_HEIGHT);
 			spriteBatch.setColor(Color.WHITE);
 		}
 	}
