@@ -141,7 +141,6 @@ public class BuildMenu {
 			Set<Map.Entry<ItemType, Integer>> entries = costs.entrySet();
 			float scale = 0.5f;		//Scaling to get icons to 16px
 			float iconSize = 16; 	//Pixels of icons
-			float fontSize = 14;	//Size of font. < iconSize
 			float padding = 2;		//Padding in between icons. iconSize - fontSize
 			
 			spriteBatch.setColor(0.25f, 0.25f, 0.25f, 0.5f);

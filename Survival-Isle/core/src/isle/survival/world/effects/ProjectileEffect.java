@@ -2,15 +2,12 @@ package isle.survival.world.effects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import isle.survival.world.Effect;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import world.World;
-
-import java.lang.Math.*;
 
 public class ProjectileEffect extends Effect {
 	
