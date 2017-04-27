@@ -132,6 +132,10 @@ public class Player extends GameObject implements Serializable {
 			System.out.println("DEAD!");
 			game.playerDied(this);
 			shouldBeRemoved = true;
+			
+			if (inventory.getAmount(ItemType.Respawn) > 0)
+				inventory.removeItem(ItemType.Respawn, inventory.getAmount(ItemType.Respawn));
+			
 			super.die();
 		}
 	}
