@@ -57,5 +57,7 @@ public class Ui {
 
 	public void dispose() {
 		inventoryMenu.dispose();
+		chatBox.dispose();
+		chatHistory.dispose();
 	}
 }

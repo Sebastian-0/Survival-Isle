@@ -12,9 +12,10 @@ public class ChatBox {
 	private Point position;
 	private Point size;
 	private boolean enabled;
+	private BitmapFont font;
 	
 	public ChatBox() {
-		BitmapFont font = new BitmapFont(Gdx.files.internal("font32.fnt"));
+		font = new BitmapFont(Gdx.files.internal("font32.fnt"));
 		position = new Point();
 		size = new Point();
 		textField = new TextField(position, size, font, "");
@@ -44,6 +45,10 @@ public class ChatBox {
 
 	public void keyTyped(char character) {
 		textField.keyTyped(character);
+	}
+
+	public void dispose() {
+		font.dispose();
 	}
 
 }
