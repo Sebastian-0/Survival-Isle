@@ -63,6 +63,8 @@ public class TextureBase {
 		objectTextures.put(9, new Texture("turret_right.png"));
 		objectTextures.put(10, new Texture("turret_up.png"));
 		objectTextures.put(11, new Texture("turret_left.png"));
+		
+		objectTextures.put(12, new Texture("bullet.png"));
 	}
 
 	public void dispose() {

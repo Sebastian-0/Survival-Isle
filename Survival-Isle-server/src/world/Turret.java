@@ -45,7 +45,7 @@ public class Turret extends BuildableObject {
 			if (enemy != null && squareDistanceTo(enemy) < ATTACK_RANGE*ATTACK_RANGE) {
 				reloadTimer = RELOAD_TIME;
 				enemy.damage(ATTACK_DAMAGE);
-				//game.doForEachClient(c->c.sendCreateEffect(EffectType.Projectile, 0, id, enemy.id)); //TODO: fixa i klient så att den kan ta emot eventet! 
+				game.doForEachClient(c->c.sendCreateEffect(EffectType.Projectile, 0, id, enemy.id)); //TODO: fixa i klient sï¿½ att den kan ta emot eventet! 
 			}
 		}
 	}

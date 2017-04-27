@@ -163,8 +163,7 @@ public class ClientGame {
 					NetworkObject originObject = worldObjects.getObject(originId);
 					NetworkObject targetObject = worldObjects.getObject(targetId);
 					if (originObject != null && targetObject != null) {
-						Texture texture = textureBase.getTexture(projectileType.getTexture());
-						worldEffects.addEffect(new ProjectileEffect(originObject, targetObject, projectileType.getSpeed(), texture));
+						worldEffects.addEffect(new ProjectileEffect(originObject, targetObject, projectileType, textureBase));
 					}
 				}
 				break;
