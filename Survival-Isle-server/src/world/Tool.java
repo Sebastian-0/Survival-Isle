@@ -21,10 +21,6 @@ public enum Tool {
 		this.action = action;
 	}
 	
-	public ToolAction getAction() {
-		return action;
-	}
-	
 	public void use(GameInterface game, Player player) {
 		action.execute(game, player);
 	}

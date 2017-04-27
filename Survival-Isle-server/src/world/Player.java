@@ -17,7 +17,7 @@ public class Player extends GameObject implements Serializable {
 	private transient boolean toolActive;
 	
 	public Player() {
-		textureId = 0;
+		type = ObjectType.Player;
 		inv = new Inventory();
 		selectedTool = Tool.Pickaxe;
 	}

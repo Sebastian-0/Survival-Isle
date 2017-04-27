@@ -273,7 +273,7 @@ public class ServerWorld extends World implements Serializable {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (walls[x][y] != null)
-					connection.sendInt(walls[x][y].getId());
+					connection.sendInt(walls[x][y].getType().ordinal());
 				else
 					connection.sendInt(-1);
 			}
@@ -289,7 +289,7 @@ public class ServerWorld extends World implements Serializable {
 			if (walls[(int)p.x][(int)p.y] == null) {
 				connection.sendInt(-1);
 			} else {
-				connection.sendInt(walls[(int)p.x][(int)p.y].getId());
+				connection.sendInt(walls[(int)p.x][(int)p.y].getType().ordinal());
 			}
 		}
 	}

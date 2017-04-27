@@ -14,7 +14,7 @@ public class Turret extends BuildableObject {
 	private double reloadTimer = 0;
 	
 	public Turret() {
-		textureId = 8;
+		type = ObjectType.Turret;
 		resourceCost = new HashMap<ItemType, Integer>();
 		resourceCost.put(ItemType.Stone, 5);
 		resourceCost.put(ItemType.Wood, 5);
@@ -34,7 +34,7 @@ public class Turret extends BuildableObject {
 		super.update(game, deltaTime);
 		
 		WallTile tile = game.getWorld().getWallTileAtPosition(position);
-		if (tile == null || tile.getId() != TileType.TurretBase.ordinal()) {
+		if (tile == null || tile.getType() != TileType.TurretBase) {
 			shouldBeRemoved = true;
 		}
 		

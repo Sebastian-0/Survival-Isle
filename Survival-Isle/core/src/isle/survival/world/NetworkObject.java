@@ -60,7 +60,8 @@ public class NetworkObject {
 	}
 	
 	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
-		spriteBatch.draw(textures.getObjectTexture(textureId + facingDirection), 
+		// TODO NetworkObject; Remove the constant '4' from here, it will probably break something in the future
+		spriteBatch.draw(textures.getObjectTexture(textureId*4 + facingDirection), 
 				drawnPosition.x*World.TILE_WIDTH - xView,
 				drawnPosition.y*World.TILE_HEIGHT - yView);
 	}

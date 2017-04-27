@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 
@@ -116,6 +115,10 @@ public class BuildMenu {
 	public Tool getSelectedTool() {
 		return selectedItem.getTool();
 	}
+	
+	public Texture getSelectedToolIcon() {
+		return selectedItem.getIcon();
+	}
 
 	public void draw(SpriteBatch spriteBatch) {
 		for (BuildItem buildItem : items) {
@@ -129,7 +132,7 @@ public class BuildMenu {
 				BuildItem.WIDTH + 12, 
 				BuildItem.HEIGHT + 12);
 		
-		Map costs = selectedItem.getTool().getResourceCost();
+		Map<ItemType, Integer> costs = selectedItem.getTool().getResourceCost();
 		if(costs != null) {
 			Set<Map.Entry<ItemType, Integer>> entries = costs.entrySet();
 			float scale = 0.5f;		//Scaling to get icons to 16px

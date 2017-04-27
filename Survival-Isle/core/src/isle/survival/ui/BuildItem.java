@@ -1,18 +1,12 @@
 package isle.survival.ui;
 
-import util.Point;
-import world.Inventory;
-import world.ItemType;
-import world.Tool;
-
-import java.util.Map;
-import java.util.Set;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import util.Point;
+import world.Inventory;
+import world.Tool;
 
 public class BuildItem {
 	public static final int WIDTH  = 64;
@@ -64,6 +58,10 @@ public class BuildItem {
 	
 	public Tool getTool() {
 		return tool;
+	}
+	
+	public Texture getIcon() {
+		return texture;
 	}
 
 	public boolean isVisible() {

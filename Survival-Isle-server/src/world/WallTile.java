@@ -8,7 +8,7 @@ public class WallTile implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int id;
+	private TileType type;
 	private int health;
 	private boolean isBreakable;
 	private Map<ItemType, Integer> itemDrops;
@@ -73,15 +73,15 @@ public class WallTile implements Serializable {
 	}
 	
 	public WallTile(TileType type) {
-		id = type.ordinal();
+		this.type = type;
 		isBreakable = type.isBreakable;
 		health = type.health;
 		itemDrops = type.itemDrops;
 	}
 	
 	
-	public int getId() {
-		return id;
+	public TileType getType() {
+		return type;
 	}
 	
 	
