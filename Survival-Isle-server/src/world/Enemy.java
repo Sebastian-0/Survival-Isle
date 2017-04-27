@@ -11,10 +11,12 @@ public class Enemy extends GameObject implements Serializable {
 	private static final long serialVersionUID = 1L; 
 
 	private static final double MOVEMENT_TIME = .3;
+	private static final int MAXIMUM_PATH_AGE = 1;
 	private static final int ATTACK_DAMAGE = 10;
 	
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
+	private int pathAgeInSteps;
 	
 	public Enemy() {
 		type = ObjectType.Enemy;
@@ -53,6 +55,10 @@ public class Enemy extends GameObject implements Serializable {
 				} else {
 					path.clear();
 				}
+			}
+			
+			if (++pathAgeInSteps > MAXIMUM_PATH_AGE) {
+				path.clear();
 			}
 		}
 	}
