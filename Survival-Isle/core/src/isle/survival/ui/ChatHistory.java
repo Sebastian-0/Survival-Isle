@@ -46,4 +46,8 @@ public class ChatHistory {
 		if (recentMessagesTimer > 0)
 			recentMessagesTimer -= deltaTime;
 	}
+
+	public void dispose() {
+		font.dispose();
+	}
 }
