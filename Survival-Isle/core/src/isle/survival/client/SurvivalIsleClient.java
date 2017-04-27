@@ -114,11 +114,6 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					Gdx.input.setInputProcessor(titleScreen);
 					Thread.currentThread().interrupt();
 					break;
-				case SendChatMessage:
-					String sender = coder.getConnection().receiveString();
-					String message = coder.getConnection().receiveString();
-					System.out.println(sender + ": " + message);
-					break;
 				default:
 					game.parseServerMessage(code);
 					break;
