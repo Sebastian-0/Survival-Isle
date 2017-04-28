@@ -78,11 +78,7 @@ public class PathFinder {
 	}
 	
 	private int getStepCost(Point position) {
-		WallTile tile = world.getWallTileAtPosition(position);
-		if (tile != null) {
-			return (int) (tile.getPathMultiplier() * STEP_COST);
-		}
-		return STEP_COST;
+		return (int) (STEP_COST * world.getPathMultiplierAt(position));
 	}
 	
 	private int getHeuristic(State state, Point position) {
