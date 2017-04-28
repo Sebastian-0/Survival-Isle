@@ -13,6 +13,8 @@ public class Enemy extends GameObject implements Serializable {
 	private static final double MOVEMENT_TIME = .3;
 	private static final int MAXIMUM_PATH_AGE = 1;
 	private static final int ATTACK_DAMAGE = 10;
+
+	private static final int DAMAGE = 1;
 	
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
@@ -49,9 +51,16 @@ public class Enemy extends GameObject implements Serializable {
 				game.doForEachClient(c -> c.sendUpdateObject(this));
 			} else if (!path.isEmpty()) {
 				Point nextPosition = path.remove(0);
-				if (game.getWorld().getWallTileAtPosition(nextPosition) == null) {
+				WallTile wallTile = game.getWorld().getWallTileAtPosition(nextPosition);
+				if (wallTile == null) {
 					setPosition(nextPosition);
 					game.doForEachClient(c -> c.sendUpdateObject(this));
+				} else if (wallTile.isBreakable()) {
+					if (game.getWorld().attackWallTileAtPosition(nextPosition, DAMAGE)) {
+						animationState = AnimationState.Attacking;
+						attackTarget.set(nextPosition);
+						game.doForEachClient(c -> c.sendUpdateObject(this));
+					}
 				} else {
 					path.clear();
 				}

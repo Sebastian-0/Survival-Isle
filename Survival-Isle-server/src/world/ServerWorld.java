@@ -243,9 +243,25 @@ public class ServerWorld extends World implements Serializable {
 		return walls[(int) position.x][(int) position.y];
 	}
 
-	public void addWallTileAtPosition(Point position, WallType tile) {
-		walls[(int) position.x][(int) position.y] = new WallTile(tile);
+	private void setWallTile(Point position, WallTile tile) {
+		walls[(int) position.x][(int) position.y] = tile;
 		wallTilesToUpdate.add(position);
+	}
+
+	public void addWallTileAtPosition(Point position, WallType tile) {
+		setWallTile(position, new WallTile(tile));
+	}
+	
+	public boolean attackWallTileAtPosition(Point position, int damage) {
+		WallTile tile = getWallTileAtPosition(position);
+		if (tile.isBreakable()) {
+			if (tile.damage(damage)) {
+				wallTilesToUpdate.add(position);
+				setWallTile(position, null);
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public boolean attackWallTileAtPosition(int x, int y, int damage, Player source) {
