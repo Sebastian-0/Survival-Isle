@@ -12,5 +12,6 @@ public enum ClientProtocol {
 	AckClose,
 	ActivateTool,
 	DeactivateTool,
-	SendChatMessage;
+	SendChatMessage, 
+	DebugRequest;
 }

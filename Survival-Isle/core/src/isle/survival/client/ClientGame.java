@@ -185,6 +185,9 @@ public class ClientGame {
 				String message = coder.getConnection().receiveString();
 				ui.getChatHistory().addMessage(sender, message);
 				break;
+			case SendDebug:
+				//TODO: pumpa ut data.
+				break;
 			default:
 				break;
 			}

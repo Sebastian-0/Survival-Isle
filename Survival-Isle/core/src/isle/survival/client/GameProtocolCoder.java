@@ -51,4 +51,8 @@ public class GameProtocolCoder extends ClientProtocolCoder {
 		connection.sendCode(ClientProtocol.SendChatMessage);
 		connection.sendString(message);
 	}
+	
+	public void sendDebugRequest() {
+		connection.sendCode(ClientProtocol.DebugRequest);
+	}
 }

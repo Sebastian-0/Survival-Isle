@@ -14,5 +14,6 @@ public enum ServerProtocol {
 	PlaySound,
 	SendClose,
 	AckClose,
-	SendChatMessage;
+	SendChatMessage, 
+	SendDebug;
 }
