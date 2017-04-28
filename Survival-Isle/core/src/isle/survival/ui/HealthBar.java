@@ -16,12 +16,12 @@ public class HealthBar {
 	WorldObjects objects;
 	
 	public HealthBar(WorldObjects objects) {
-		this.x = Gdx.graphics.getWidth() - 30;
-		this.y = Gdx.graphics.getHeight() - 110;
 		this.objects = objects;
 	}
 	
 	public void draw(SpriteBatch spriteBatch) {
+		x = Gdx.graphics.getWidth() - 30;
+		y = Gdx.graphics.getHeight() - 110;
 		
 		//Bar background
 		// Frame

@@ -35,18 +35,30 @@ public class TitleScreen extends InputAdapter {
 	}
 	
 	public void draw() {
-		Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
+		Gdx.graphics.getGL20().glClearColor(1, 1, 1, 1);
 		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		spriteBatch.begin();
-		
+
+		int dw = getWidthOffset();
+		int dh = getHeightOffset();
+		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(dw, dh, 0));
 		spriteBatch.draw(texture, 0, 0);
 		nameField.draw(spriteBatch);
 		ipField.draw(spriteBatch);
 		portField.draw(spriteBatch);
 		startButton.draw(spriteBatch);
+		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(-dw, -dh, 0));
 		
 		spriteBatch.end();
+	}
+
+	private int getHeightOffset() {
+		return Gdx.graphics.getHeight()/2 - texture.getHeight()/2;
+	}
+
+	private int getWidthOffset() {
+		return Gdx.graphics.getWidth()/2 - texture.getWidth()/2;
 	}
 	
 	@Override
@@ -66,6 +78,12 @@ public class TitleScreen extends InputAdapter {
 	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		int dw = getWidthOffset();
+		int dh = getHeightOffset();
+		
+		screenX -= dw;
+		screenY += dh;
+		
 		nameField.touchDown(screenX, screenY, pointer, button); 
 		ipField.touchDown(screenX, screenY, pointer, button); 
 		portField.touchDown(screenX, screenY, pointer, button);
