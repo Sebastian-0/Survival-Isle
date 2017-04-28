@@ -91,7 +91,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 
 	private Point getRespawnPoint(Player player) {
 		List<GameObject> respawnLocations = new ArrayList<>();
-		worldObjects.getObjectsOfType(RespawnCrystal.class).forEach(rc -> respawnLocations.add(rc));
+		respawnLocations.addAll(worldObjects.getObjectsOfType(RespawnCrystal.class));
 		worldObjects.getObjectsOfType(Player.class).stream().filter(p -> p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).forEach(p -> respawnLocations.add(p));
 		
 		GameObject respawn = player.getClosestObject(respawnLocations);
@@ -168,7 +168,6 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		client.sendInventory(player.getInventory());
 		players.put(client, player);
 		new ClientListener(this, client).start();
-		System.out.println("Client connected: " + client);
 	}
 	
 	@Override

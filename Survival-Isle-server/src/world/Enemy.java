@@ -27,8 +27,10 @@ public class Enemy extends GameObject implements Serializable {
 	public void update(GameInterface game, double deltaTime) {
 		super.update(game, deltaTime);
 
-		List<Player> players = game.getObjects().getObjectsOfType(Player.class);
-		GameObject closestPlayer = getClosestObject(players);
+		List<GameObject> targets = new ArrayList<>();
+		targets.addAll(game.getObjects().getObjectsOfType(Player.class));
+		targets.addAll(game.getObjects().getObjectsOfType(RespawnCrystal.class));
+		GameObject closestPlayer = getClosestObject(targets);
 		
 		if (path.isEmpty()) {
 			if (closestPlayer != null) {
@@ -89,21 +91,4 @@ public class Enemy extends GameObject implements Serializable {
 		shouldBeRemoved = true;
 		game.getWorld().increasePathMultiplier(getPosition(), 1, 0.1f);
 	}
-	
-	/*
-	private void actOnWorld(GameInterface game, int dx, int dy) {
-		if (position.x + dx < 0 || 
-			position.y + dy < 0 ||
-			position.x + dx >= game.getWorld().width ||
-			position.y + dy >= game.getWorld().height)
-			return;
-
-		animationState = AnimationState.Idle;
-		WallTile tile = game.getWorld().getWallTileAtPosition((int) position.x + dx, (int) position.y + dy);
-		if (tile == null) {
-			position.x += dx;
-			position.y += dy;
-		}
-	}
-	*/
 }
