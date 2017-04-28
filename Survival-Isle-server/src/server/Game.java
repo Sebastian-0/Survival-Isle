@@ -251,9 +251,13 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	@Override
 	public void playerDied(Player player) {
 		deadPlayers.add(player);
-		
+		checkForRespawnCrystals();
+	}
+	
+	public void checkForRespawnCrystals() {
 		if (players.values().stream().filter(p->p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).findAny().orElse(null) == null) {
-			if (getObjects().getObjectsOfType(RespawnCrystal.class).size() == 0) {
+			List<RespawnCrystal> crystals = getObjects().getObjectsOfType(RespawnCrystal.class);
+			if (crystals.size() == 0 || crystals.stream().filter(c->!c.shouldBeRemoved()).findAny().orElse(null) == null) {
 				gameOver();
 			}
 		}
