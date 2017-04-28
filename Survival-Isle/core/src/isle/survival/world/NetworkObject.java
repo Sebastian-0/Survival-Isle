@@ -139,7 +139,7 @@ public class NetworkObject {
 
 	public void setIsHurt(boolean isHurt) {
 		if (isHurt)
-			painTimer = 1;
+			painTimer = 0.5f;
 	}
 
 	@Override
