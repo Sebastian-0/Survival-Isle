@@ -128,6 +128,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 			for (ServerProtocolCoder client : leavingClients) {
 				clients.remove(client);
 				removeObject(players.get(client));
+				doForEachClient(c -> c.sendChatMessage(client.getName(), "has left the game"));
 			}
 			leavingClients.clear();
 		}
@@ -149,6 +150,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	private void initNewClient(ServerProtocolCoder client) {
+		doForEachClient(c -> c.sendChatMessage(client.getName(), "has joined the game"));
 		client.sendWorld(world);
 		client.sendCreateWorldObjects(worldObjects);
 		client.sendTimeEvent(time.isDaytime() ? 1 : 2);
