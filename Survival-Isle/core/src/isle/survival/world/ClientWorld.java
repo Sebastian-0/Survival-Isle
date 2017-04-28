@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 
 import server.Connection;
 import world.World;
@@ -73,7 +74,7 @@ public class ClientWorld extends World {
 		for (int i = startX; i < endX; i++) {
 			for (int j = startY; j < endY; j++) {
 				if (debug[i][j] != 0) {
-					debugFont.draw(spriteBatch, String.format("{0:0.##}", debug[i][j]), i*TILE_WIDTH - xOffset, (j+1)*TILE_HEIGHT - yOffset);
+					debugFont.draw(spriteBatch, ""+(MathUtils.floor(debug[i][j]*100)/100f), i*TILE_WIDTH - xOffset, (j+1)*TILE_HEIGHT - yOffset);
 				}
 			}
 		}
