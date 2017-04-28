@@ -83,14 +83,14 @@ public abstract class GameObject implements Serializable {
 
 	protected abstract int getMaxHp();
 	
-	public void damage(float amount) {
+	public void damage(GameInterface game, float amount) {
 		hp -= amount;
 		if (hp <= 0 && !isDead) {
-			die();
+			die(game);
 		}
 	}
 
-	protected void die() {
+	protected void die(GameInterface game) {
 		isDead = true;
 	}
 	
