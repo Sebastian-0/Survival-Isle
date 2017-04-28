@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import util.Point;
 import world.Enemy;
 import world.GameInterface;
 import world.GameObject;
@@ -79,13 +80,30 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		for (int i = 0; i < deadPlayers.size(); i++) {
 			Player player = deadPlayers.get(i);
 			if (player.revive(deltaTime)) {
-				player.setPosition(world.getNewSpawnPoint());
+				player.setPosition(getRespawnPoint(player));
 				addObject(player);
 				players.entrySet().stream().filter((entry)->(entry.getValue() == player)).findAny().orElse(null).getKey().sendSetPlayer(player);
 				deadPlayers.remove(i);
 				i--;
 			}
 		}
+	}
+
+	private Point getRespawnPoint(Player player) {
+		List<Point> respawnLocations = new ArrayList<>();
+		worldObjects.getObjectsOfType(RespawnCrystal.class).forEach(rc -> respawnLocations.add(rc.getPosition()));
+		worldObjects.getObjectsOfType(Player.class).stream().filter(p -> p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).forEach(p -> respawnLocations.add(p.getPosition()));
+		
+		Point respawnPoint = world.getNewSpawnPoint();
+		double minDistance = Double.POSITIVE_INFINITY; 
+		for (Point point : respawnLocations) {
+			double distance = player.getPosition().distanceSqTo(point);
+			if (distance < minDistance) {
+				minDistance = distance;
+				respawnPoint = point;
+			}
+		}
+		return respawnPoint;
 	}
 
 	private void updateWallTiles() {
@@ -256,6 +274,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		checkForRespawnCrystals();
 	}
 	
+	@Override
 	public void checkForRespawnCrystals() {
 		if (players.values().stream().filter(p->p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).findAny().orElse(null) == null) {
 			List<RespawnCrystal> crystals = getObjects().getObjectsOfType(RespawnCrystal.class);

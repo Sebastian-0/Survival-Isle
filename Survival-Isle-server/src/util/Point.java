@@ -53,6 +53,10 @@ public class Point implements Serializable {
 		return false;
 	}
 
+	public double distanceSqTo(Point p) {
+		return distanceSq(x, y, p.x, p.y);
+	}
+
 	public static double distanceSq(double x1, double y1, double x2, double y2)	{
 		x1 -= x2;
 		y1 -= y2;
