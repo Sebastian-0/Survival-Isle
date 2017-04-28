@@ -14,6 +14,7 @@ public class ClientWorld extends World {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private int[][] walls;
+	private float[][] debug;
 	private boolean isDaytime; 
 	private Texture nightTexture;
 	private double duskTimer;
@@ -23,6 +24,7 @@ public class ClientWorld extends World {
 		this.spriteBatch = spriteBatch;
 		ground = new int[0][0];
 		walls = new int[0][0];
+		debug = new float[0][0];
 		isDaytime = true;
 		
 		nightTexture = new Texture("night.png");
@@ -58,6 +60,22 @@ public class ClientWorld extends World {
 		}
 	}
 	
+	public void drawDebug(float xOffset, float yOffset) {
+		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
+		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
+		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH + 1, width));
+		int endY = (int) (Math.min((yOffset + Gdx.graphics.getHeight()) / TILE_HEIGHT + 1, height));
+	
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
+				if (debug[i][j] != 0) {
+					//Draw debug
+				}
+			}
+		}
+	}
+	
+	
 	public void update(double deltaTime) {
 		if (!isDaytime && duskTimer < DUSK_TIME)
 			duskTimer = Math.min(DUSK_TIME, duskTimer+deltaTime);
@@ -81,6 +99,9 @@ public class ClientWorld extends World {
 				walls[x][y] = connection.receiveInt();
 			}
 		}
+
+		debug = new float[width][height];
+		clearDebug();
 	}
 
 	public void receiveWallTiles(Connection connection) {
@@ -99,5 +120,16 @@ public class ClientWorld extends World {
 		if (t == 2)
 			duskTimer = DUSK_TIME;
 	}
-	
+
+	public void clearDebug() {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				debug[i][j] = 0;
+			}
+		}
+	}
+
+	public void updateDebug(int x, int y, float value) {
+		debug[x][y] = value;
+	}
 }

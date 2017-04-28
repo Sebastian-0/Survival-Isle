@@ -33,6 +33,7 @@ public class ServerWorld extends World implements Serializable {
 		this.game = game;
 		temporaryPathMultipliers = new float[width][height];
 		wallTilesToUpdate = new LinkedList<Point>();
+		decreasePathMultipliers();
 	}
 	
 	public void generateTerrain() {
@@ -90,39 +91,6 @@ public class ServerWorld extends World implements Serializable {
 		return false;
 	}
 
-	public void send(Connection connection) {
-		connection.sendInt(width);
-		connection.sendInt(height);
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				connection.sendInt(ground[x][y]);
-			}
-		}
-		
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
-				if (walls[x][y] != null)
-					connection.sendInt(walls[x][y].getType().ordinal());
-				else
-					connection.sendInt(-1);
-			}
-		}
-	}
-
-	public void sendWallTileUpdate(Connection connection) {
-		connection.sendInt(wallTilesToUpdate.size());
-		for (int i = 0; i < wallTilesToUpdate.size(); i++) {
-			Point p = wallTilesToUpdate.get(i);
-			connection.sendInt((int) p.x);
-			connection.sendInt((int) p.y);
-			if (walls[(int)p.x][(int)p.y] == null) {
-				connection.sendInt(-1);
-			} else {
-				connection.sendInt(walls[(int)p.x][(int)p.y].getType().ordinal());
-			}
-		}
-	}
-	
 	public boolean shouldUpdateWallTiles() {
 		return !wallTilesToUpdate.isEmpty();
 	}
@@ -205,5 +173,52 @@ public class ServerWorld extends World implements Serializable {
 	private boolean isInBounds(Point position) {
 		return position.x >= 0 && position.y >= 0 && 
 				position.x < width && position.y < height;
+	}
+
+	public void send(Connection connection) {
+		connection.sendInt(width);
+		connection.sendInt(height);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				connection.sendInt(ground[x][y]);
+			}
+		}
+		
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				if (walls[x][y] != null)
+					connection.sendInt(walls[x][y].getType().ordinal());
+				else
+					connection.sendInt(-1);
+			}
+		}
+	}
+
+	public void sendWallTileUpdate(Connection connection) {
+		connection.sendInt(wallTilesToUpdate.size());
+		for (int i = 0; i < wallTilesToUpdate.size(); i++) {
+			Point p = wallTilesToUpdate.get(i);
+			connection.sendInt((int) p.x);
+			connection.sendInt((int) p.y);
+			if (walls[(int)p.x][(int)p.y] == null) {
+				connection.sendInt(-1);
+			} else {
+				connection.sendInt(walls[(int)p.x][(int)p.y].getType().ordinal());
+			}
+		}
+	}
+
+	public void sendDebug(Connection connection) {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (temporaryPathMultipliers[i][j] != 1) {
+					connection.sendInt(1);
+					connection.sendInt(i);
+					connection.sendInt(j);
+					connection.sendString(temporaryPathMultipliers[i][j]+"");
+				}
+			}
+		}
+		connection.sendInt(0);
 	}
 }

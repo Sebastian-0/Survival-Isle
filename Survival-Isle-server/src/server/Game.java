@@ -230,6 +230,9 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 			String message = client.getConnection().receiveString();
 			doForEachClient(c -> c.sendChatMessage(client.getName(), message));
 			break;
+		case DebugRequest:
+			client.sendDebug(this);
+			break;
 		default:
 			System.out.println("Server received unexpected message: " + code);
 			break;

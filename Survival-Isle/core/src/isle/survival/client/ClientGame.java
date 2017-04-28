@@ -41,6 +41,8 @@ public class ClientGame {
 	private float xView;
 	private float yView;
 	
+	private boolean inDebugMode = false;
+	
 	private Ui ui;
 
 	public ClientGame(String name, SpriteBatch spriteBatch, TextureBase textureBase, SoundBase soundBase) {
@@ -84,6 +86,11 @@ public class ClientGame {
 		
 		inputProcessor.update(deltaTime);
 		ui.update(deltaTime);
+		
+		if (inDebugMode) {
+			coder.sendDebugRequest();
+		}
+		
 		coder.flush();
 	}
 	
@@ -98,6 +105,9 @@ public class ClientGame {
 		worldEffects.draw(xView, yView);
 		
 		world.drawTime();
+		
+		if (inDebugMode)
+			world.drawDebug(xView, yView);
 		
 		ui.draw(spriteBatch);
 		
@@ -186,7 +196,13 @@ public class ClientGame {
 				ui.getChatHistory().addMessage(sender, message);
 				break;
 			case SendDebug:
-				//TODO: pumpa ut data.
+				world.clearDebug();
+				while (coder.getConnection().receiveInt() == 1) {
+					int x = coder.getConnection().receiveInt();
+					int y = coder.getConnection().receiveInt();
+					float value = Float.parseFloat(coder.getConnection().receiveString());
+					world.updateDebug(x, y, value);
+				}
 				break;
 			default:
 				break;

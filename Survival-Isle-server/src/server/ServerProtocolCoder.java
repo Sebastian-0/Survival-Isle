@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.net.Socket;
 
 import world.EffectType;
+import world.GameInterface;
 import world.GameObject;
 import world.Inventory;
 import world.ServerWorld;
@@ -131,17 +132,22 @@ public class ServerProtocolCoder implements Serializable {
 		flush();
 	}
 
+	public void sendChatMessage(String senderName, String message) {
+		connection.sendCode(ServerProtocol.SendChatMessage);
+		connection.sendString(senderName);
+		connection.sendString(message);
+	}
+	
+	public void sendDebug(GameInterface game) {
+		connection.sendCode(ServerProtocol.SendDebug);
+		game.getWorld().sendDebug(connection);
+	}
+
 	public void flush() {
 		connection.flush();
 	}
 
 	public void disconnect() {
 		connection.close();
-	}
-
-	public void sendChatMessage(String senderName, String message) {
-		connection.sendCode(ServerProtocol.SendChatMessage);
-		connection.sendString(senderName);
-		connection.sendString(message);
 	}
 }
