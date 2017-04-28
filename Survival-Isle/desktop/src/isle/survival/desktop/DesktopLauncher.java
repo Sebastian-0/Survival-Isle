@@ -19,6 +19,8 @@ public class DesktopLauncher {
 		String name = JOptionPane.showInputDialog("Enter name");
 		if (name != null) {
 			LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+			config.width = 800;
+			config.height = 600;
 			new LwjglApplication(new SurvivalIsleClient(name), config);
 		}
 	}
