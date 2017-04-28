@@ -8,6 +8,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import isle.survival.shaders.Shaders;
 import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
 import server.ConnectionClosedException;
@@ -37,6 +38,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		soundBase = new SoundBase();
 		
 		titleScreen = new TitleScreen(this, spriteBatch);
+		
+		Shaders.initShaders();
+		spriteBatch.setShader(Shaders.colorShader);
 
 		startNewGame(name, "localhost", 1337);
 	}
