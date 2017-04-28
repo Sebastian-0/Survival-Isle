@@ -24,7 +24,7 @@ public class NetworkObject {
 	private AnimationState animation;
 	private int facingDirection;
 	private boolean isDead;
-
+	private int hp;
 	
 	public NetworkObject(int x, int y, int id, int textureId) {
 		targetPosition = new Point(x, y);
@@ -91,8 +91,16 @@ public class NetworkObject {
 		return (int) targetPosition.y;
 	}
 	
+	public int getHp() {
+		return hp;
+	}
+	
 	public boolean isDead() {
 		return isDead;
+	}
+	
+	public void setHp(int hp) {
+		this.hp = hp;
 	}
 
 	public void setPosition(int x, int y) {

@@ -71,6 +71,8 @@ public abstract class GameObject implements Serializable {
 			connection.sendInt((int)attackTarget.x);
 			connection.sendInt((int)attackTarget.y);
 		}
+		
+		connection.sendInt((int)hp);
 	}
 
 	public void sendDestroy(Connection connection) {

@@ -64,7 +64,7 @@ public class ClientGame {
 	}
 
 	private void initOnceConnected() {
-		ui = new Ui(textureBase, inventory, coder);
+		ui = new Ui(textureBase, inventory, coder, worldObjects);
 		
 		inputProcessor = new InputProcessor(ui, coder);
 		Gdx.input.setInputProcessor(inputProcessor);
@@ -136,6 +136,7 @@ public class ClientGame {
 				break;
 			case SendObjects:
 				worldObjects.updateObjects(coder.getConnection());
+				//ui.draw(spriteBatch);
 				break;
 			case DestroyObject:
 				worldObjects.destroyObjects(coder.getConnection());

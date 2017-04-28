@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.client.GameProtocolCoder;
+import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
+import isle.survival.world.WorldObjects;
 import world.Inventory;
 
 public class Ui {
@@ -12,12 +14,14 @@ public class Ui {
 	private InventoryMenu inventoryMenu;
 	private ChatBox chatBox;
 	private ChatHistory chatHistory;
+	private HealthBar healthBar;
 	
-	public Ui(TextureBase textures, Inventory inventory, GameProtocolCoder coder) {
+	public Ui(TextureBase textures, Inventory inventory, GameProtocolCoder coder, WorldObjects objects) {
 		buildMenu = new BuildMenu(textures, inventory, coder);
 		inventoryMenu = new InventoryMenu(textures, inventory);
 		chatBox = new ChatBox();
 		chatHistory = new ChatHistory();
+		healthBar = new HealthBar(objects);
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
@@ -37,6 +41,8 @@ public class Ui {
 		
 		if (chatBox.isEnabled())
 			chatBox.draw(spriteBatch);
+		
+		healthBar.draw(spriteBatch);
 	}
 	
 	public void update(double deltaTime) {

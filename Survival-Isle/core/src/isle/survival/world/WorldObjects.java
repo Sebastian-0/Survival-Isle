@@ -72,10 +72,12 @@ public class WorldObjects {
 			int x = connection.receiveInt();
 			int y = connection.receiveInt();
 			int animation = connection.receiveInt();
+			int hp = connection.receiveInt();
 			int textureId = connection.receiveInt();
 			NetworkObject object = new NetworkObject(x, y, id, textureId);
 			object.setAnimation(animation);
 			objects.add(object);
+			object.setHp(hp);
 		}
 	}
 
@@ -95,6 +97,8 @@ public class WorldObjects {
 				y = connection.receiveInt();
 				object.setAttackTarget(x, y);
 			}
+			
+			object.setHp(connection.receiveInt());
 		}
 	}
 
