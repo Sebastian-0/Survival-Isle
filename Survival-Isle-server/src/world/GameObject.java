@@ -13,36 +13,40 @@ public abstract class GameObject implements Serializable {
 	public static int idCounter;
 
 	public enum AnimationState {
-		Idle(0),
-		Attacking(1);
-
-		public final int id;
-
-		AnimationState(int id) {
-			this.id = id;
-		}
+		Idle,
+		Attacking,
+		Targeting;
 	}
 
 	protected int id;
 	protected ObjectType type;
 	protected Point position;
-	protected Point attackTarget;
+	protected Point animationTarget;
 	protected AnimationState animationState;
 	protected boolean shouldBeRemoved;
 	protected boolean isDead;
 	protected float hp;
+	protected boolean isHurt;
+	
 
 	public GameObject() {
 		id = idCounter++;
 		
 		position = new Point(0, 0);
-		attackTarget = new Point(0, 0);
+		animationTarget = new Point(0, 0);
 		animationState = AnimationState.Idle;
 		
 		hp = getMaxHp();
 	}
 	
-	public void update(GameInterface game, double deltaTime) { }
+	public void update(GameInterface game, double deltaTime) {}
+	
+	protected void sendUpdateIfHurt(GameInterface game) {
+		if (isHurt && !shouldBeRemoved) {
+			game.doForEachClient(c->c.sendUpdateObject(this));
+			isHurt = false;
+		}
+	}
 
 	public int getId() {
 		return id;
@@ -57,20 +61,27 @@ public abstract class GameObject implements Serializable {
 	}
 
 	public void sendCreate(Connection connection) {
-		sendUpdate(connection);
 		connection.sendInt(type.ordinal());
+		sendUpdate(connection);
 	}
 
 	public void sendUpdate(Connection connection) {
 		connection.sendInt(id);
 		connection.sendInt((int)position.x);
 		connection.sendInt((int)position.y);
-		connection.sendInt(animationState.id);
+		connection.sendInt(animationState.ordinal());
 
-		if (animationState == AnimationState.Attacking) {
-			connection.sendInt((int)attackTarget.x);
-			connection.sendInt((int)attackTarget.y);
+		switch (animationState) {
+		case Attacking:
+		case Targeting:
+			connection.sendInt((int)animationTarget.x);
+			connection.sendInt((int)animationTarget.y);
+			break;
+		default:
+			break;
 		}
+
+		connection.sendInt(isHurt ? 1 : 0);
 	}
 
 	public void sendDestroy(Connection connection) {
@@ -87,6 +98,8 @@ public abstract class GameObject implements Serializable {
 		hp -= amount;
 		if (hp <= 0 && !isDead) {
 			die(game);
+		} else if (amount > 0) {
+			isHurt = true;
 		}
 	}
 

@@ -38,14 +38,17 @@ public class Turret extends BuildableObject {
 			shouldBeRemoved = true;
 		}
 		
-		if (reloadTimer > 0)
+		if (reloadTimer > 0) {
 			reloadTimer -= deltaTime;
-		else {
+		} else {
 			GameObject enemy = getClosestObject(game.getObjects().getObjectsOfType(Enemy.class));
 			if (enemy != null && squareDistanceTo(enemy) < ATTACK_RANGE*ATTACK_RANGE) {
 				reloadTimer = RELOAD_TIME;
 				enemy.damage(game, ATTACK_DAMAGE);
-				game.doForEachClient(c->c.sendCreateEffect(EffectType.Projectile, 0, id, enemy.id)); //TODO: fixa i klient s� att den kan ta emot eventet! 
+				game.doForEachClient(c->c.sendCreateEffect(EffectType.Projectile, 0, id, enemy.id));
+				animationState = AnimationState.Targeting;
+				animationTarget.set(enemy.position);
+				game.doForEachClient(c -> c.sendUpdateObject(this));
 			}
 		}
 	}

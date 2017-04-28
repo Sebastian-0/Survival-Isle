@@ -38,6 +38,8 @@ public class Enemy extends GameObject implements Serializable {
 			}
 		}
 
+		boolean shouldSendUpdate = isHurt && !shouldBeRemoved;
+		
 		animationState = AnimationState.Idle;
 		movementCounter += deltaTime;
 		if (movementCounter > MOVEMENT_TIME) {
@@ -45,20 +47,20 @@ public class Enemy extends GameObject implements Serializable {
 			if (closestPlayer != null && closestPlayer.position.equals(position)) {
 				closestPlayer.damage(game, PLAYER_DAMAGE);
 				animationState = AnimationState.Attacking;
-				attackTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
-				attackTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
-				game.doForEachClient(c -> c.sendUpdateObject(this));
+				animationTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
+				animationTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
+				shouldSendUpdate = true;
 			} else if (!path.isEmpty()) {
 				Point nextPosition = path.remove(0);
 				WallTile wallTile = game.getWorld().getWallTileAtPosition(nextPosition);
 				if (wallTile == null) {
 					setPosition(nextPosition);
-					game.doForEachClient(c -> c.sendUpdateObject(this));
+					shouldSendUpdate = true;
 				} else if (wallTile.isBreakable()) {
 					if (game.getWorld().attackWallTileAtPosition(nextPosition, TILE_DAMAGE)) {
 						animationState = AnimationState.Attacking;
-						attackTarget.set(nextPosition);
-						game.doForEachClient(c -> c.sendUpdateObject(this));
+						animationTarget.set(nextPosition);
+						shouldSendUpdate = true;
 					}
 				} else {
 					path.clear();
@@ -69,6 +71,11 @@ public class Enemy extends GameObject implements Serializable {
 				path.clear();
 			}
 		}
+		
+		if (shouldSendUpdate)
+			game.doForEachClient(c -> c.sendUpdateObject(this));
+		if (isHurt)
+			isHurt = false;
 	}
 
 	@Override
