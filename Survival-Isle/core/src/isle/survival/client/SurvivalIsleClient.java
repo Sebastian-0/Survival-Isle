@@ -103,7 +103,6 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					System.out.println("Disconnected from host.");
 					coder.acknowledgeClose();
 					closeSocket();
-					game = null;
 					Gdx.input.setInputProcessor(titleScreen);
 					terminateProgram();
 					Thread.currentThread().interrupt();
@@ -147,6 +146,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch.dispose();
 		soundBase.dispose();
 		game.dispose();
+		game = null;
 		titleScreen.dispose();
 
 		if (socket != null && !socket.isClosed()) {
