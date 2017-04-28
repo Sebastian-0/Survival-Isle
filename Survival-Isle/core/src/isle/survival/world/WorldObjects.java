@@ -72,6 +72,7 @@ public class WorldObjects {
 			int x = connection.receiveInt();
 			int y = connection.receiveInt();
 			int animation = connection.receiveInt();
+			connection.receiveInt();
 			int textureId = connection.receiveInt();
 			NetworkObject object = new NetworkObject(x, y, id, textureId);
 			object.setAnimation(animation);
@@ -95,6 +96,9 @@ public class WorldObjects {
 				y = connection.receiveInt();
 				object.setAttackTarget(x, y);
 			}
+			
+			boolean isHurt = connection.receiveInt() == 1;
+			object.setIsHurt(isHurt);
 		}
 	}
 
@@ -104,7 +108,7 @@ public class WorldObjects {
 			int id = connection.receiveInt();
 			objects.removeValue(new NetworkObject(0, 0, id, 0), false);
 			
-			if(id == player.getId())
+			if(player != null && id == player.getId())
 				player = null;
 		}
 	}

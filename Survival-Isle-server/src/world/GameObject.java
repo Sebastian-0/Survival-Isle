@@ -31,6 +31,8 @@ public abstract class GameObject implements Serializable {
 	protected boolean shouldBeRemoved;
 	protected boolean isDead;
 	protected float hp;
+	protected boolean isHurt;
+	
 
 	public GameObject() {
 		id = idCounter++;
@@ -42,7 +44,14 @@ public abstract class GameObject implements Serializable {
 		hp = getMaxHp();
 	}
 	
-	public void update(GameInterface game, double deltaTime) { }
+	public void update(GameInterface game, double deltaTime) {}
+	
+	protected void sendUpdateIfHurt(GameInterface game) {
+		if (isHurt && !shouldBeRemoved) {
+			game.doForEachClient(c->c.sendUpdateObject(this));
+			isHurt = false;
+		}
+	}
 
 	public int getId() {
 		return id;
@@ -71,6 +80,8 @@ public abstract class GameObject implements Serializable {
 			connection.sendInt((int)attackTarget.x);
 			connection.sendInt((int)attackTarget.y);
 		}
+
+		connection.sendInt(isHurt ? 1 : 0);
 	}
 
 	public void sendDestroy(Connection connection) {
@@ -87,6 +98,8 @@ public abstract class GameObject implements Serializable {
 		hp -= amount;
 		if (hp <= 0 && !isDead) {
 			die();
+		} else if (amount > 0) {
+			isHurt = true;
 		}
 	}
 

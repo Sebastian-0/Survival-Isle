@@ -33,6 +33,12 @@ public class Player extends GameObject implements Serializable {
 	public Inventory getInventory() {
 		return inventory;
 	}
+	
+	@Override
+	public void update(GameInterface game, double deltaTime) {
+		super.update(game, deltaTime);
+		sendUpdateIfHurt(game);
+	}
 
 	public void parseMessage(ServerProtocolCoder client, GameInterface game) {
 		Consumer<ServerProtocolCoder> updateObject = c->c.sendUpdateObject(this);

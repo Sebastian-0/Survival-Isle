@@ -133,6 +133,11 @@ public class NetworkObject {
 		this.isDead = isDead;
 	}
 
+	public void setIsHurt(boolean isHurt) {
+		if (isHurt)
+			painTimer = 1;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof NetworkObject && ((NetworkObject) o).id == id)
