@@ -236,6 +236,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		joiningClients = new ArrayList<>();
 		leavingClients = new ArrayList<>();
 		pathFinder = new PathFinder(world);
+		deadPlayers = new ArrayList<>();
 		GameObject.idCounter = ois.readInt();
 	}
 	

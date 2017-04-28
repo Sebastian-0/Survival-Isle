@@ -1,6 +1,5 @@
 package isle.survival.world;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -26,6 +25,7 @@ public class NetworkObject {
 	private AnimationState animation;
 	private int facingDirection;
 	private float painTimer;
+	private boolean isDead;
 
 	
 	public NetworkObject(int x, int y, int id, int textureId) {
@@ -36,6 +36,7 @@ public class NetworkObject {
 		attackTarget = new Point(0, 0);
 		this.id = id;
 		this.textureId = textureId;
+		this.isDead = false;
 	}
 	
 	public void update(float deltaTime) {
@@ -105,6 +106,10 @@ public class NetworkObject {
 	public int getServerY() {
 		return (int) targetPosition.y;
 	}
+	
+	public boolean isDead() {
+		return isDead;
+	}
 
 	public void setPosition(int x, int y) {
 		previousPosition.set(previousPosition.interpolateTo(targetPosition, movementInterpolation));
@@ -122,6 +127,10 @@ public class NetworkObject {
 			this.animation = AnimationState.Attacking;
 		else
 			this.animation = AnimationState.Idle;
+	}
+	
+	public void setIsDead(boolean isDead) {
+		this.isDead = isDead;
 	}
 
 	@Override
