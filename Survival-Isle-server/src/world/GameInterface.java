@@ -14,4 +14,6 @@ public interface GameInterface {
 	
 	ServerWorld getWorld();
 	WorldObjects getObjects();
+	
+	void checkForRespawnCrystals();
 }

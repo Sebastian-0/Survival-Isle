@@ -31,6 +31,7 @@ public class RespawnCrystal extends BuildableObject {
 		WallTile tile = game.getWorld().getWallTileAtPosition(position);
 		if (tile == null || tile.getType() != WallType.RespawnCrystal) {
 			shouldBeRemoved = true;
+			game.checkForRespawnCrystals();
 		}
 	}
 	

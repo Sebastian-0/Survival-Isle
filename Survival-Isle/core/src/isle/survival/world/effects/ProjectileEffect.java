@@ -12,8 +12,6 @@ import world.World;
 public class ProjectileEffect extends Effect {
 	
 	private Vector2 position;
-	private float target_x;
-	private float target_y;
 	private Vector2 velocity;
 	private String textureName;
 	private float angle;
@@ -23,8 +21,6 @@ public class ProjectileEffect extends Effect {
 	
 	public ProjectileEffect(NetworkObject origin, NetworkObject target, ProjectileType type, TextureBase textureBase) {
 		this.position = new Vector2(origin.getX(), origin.getY());
-		this.target_x = target.getX();
-		this.target_y = target.getY();
 		this.angle = (float) Math.atan2(target.getX()-origin.getX(), target.getY()-origin.getY()) - (float) Math.PI/2;
 		this.distanceLeft = (float) Math.hypot(target.getX()-origin.getX(), target.getY()-origin.getY());
 		this.angle = -this.angle;

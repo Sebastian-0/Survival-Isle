@@ -42,7 +42,6 @@ public class ClientGame {
 	private float yView;
 	
 	private Ui ui;
-	
 
 	public ClientGame(String name, SpriteBatch spriteBatch, TextureBase textureBase, SoundBase soundBase) {
 		this.name = name;
@@ -55,7 +54,7 @@ public class ClientGame {
 		worldEffects = new WorldEffects(textureBase, spriteBatch);
 		inventory = new Inventory();
 	}
-	
+
 	public ClientProtocolCoder connectToServer(Socket socket) {
 		coder = new GameProtocolCoder(name, new Connection(socket));
 
@@ -108,7 +107,7 @@ public class ClientGame {
 	private void drawTool(float xOffset, float yOffset) {
 		Tool tool = ui.getBuildMenu().getSelectedTool();
 		
-		if (tool != Tool.Pickaxe) { 
+		if (tool != Tool.Pickaxe && worldObjects.getPlayer() != null) { 
 			int x = worldObjects.getPlayer().getServerX();
 			int y = worldObjects.getPlayer().getServerY();
 			spriteBatch.setColor(1, 1, 1, 0.5f);

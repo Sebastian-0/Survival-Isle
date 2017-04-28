@@ -15,12 +15,12 @@ public class WallTile implements Serializable {
 	
 	public enum WallType {
 		Water(false, 3, 1000000),
-		Forest(true, 2, 1000000, ItemType.Wood.ordinal(), 1), 
-		Mountain(true, 3, 1000000, ItemType.Stone.ordinal(), 2),
-		WoodWall(true, 5, 10, ItemType.Wood.ordinal(), 2),
-		StoneWall(true, 10, 20, ItemType.Stone.ordinal(), 2),
+		Forest(true, 20, 10, ItemType.Wood.ordinal(), 1), 
+		Mountain(true, 30, 10, ItemType.Stone.ordinal(), 2),
+		WoodWall(true, 15, 5, ItemType.Wood.ordinal(), 2),
+		StoneWall(true, 20, 5, ItemType.Stone.ordinal(), 2),
 		EnemySpawn(false, 1, 1000000), 
-		TurretBase(true, 4, 10, ItemType.Wood.ordinal(), 5, ItemType.Stone.ordinal(), 5),
+		TurretBase(true, 2, 1, ItemType.Wood.ordinal(), 5, ItemType.Stone.ordinal(), 5),
 		RespawnCrystal(true, 10, 1, ItemType.RespawnCrystal.ordinal(), 1);
 		
 
