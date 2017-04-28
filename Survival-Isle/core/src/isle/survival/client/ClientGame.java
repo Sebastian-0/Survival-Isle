@@ -5,6 +5,7 @@ import java.net.Socket;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.input.InputProcessor;
@@ -27,6 +28,8 @@ import world.Tool;
 import world.World;
 
 public class ClientGame {
+	private final boolean IN_DEBUG_MODE = false;
+	
 	private String name;
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
@@ -41,6 +44,8 @@ public class ClientGame {
 	private float xView;
 	private float yView;
 	
+	private BitmapFont debugFont;
+	
 	private Ui ui;
 
 	public ClientGame(String name, SpriteBatch spriteBatch, TextureBase textureBase, SoundBase soundBase) {
@@ -53,6 +58,10 @@ public class ClientGame {
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
 		worldEffects = new WorldEffects(textureBase, spriteBatch);
 		inventory = new Inventory();
+		
+		if (IN_DEBUG_MODE) {
+			debugFont = new BitmapFont(Gdx.files.internal("debug.fnt"));
+		}
 	}
 
 	public ClientProtocolCoder connectToServer(Socket socket) {
@@ -84,6 +93,11 @@ public class ClientGame {
 		
 		inputProcessor.update(deltaTime);
 		ui.update(deltaTime);
+		
+		if (IN_DEBUG_MODE) {
+			coder.sendDebugRequest();
+		}
+		
 		coder.flush();
 	}
 	
@@ -98,6 +112,9 @@ public class ClientGame {
 		worldEffects.draw(xView, yView);
 		
 		world.drawTime();
+		
+		if (IN_DEBUG_MODE)
+			world.drawDebug(debugFont, xView, yView);
 		
 		ui.draw(spriteBatch);
 		
@@ -186,7 +203,13 @@ public class ClientGame {
 				ui.getChatHistory().addMessage(sender, message);
 				break;
 			case SendDebug:
-				//TODO: pumpa ut data.
+				world.clearDebug();
+				while (coder.getConnection().receiveInt() == 1) {
+					int x = coder.getConnection().receiveInt();
+					int y = coder.getConnection().receiveInt();
+					float value = Float.parseFloat(coder.getConnection().receiveString());
+					world.updateDebug(x, y, value);
+				}
 				break;
 			default:
 				break;
@@ -196,5 +219,7 @@ public class ClientGame {
 
 	public void dispose() {
 		ui.dispose();
+		if (IN_DEBUG_MODE)
+			debugFont.dispose();
 	}
 }

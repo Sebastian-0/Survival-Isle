@@ -150,7 +150,6 @@ public class Player extends GameObject implements Serializable {
 	public boolean revive(double deltaTime) {
 		reviveCountdown -= deltaTime;
 		if (reviveCountdown <= 0) {
-			System.out.println("REVIVED!");
 			shouldBeRemoved = false;
 			isDead = false;
 			hp = getMaxHp();

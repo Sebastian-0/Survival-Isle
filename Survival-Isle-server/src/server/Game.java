@@ -65,7 +65,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	private void spawnEnemies(double deltaTime) {
-		if (!time.isDaytime() && Math.random() / (time.getDay()+1) < deltaTime) {
+		if (!time.isDaytime() && Math.random() / Math.min(time.getDay()+1,5) < deltaTime) {
 			Enemy e = new Enemy();
 			worldObjects.addObject(e);
 			e.setPosition(world.getRandomEnemySpawnPoint());
@@ -90,20 +90,15 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	private Point getRespawnPoint(Player player) {
-		List<Point> respawnLocations = new ArrayList<>();
-		worldObjects.getObjectsOfType(RespawnCrystal.class).forEach(rc -> respawnLocations.add(rc.getPosition()));
-		worldObjects.getObjectsOfType(Player.class).stream().filter(p -> p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).forEach(p -> respawnLocations.add(p.getPosition()));
+		List<GameObject> respawnLocations = new ArrayList<>();
+		respawnLocations.addAll(worldObjects.getObjectsOfType(RespawnCrystal.class));
+		worldObjects.getObjectsOfType(Player.class).stream().filter(p -> p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).forEach(p -> respawnLocations.add(p));
 		
-		Point respawnPoint = world.getNewSpawnPoint();
-		double minDistance = Double.POSITIVE_INFINITY; 
-		for (Point point : respawnLocations) {
-			double distance = player.getPosition().distanceSqTo(point);
-			if (distance < minDistance) {
-				minDistance = distance;
-				respawnPoint = point;
-			}
-		}
-		return respawnPoint;
+		GameObject respawn = player.getClosestObject(respawnLocations);
+		if (respawn != null)
+			return respawn.getPosition();
+		else
+			return world.getNewSpawnPoint();
 	}
 
 	private void updateWallTiles() {
@@ -127,7 +122,14 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		synchronized (leavingClients) {
 			for (ServerProtocolCoder client : leavingClients) {
 				clients.remove(client);
-				removeObject(players.get(client));
+				Player player = players.get(client);
+				removeObject(player);
+				doForEachClient(c -> c.sendChatMessage(client.getName(), "has left the game"));
+				if (deadPlayers.contains(player)) {
+					deadPlayers.remove(player);
+					player.revive(Double.POSITIVE_INFINITY);
+					player.setPosition(getRespawnPoint(player));
+				}
 			}
 			leavingClients.clear();
 		}
@@ -149,6 +151,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	private void initNewClient(ServerProtocolCoder client) {
+		doForEachClient(c -> c.sendChatMessage(client.getName(), "has joined the game"));
 		client.sendWorld(world);
 		client.sendCreateWorldObjects(worldObjects);
 		client.sendTimeEvent(time.isDaytime() ? 1 : 2);
@@ -165,7 +168,6 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		client.sendInventory(player.getInventory());
 		players.put(client, player);
 		new ClientListener(this, client).start();
-		System.out.println("Client connected: " + client);
 	}
 	
 	@Override
@@ -227,6 +229,9 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		case SendChatMessage:
 			String message = client.getConnection().receiveString();
 			doForEachClient(c -> c.sendChatMessage(client.getName(), message));
+			break;
+		case DebugRequest:
+			client.sendDebug(this);
 			break;
 		default:
 			System.out.println("Server received unexpected message: " + code);

@@ -108,7 +108,7 @@ public abstract class GameObject implements Serializable {
 		isDead = true;
 	}
 	
-	protected GameObject getClosestObject(List<? extends GameObject> objects) {
+	public GameObject getClosestObject(List<? extends GameObject> objects) {
 		if (!objects.isEmpty()) {
 			double minDistance = Float.MAX_VALUE;
 			GameObject closestObject = null;

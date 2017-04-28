@@ -3,6 +3,7 @@ package isle.survival.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import server.Connection;
@@ -14,6 +15,7 @@ public class ClientWorld extends World {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private int[][] walls;
+	private float[][] debug;
 	private boolean isDaytime; 
 	private Texture nightTexture;
 	private double duskTimer;
@@ -23,10 +25,13 @@ public class ClientWorld extends World {
 		this.spriteBatch = spriteBatch;
 		ground = new int[0][0];
 		walls = new int[0][0];
+		debug = new float[0][0];
 		isDaytime = true;
 		
 		nightTexture = new Texture("night.png");
 		duskTimer = 0;
+		
+		
 	}
 
 	public void drawTerrain(float xOffset, float yOffset) {
@@ -58,6 +63,23 @@ public class ClientWorld extends World {
 		}
 	}
 	
+	public void drawDebug(BitmapFont debugFont, float xOffset, float yOffset) {
+		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
+		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
+		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH + 1, width));
+		int endY = (int) (Math.min((yOffset + Gdx.graphics.getHeight()) / TILE_HEIGHT + 1, height));
+
+		debugFont.setColor(Color.BLACK);
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
+				if (debug[i][j] != 0) {
+					debugFont.draw(spriteBatch, String.format("{0:0.##}", debug[i][j]), i*TILE_WIDTH - xOffset, (j+1)*TILE_HEIGHT - yOffset);
+				}
+			}
+		}
+	}
+	
+	
 	public void update(double deltaTime) {
 		if (!isDaytime && duskTimer < DUSK_TIME)
 			duskTimer = Math.min(DUSK_TIME, duskTimer+deltaTime);
@@ -81,6 +103,9 @@ public class ClientWorld extends World {
 				walls[x][y] = connection.receiveInt();
 			}
 		}
+
+		debug = new float[width][height];
+		clearDebug();
 	}
 
 	public void receiveWallTiles(Connection connection) {
@@ -99,5 +124,16 @@ public class ClientWorld extends World {
 		if (t == 2)
 			duskTimer = DUSK_TIME;
 	}
-	
+
+	public void clearDebug() {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				debug[i][j] = 0;
+			}
+		}
+	}
+
+	public void updateDebug(int x, int y, float value) {
+		debug[x][y] = value;
+	}
 }

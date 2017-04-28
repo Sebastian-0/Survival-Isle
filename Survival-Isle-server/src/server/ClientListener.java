@@ -27,6 +27,5 @@ public class ClientListener extends Thread {
 		}
 		client.disconnect();
 		game.removeClient(client);
-		System.out.println("Client disconnected: " + client);
 	}
 }
