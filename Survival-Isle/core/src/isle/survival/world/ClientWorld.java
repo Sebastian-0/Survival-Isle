@@ -3,6 +3,7 @@ package isle.survival.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import server.Connection;
@@ -29,6 +30,8 @@ public class ClientWorld extends World {
 		
 		nightTexture = new Texture("night.png");
 		duskTimer = 0;
+		
+		
 	}
 
 	public void drawTerrain(float xOffset, float yOffset) {
@@ -60,16 +63,17 @@ public class ClientWorld extends World {
 		}
 	}
 	
-	public void drawDebug(float xOffset, float yOffset) {
+	public void drawDebug(BitmapFont debugFont, float xOffset, float yOffset) {
 		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
 		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
 		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH + 1, width));
 		int endY = (int) (Math.min((yOffset + Gdx.graphics.getHeight()) / TILE_HEIGHT + 1, height));
-	
+
+		debugFont.setColor(Color.BLACK);
 		for (int i = startX; i < endX; i++) {
 			for (int j = startY; j < endY; j++) {
 				if (debug[i][j] != 0) {
-					//Draw debug
+					debugFont.draw(spriteBatch, String.format("{0:0.##}", debug[i][j]), i*TILE_WIDTH - xOffset, (j+1)*TILE_HEIGHT - yOffset);
 				}
 			}
 		}
