@@ -94,17 +94,18 @@ public class NetworkObject {
 		targetPosition.set(x, y);
 		movementInterpolation = 0;
 	}
+	
+	public void jumpToTarget() {
+		previousPosition.set(targetPosition);
+	}
 
 	public void setAttackTarget(int x, int y) {
 		attackTarget.set(x, y);
 		attackInterpolation = 0;
 	}
 
-	public void setAnimation(int animation) {
-		if (animation == AnimationState.Attacking.id)
-			this.animation = AnimationState.Attacking;
-		else
-			this.animation = AnimationState.Idle;
+	public void setAnimation(AnimationState animation) {
+		this.animation = animation;
 	}
 
 	@Override

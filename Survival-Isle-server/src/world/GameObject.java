@@ -13,14 +13,9 @@ public abstract class GameObject implements Serializable {
 	public static int idCounter;
 
 	public enum AnimationState {
-		Idle(0),
-		Attacking(1);
-
-		public final int id;
-
-		AnimationState(int id) {
-			this.id = id;
-		}
+		Idle,
+		Attacking,
+		Targeting;
 	}
 
 	protected int id;
@@ -57,19 +52,24 @@ public abstract class GameObject implements Serializable {
 	}
 
 	public void sendCreate(Connection connection) {
-		sendUpdate(connection);
 		connection.sendInt(type.ordinal());
+		sendUpdate(connection);
 	}
 
 	public void sendUpdate(Connection connection) {
 		connection.sendInt(id);
 		connection.sendInt((int)position.x);
 		connection.sendInt((int)position.y);
-		connection.sendInt(animationState.id);
+		connection.sendInt(animationState.ordinal());
 
-		if (animationState == AnimationState.Attacking) {
+		switch (animationState) {
+		case Attacking:
+		case Targeting:
 			connection.sendInt((int)attackTarget.x);
 			connection.sendInt((int)attackTarget.y);
+			break;
+		default:
+			break;
 		}
 	}
 
