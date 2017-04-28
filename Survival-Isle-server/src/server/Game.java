@@ -127,8 +127,14 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		synchronized (leavingClients) {
 			for (ServerProtocolCoder client : leavingClients) {
 				clients.remove(client);
-				removeObject(players.get(client));
+				Player player = players.get(client);
+				removeObject(player);
 				doForEachClient(c -> c.sendChatMessage(client.getName(), "has left the game"));
+				if (deadPlayers.contains(player)) {
+					deadPlayers.remove(player);
+					player.revive(Double.POSITIVE_INFINITY);
+					player.setPosition(getRespawnPoint(player));
+				}
 			}
 			leavingClients.clear();
 		}
