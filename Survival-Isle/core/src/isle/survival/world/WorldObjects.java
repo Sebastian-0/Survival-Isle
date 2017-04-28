@@ -99,7 +99,7 @@ public class WorldObjects {
 		case Targeting:
 			x = connection.receiveInt();
 			y = connection.receiveInt();
-			object.setAttackTarget(x, y);
+			object.setAnimationTarget(x, y);
 			break;
 		default:
 			break;

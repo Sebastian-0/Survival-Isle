@@ -21,7 +21,7 @@ public abstract class GameObject implements Serializable {
 	protected int id;
 	protected ObjectType type;
 	protected Point position;
-	protected Point attackTarget;
+	protected Point animationTarget;
 	protected AnimationState animationState;
 	protected boolean shouldBeRemoved;
 	protected boolean isDead;
@@ -31,7 +31,7 @@ public abstract class GameObject implements Serializable {
 		id = idCounter++;
 		
 		position = new Point(0, 0);
-		attackTarget = new Point(0, 0);
+		animationTarget = new Point(0, 0);
 		animationState = AnimationState.Idle;
 		
 		hp = getMaxHp();
@@ -65,8 +65,8 @@ public abstract class GameObject implements Serializable {
 		switch (animationState) {
 		case Attacking:
 		case Targeting:
-			connection.sendInt((int)attackTarget.x);
-			connection.sendInt((int)attackTarget.y);
+			connection.sendInt((int)animationTarget.x);
+			connection.sendInt((int)animationTarget.y);
 			break;
 		default:
 			break;

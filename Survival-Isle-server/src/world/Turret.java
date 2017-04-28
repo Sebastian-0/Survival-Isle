@@ -46,7 +46,9 @@ public class Turret extends BuildableObject {
 				reloadTimer = RELOAD_TIME;
 				enemy.damage(game, ATTACK_DAMAGE);
 				game.doForEachClient(c->c.sendCreateEffect(EffectType.Projectile, 0, id, enemy.id));
-				
+				animationState = AnimationState.Targeting;
+				animationTarget.set(enemy.position);
+				game.doForEachClient(c -> c.sendUpdateObject(this));
 			}
 		}
 	}

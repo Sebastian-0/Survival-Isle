@@ -110,8 +110,8 @@ public class Player extends GameObject implements Serializable {
 		else if (tile.isBreakable() && selectedTool == Tool.Pickaxe) {
 			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, DAMAGE, this)) {
 				animationState = AnimationState.Attacking;
-				attackTarget.x = position.x+dx;
-				attackTarget.y = position.y+dy;
+				animationTarget.x = position.x+dx;
+				animationTarget.y = position.y+dy;
 			}
 		}
 	}
