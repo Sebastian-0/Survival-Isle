@@ -46,6 +46,7 @@ public class TextureBase {
 		wallTileTextures.put(4, new Texture("stonewall.png"));
 		wallTileTextures.put(5, new Texture("enemy_spawn.png"));
 		wallTileTextures.put(6, new Texture("turret_base.png"));
+		wallTileTextures.put(7, new Texture("respawn_crystal.png"));
 	}
 	
 	private void setUpObjectTextures() {
@@ -63,8 +64,11 @@ public class TextureBase {
 		objectTextures.put(9, new Texture("turret_right.png"));
 		objectTextures.put(10, new Texture("turret_up.png"));
 		objectTextures.put(11, new Texture("turret_left.png"));
-		
-		objectTextures.put(12, new Texture("bullet.png"));
+
+		objectTextures.put(12, new Texture("empty.png"));
+		objectTextures.put(13, new Texture("empty.png"));
+		objectTextures.put(14, new Texture("empty.png"));
+		objectTextures.put(15, new Texture("empty.png"));
 	}
 
 	public void dispose() {

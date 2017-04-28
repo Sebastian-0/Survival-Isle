@@ -24,11 +24,15 @@ public abstract class BuildableObject extends GameObject {
 	abstract GameObject instanciate(Point point, GameInterface game);
 	
 	public boolean hasAnyResource(Inventory inventory) {
-		return inventory.getAmount(ItemType.Stone) > 0 || inventory.getAmount(ItemType.Wood) > 0;
+		return (inventory.getAmount(ItemType.Stone) > 0 && resourceCost.getOrDefault(ItemType.Stone,0) > 0) || 
+			(inventory.getAmount(ItemType.Wood) > 0 && resourceCost.getOrDefault(ItemType.Wood,0) > 0) ||
+			(inventory.getAmount(ItemType.RespawnCrystal) > 0 && resourceCost.getOrDefault(ItemType.RespawnCrystal,0) > 0);
 	}
 	
 	public boolean hasAllResources(Inventory inventory) {
-		return inventory.getAmount(ItemType.Stone) >= resourceCost.get(ItemType.Stone) && inventory.getAmount(ItemType.Wood) >= resourceCost.get(ItemType.Wood);
+		return inventory.getAmount(ItemType.Stone) >= resourceCost.getOrDefault(ItemType.Stone,0) && 
+			inventory.getAmount(ItemType.Wood) >= resourceCost.getOrDefault(ItemType.Wood,0) &&
+			inventory.getAmount(ItemType.RespawnCrystal) >= resourceCost.getOrDefault(ItemType.RespawnCrystal,0);
 	}
 
 	Map<ItemType, Integer> getResourceCost() {

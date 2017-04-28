@@ -22,7 +22,7 @@ public class InventoryMenu {
 		font = new BitmapFont(Gdx.files.internal("font32.fnt"));
 		items.add(new InventoryItem(textures.getTexture("wood_icon"), "Wood: ", font, inventory, ItemType.Wood));
 		items.add(new InventoryItem(textures.getTexture("stone_icon"), "Stone: ", font, inventory, ItemType.Stone));
-		items.add(new InventoryItem(textures.getTexture("respawn_crystal_icon"), "Respawn crystal: ", font, inventory, ItemType.Respawn));
+		items.add(new InventoryItem(textures.getTexture("respawn_crystal_icon"), "Respawn crystal: ", font, inventory, ItemType.RespawnCrystal));
 		
 		positionItems();
 	}
