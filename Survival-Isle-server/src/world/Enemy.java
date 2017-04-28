@@ -43,7 +43,7 @@ public class Enemy extends GameObject implements Serializable {
 		if (movementCounter > MOVEMENT_TIME) {
 			movementCounter = 0;
 			if (closestPlayer != null && closestPlayer.position.equals(position)) {
-				closestPlayer.damage(PLAYER_DAMAGE);
+				closestPlayer.damage(game, PLAYER_DAMAGE);
 				animationState = AnimationState.Attacking;
 				attackTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
 				attackTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
@@ -77,8 +77,8 @@ public class Enemy extends GameObject implements Serializable {
 	}
 	
 	@Override
-	protected void die() {
-		super.die();
+	protected void die(GameInterface game) {
+		super.die(game);
 		shouldBeRemoved = true;
 	}
 	

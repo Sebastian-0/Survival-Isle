@@ -44,10 +44,9 @@ public class Turret extends BuildableObject {
 			GameObject enemy = getClosestObject(game.getObjects().getObjectsOfType(Enemy.class));
 			if (enemy != null && squareDistanceTo(enemy) < ATTACK_RANGE*ATTACK_RANGE) {
 				reloadTimer = RELOAD_TIME;
-				enemy.damage(ATTACK_DAMAGE);
+				enemy.damage(game, ATTACK_DAMAGE);
 				game.doForEachClient(c->c.sendCreateEffect(EffectType.Projectile, 0, id, enemy.id));
 				
-				game.doForEachClient(c -> c.sendUpdateObject(this));
 			}
 		}
 	}

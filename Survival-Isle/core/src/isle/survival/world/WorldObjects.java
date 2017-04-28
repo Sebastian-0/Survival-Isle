@@ -111,6 +111,9 @@ public class WorldObjects {
 		for (int i = 0; i < amount; i++) {
 			int id = connection.receiveInt();
 			objects.removeValue(new NetworkObject(0, 0, id, 0), false);
+			
+			if(id == player.getId())
+				player = null;
 		}
 	}
 

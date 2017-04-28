@@ -3,6 +3,7 @@ package isle.survival.world;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
+import isle.survival.shaders.Shaders;
 import util.Point;
 import world.GameObject.AnimationState;
 import world.World;
@@ -23,6 +24,8 @@ public class NetworkObject {
 	private float attackInterpolation;
 	private AnimationState animation;
 	private int facingDirection;
+	private float painTimer;
+	private boolean isDead;
 
 	
 	public NetworkObject(int x, int y, int id, int textureId) {
@@ -33,6 +36,7 @@ public class NetworkObject {
 		attackTarget = new Point(0, 0);
 		this.id = id;
 		this.textureId = textureId;
+		this.isDead = false;
 	}
 	
 	public void update(float deltaTime) {
@@ -59,13 +63,27 @@ public class NetworkObject {
 			if (facingDirection < 0)
 				facingDirection = 3;
 		}
+		
+		if (painTimer > 0)
+			painTimer -= deltaTime;
 	}
 	
 	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
+		if (painTimer > 0) {
+			spriteBatch.flush();
+			Shaders.colorShader.setUniformi("enabled", 1);
+			Shaders.colorShader.setUniformf("tint", 1, 0, 0);
+		}
+
 		// TODO NetworkObject; Remove the constant '4' from here, it will probably break something in the future
 		spriteBatch.draw(textures.getObjectTexture(textureId*4 + facingDirection), 
 				drawnPosition.x*World.TILE_WIDTH - xView,
 				drawnPosition.y*World.TILE_HEIGHT - yView);
+
+		if (painTimer > 0) {
+			spriteBatch.flush();
+			Shaders.colorShader.setUniformi("enabled", 0);
+		}
 	}
 	
 
@@ -88,6 +106,10 @@ public class NetworkObject {
 	public int getServerY() {
 		return (int) targetPosition.y;
 	}
+	
+	public boolean isDead() {
+		return isDead;
+	}
 
 	public void setPosition(int x, int y) {
 		previousPosition.set(previousPosition.interpolateTo(targetPosition, movementInterpolation));
@@ -106,6 +128,10 @@ public class NetworkObject {
 
 	public void setAnimation(AnimationState animation) {
 		this.animation = animation;
+	}
+	
+	public void setIsDead(boolean isDead) {
+		this.isDead = isDead;
 	}
 
 	@Override
