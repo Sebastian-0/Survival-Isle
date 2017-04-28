@@ -90,20 +90,15 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	private Point getRespawnPoint(Player player) {
-		List<Point> respawnLocations = new ArrayList<>();
-		worldObjects.getObjectsOfType(RespawnCrystal.class).forEach(rc -> respawnLocations.add(rc.getPosition()));
-		worldObjects.getObjectsOfType(Player.class).stream().filter(p -> p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).forEach(p -> respawnLocations.add(p.getPosition()));
+		List<GameObject> respawnLocations = new ArrayList<>();
+		worldObjects.getObjectsOfType(RespawnCrystal.class).forEach(rc -> respawnLocations.add(rc));
+		worldObjects.getObjectsOfType(Player.class).stream().filter(p -> p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).forEach(p -> respawnLocations.add(p));
 		
-		Point respawnPoint = world.getNewSpawnPoint();
-		double minDistance = Double.POSITIVE_INFINITY; 
-		for (Point point : respawnLocations) {
-			double distance = player.getPosition().distanceSqTo(point);
-			if (distance < minDistance) {
-				minDistance = distance;
-				respawnPoint = point;
-			}
-		}
-		return respawnPoint;
+		GameObject respawn = player.getClosestObject(respawnLocations);
+		if (respawn != null)
+			return respawn.getPosition();
+		else
+			return world.getNewSpawnPoint();
 	}
 
 	private void updateWallTiles() {
