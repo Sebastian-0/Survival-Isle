@@ -133,12 +133,12 @@ public class Player extends GameObject implements Serializable {
 		if (!isDead) {
 			reviveCountdown = REVIVE_TIME;
 			System.out.println("DEAD!");
-			game.playerDied(this);
 			shouldBeRemoved = true;
 			
 			if (inventory.getAmount(ItemType.RespawnCrystal) > 0)
 				inventory.removeItem(ItemType.RespawnCrystal, inventory.getAmount(ItemType.RespawnCrystal));
-			
+
+			game.playerDied(this);
 			super.die();
 		}
 	}

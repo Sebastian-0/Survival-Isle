@@ -14,8 +14,10 @@ import world.Enemy;
 import world.GameInterface;
 import world.GameObject;
 import world.Inventory;
+import world.ItemType;
 import world.PathFinder;
 import world.Player;
+import world.RespawnCrystal;
 import world.ServerWorld;
 import world.Time;
 import world.WorldObjects;
@@ -32,9 +34,11 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	private WorldObjects worldObjects;
 	private transient PathFinder pathFinder;
 	private Map<ServerProtocolCoder, Player> players = new HashMap<>();
-	private transient List<Player> deadPlayers = new ArrayList<>();
+	private List<Player> deadPlayers = new ArrayList<>();
 
 	private Time time;
+
+	private boolean gameOver;
 	
 	public Game() {
 		world = new ServerWorld(200, 150, this);
@@ -248,5 +252,22 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	@Override
 	public void playerDied(Player player) {
 		deadPlayers.add(player);
+		checkForRespawnCrystals();
+	}
+	
+	public void checkForRespawnCrystals() {
+		if (players.values().stream().filter(p->p.getInventory().getAmount(ItemType.RespawnCrystal) > 0).findAny().orElse(null) == null) {
+			List<RespawnCrystal> crystals = getObjects().getObjectsOfType(RespawnCrystal.class);
+			if (crystals.size() == 0 || crystals.stream().filter(c->!c.shouldBeRemoved()).findAny().orElse(null) == null) {
+				gameOver();
+			}
+		}
+	}
+
+	private void gameOver() {
+		if (!gameOver) {
+			gameOver = true;
+			System.out.println("GAME OVER!");
+		}
 	}
 }
