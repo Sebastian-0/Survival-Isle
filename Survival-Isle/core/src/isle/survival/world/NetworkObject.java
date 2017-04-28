@@ -3,6 +3,7 @@ package isle.survival.world;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
+import isle.survival.shaders.Shaders;
 import util.Point;
 import world.GameObject.AnimationState;
 import world.World;
@@ -18,11 +19,12 @@ public class NetworkObject {
 	private Point targetPosition;
 	private Point currentPosition;
 	private Point drawnPosition;
-	private Point attackTarget;
+	private Point animationTarget;
 	private float movementInterpolation;
 	private float attackInterpolation;
 	private AnimationState animation;
 	private int facingDirection;
+	private float painTimer;
 	private boolean isDead;
 	private int hp;
 	
@@ -31,7 +33,7 @@ public class NetworkObject {
 		previousPosition = new Point(x, y);
 		currentPosition = new Point(x, y);
 		drawnPosition = new Point(x, y);
-		attackTarget = new Point(0, 0);
+		animationTarget = new Point(0, 0);
 		this.id = id;
 		this.textureId = textureId;
 		this.isDead = false;
@@ -45,15 +47,18 @@ public class NetworkObject {
 		float dx = targetPosition.x - previousPosition.x;
 		float dy = targetPosition.y - previousPosition.y;
 		
-		if (animation == AnimationState.Attacking) {
+		switch (animation) {
+		case Attacking:
 			attackInterpolation = Math.min(1, attackInterpolation + deltaTime/ATTACK_TIME);
 			drawnPosition = drawnPosition.interpolateTo(
-					attackTarget, -MathUtils.sin(attackInterpolation*MathUtils.PI2)/2);
+					animationTarget, -MathUtils.sin(attackInterpolation*MathUtils.PI2)/2);
 			if (attackInterpolation == 1)
 				animation = AnimationState.Idle;
-			
-			dx = attackTarget.x - previousPosition.x;
-			dy = attackTarget.y - previousPosition.y;
+		case Targeting:
+			dx = animationTarget.x - previousPosition.x;
+			dy = animationTarget.y - previousPosition.y;
+			break;
+		default:
 		}
 		
 		if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
@@ -61,13 +66,27 @@ public class NetworkObject {
 			if (facingDirection < 0)
 				facingDirection = 3;
 		}
+		
+		if (painTimer > 0)
+			painTimer -= deltaTime;
 	}
 	
 	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
+		if (painTimer > 0) {
+			spriteBatch.flush();
+			Shaders.colorShader.setUniformi("enabled", 1);
+			Shaders.colorShader.setUniformf("tint", 1, 0, 0);
+		}
+
 		// TODO NetworkObject; Remove the constant '4' from here, it will probably break something in the future
 		spriteBatch.draw(textures.getObjectTexture(textureId*4 + facingDirection), 
 				drawnPosition.x*World.TILE_WIDTH - xView,
 				drawnPosition.y*World.TILE_HEIGHT - yView);
+
+		if (painTimer > 0) {
+			spriteBatch.flush();
+			Shaders.colorShader.setUniformi("enabled", 0);
+		}
 	}
 	
 
@@ -108,21 +127,27 @@ public class NetworkObject {
 		targetPosition.set(x, y);
 		movementInterpolation = 0;
 	}
+	
+	public void jumpToTarget() {
+		previousPosition.set(targetPosition);
+	}
 
-	public void setAttackTarget(int x, int y) {
-		attackTarget.set(x, y);
+	public void setAnimationTarget(int x, int y) {
+		animationTarget.set(x, y);
 		attackInterpolation = 0;
 	}
 
-	public void setAnimation(int animation) {
-		if (animation == AnimationState.Attacking.id)
-			this.animation = AnimationState.Attacking;
-		else
-			this.animation = AnimationState.Idle;
+	public void setAnimation(AnimationState animation) {
+		this.animation = animation;
 	}
 	
 	public void setIsDead(boolean isDead) {
 		this.isDead = isDead;
+	}
+
+	public void setIsHurt(boolean isHurt) {
+		if (isHurt)
+			painTimer = 0.5f;
 	}
 
 	@Override

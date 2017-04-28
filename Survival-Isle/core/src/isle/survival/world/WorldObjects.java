@@ -68,16 +68,13 @@ public class WorldObjects {
 	public void createObjects(Connection connection) {
 		int amount = connection.receiveInt();
 		for (int i = 0; i < amount; i++) {
-			int id = connection.receiveInt();
-			int x = connection.receiveInt();
-			int y = connection.receiveInt();
-			int animation = connection.receiveInt();
-			int hp = connection.receiveInt();
 			int textureId = connection.receiveInt();
-			NetworkObject object = new NetworkObject(x, y, id, textureId);
-			object.setAnimation(animation);
+			int id = connection.receiveInt();
+			NetworkObject object = new NetworkObject(0, 0, id, textureId);
 			objects.add(object);
-			object.setHp(hp);
+			updateObject(connection, id);
+			object.jumpToTarget();
+			
 		}
 	}
 
@@ -85,21 +82,33 @@ public class WorldObjects {
 		int amount = connection.receiveInt();
 		for (int i = 0; i < amount; i++) {
 			int id = connection.receiveInt();
-			NetworkObject object = getObject(id);
-			int x = connection.receiveInt();
-			int y = connection.receiveInt();
-			object.setPosition(x, y);
-			
-			int animation = connection.receiveInt();
-			object.setAnimation(animation);
-			if (animation == AnimationState.Attacking.id) {
-				x = connection.receiveInt();
-				y = connection.receiveInt();
-				object.setAttackTarget(x, y);
-			}
-			
-			object.setHp(connection.receiveInt());
+			updateObject(connection, id);
 		}
+	}
+
+	private void updateObject(Connection connection, int id) {
+		NetworkObject object = getObject(id);
+		int x = connection.receiveInt();
+		int y = connection.receiveInt();
+		object.setPosition(x, y);
+		
+		AnimationState animation = AnimationState.values()[connection.receiveInt()];
+		object.setAnimation(animation);
+		switch (animation) {
+		case Attacking:
+		case Targeting:
+			x = connection.receiveInt();
+			y = connection.receiveInt();
+			object.setAnimationTarget(x, y);
+			break;
+		default:
+			break;
+		}
+		
+		boolean isHurt = connection.receiveInt() == 1;
+		object.setIsHurt(isHurt);
+		int hp = connection.receiveInt();
+		object.setHp(hp);
 	}
 
 	public void destroyObjects(Connection connection) {
@@ -108,7 +117,7 @@ public class WorldObjects {
 			int id = connection.receiveInt();
 			objects.removeValue(new NetworkObject(0, 0, id, 0), false);
 			
-			if(id == player.getId())
+			if(player != null && id == player.getId())
 				player = null;
 		}
 	}

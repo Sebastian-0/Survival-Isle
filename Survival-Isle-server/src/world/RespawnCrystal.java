@@ -33,6 +33,8 @@ public class RespawnCrystal extends BuildableObject {
 			shouldBeRemoved = true;
 			game.checkForRespawnCrystals();
 		}
+		
+		sendUpdateIfHurt(game);
 	}
 	
 	@Override
