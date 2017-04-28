@@ -13,6 +13,9 @@ public class Player extends GameObject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private static final double REVIVE_TIME = 5;
+	private static final int DAMAGE = 5;
+	
+	
 	private Inventory inventory;
 	private transient Tool selectedTool;
 	private transient boolean toolActive;
@@ -107,7 +110,7 @@ public class Player extends GameObject implements Serializable {
 			position = newPosition;
 		}
 		else if (tile.isBreakable() && selectedTool == Tool.Pickaxe) {
-			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, 1, this)) {
+			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, DAMAGE, this)) {
 				animationState = AnimationState.Attacking;
 				attackTarget.x = position.x+dx;
 				attackTarget.y = position.y+dy;
