@@ -14,11 +14,13 @@ import world.WorldGenerator.GenerationResult;
 public class ServerWorld extends World implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	private static final float PATH_MULTIPLIER_DECAY = 0.9f;
 	
 	private GameInterface game;
 	
 	private Random random;
 	
+	private float[][] temporaryPathMultipliers;
 	private WallTile[][] walls;
 	
 	private List<Point> wallTilesToUpdate; 
@@ -29,6 +31,7 @@ public class ServerWorld extends World implements Serializable {
 	public ServerWorld(int width, int height, GameInterface game) {
 		super(width, height);
 		this.game = game;
+		temporaryPathMultipliers = new float[width][height];
 		wallTilesToUpdate = new LinkedList<Point>();
 	}
 	
@@ -49,15 +52,15 @@ public class ServerWorld extends World implements Serializable {
 		return walls[(int) position.x][(int) position.y];
 	}
 
+	public void addWallTileAtPosition(Point position, WallType tile) {
+		setWallTile(position, new WallTile(tile));
+	}
+	
 	private void setWallTile(Point position, WallTile tile) {
 		walls[(int) position.x][(int) position.y] = tile;
 		wallTilesToUpdate.add(position);
 	}
 
-	public void addWallTileAtPosition(Point position, WallType tile) {
-		setWallTile(position, new WallTile(tile));
-	}
-	
 	public boolean attackWallTileAtPosition(Point position, int damage) {
 		WallTile tile = getWallTileAtPosition(position);
 		if (tile.isBreakable()) {
@@ -161,5 +164,46 @@ public class ServerWorld extends World implements Serializable {
 	
 	public Point getRandomEnemySpawnPoint() {
 		return enemySpawnPoints.get(random.nextInt(enemySpawnPoints.size()));
+	}
+	
+	public float getPathMultiplierAt(Point position) {
+		float multiplier = temporaryPathMultipliers[(int) position.x][(int) position.y];
+		
+		WallTile tile = getWallTileAtPosition(position);
+		if (tile != null) {
+			multiplier *= tile.getPathMultiplier();
+		}
+		
+		return multiplier;
+	}
+	
+	public void decreasePathMultipliers() {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				float multiplier = temporaryPathMultipliers[x][y];
+				multiplier = Math.max(1,  (multiplier - 1) * PATH_MULTIPLIER_DECAY);
+				temporaryPathMultipliers[x][y] = multiplier;
+			}
+		}
+	}
+	
+	public void increasePathMultiplier(Point center, int radius, float percentageIncrease) {
+		if (percentageIncrease < 0)
+			throw new IllegalArgumentException("The increase must be >= 0: " + percentageIncrease); // the array values should never be < 1
+		
+		for (int dx = -radius; dx <= radius; dx++) {
+			for (int dy = -radius; dy <= radius; dy++) {
+				Point position = new Point(center.x + dx, center.y + dy);
+				if (isInBounds(position)) {
+					float increase = (float) (percentageIncrease / (1 + Math.sqrt(dx*dx + dy*dy)));
+					temporaryPathMultipliers[(int) position.x][(int) position.y] *= (1 + increase);
+				}
+			}
+		}
+	}
+	
+	private boolean isInBounds(Point position) {
+		return position.x >= 0 && position.y >= 0 && 
+				position.x < width && position.y < height;
 	}
 }

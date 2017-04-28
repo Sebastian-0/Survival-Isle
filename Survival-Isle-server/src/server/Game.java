@@ -190,6 +190,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	public void nightBegun(int day) {
 		doForEachClient(c->c.sendTimeEvent(0));
 		System.out.println("Dusk of day " + day);
+		world.decreasePathMultipliers();
 	}
 
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {
