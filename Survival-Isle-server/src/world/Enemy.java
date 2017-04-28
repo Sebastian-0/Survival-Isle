@@ -45,10 +45,10 @@ public class Enemy extends GameObject implements Serializable {
 		if (movementCounter > MOVEMENT_TIME) {
 			movementCounter = 0;
 			if (closestPlayer != null && closestPlayer.position.equals(position)) {
-				closestPlayer.damage(PLAYER_DAMAGE);
+				closestPlayer.damage(game, PLAYER_DAMAGE);
 				animationState = AnimationState.Attacking;
-				attackTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
-				attackTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
+				animationTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
+				animationTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
 				shouldSendUpdate = true;
 			} else if (!path.isEmpty()) {
 				Point nextPosition = path.remove(0);
@@ -59,7 +59,7 @@ public class Enemy extends GameObject implements Serializable {
 				} else if (wallTile.isBreakable()) {
 					if (game.getWorld().attackWallTileAtPosition(nextPosition, TILE_DAMAGE)) {
 						animationState = AnimationState.Attacking;
-						attackTarget.set(nextPosition);
+						animationTarget.set(nextPosition);
 						shouldSendUpdate = true;
 					}
 				} else {
@@ -84,8 +84,8 @@ public class Enemy extends GameObject implements Serializable {
 	}
 	
 	@Override
-	protected void die() {
-		super.die();
+	protected void die(GameInterface game) {
+		super.die(game);
 		shouldBeRemoved = true;
 	}
 	

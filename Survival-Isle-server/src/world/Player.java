@@ -19,15 +19,13 @@ public class Player extends GameObject implements Serializable {
 	private Inventory inventory;
 	private transient Tool selectedTool;
 	private transient boolean toolActive;
-	private GameInterface game;
 	private double reviveCountdown;
 	
-	public Player(GameInterface game) {
+	public Player() {
 		type = ObjectType.Player;
 		inventory = new Inventory();
 		inventory.addItem(ItemType.RespawnCrystal, 1);
 		selectedTool = Tool.Pickaxe;
-		this.game = game;
 	}
 
 	public Inventory getInventory() {
@@ -118,8 +116,8 @@ public class Player extends GameObject implements Serializable {
 		else if (tile.isBreakable() && selectedTool == Tool.Pickaxe) {
 			if (game.getWorld().attackWallTileAtPosition((int)position.x+dx, (int)position.y+dy, DAMAGE, this)) {
 				animationState = AnimationState.Attacking;
-				attackTarget.x = position.x+dx;
-				attackTarget.y = position.y+dy;
+				animationTarget.x = position.x+dx;
+				animationTarget.y = position.y+dy;
 			}
 		}
 	}
@@ -135,7 +133,7 @@ public class Player extends GameObject implements Serializable {
 	}
 
 	@Override
-	protected void die() {
+	protected void die(GameInterface game) {
 		if (!isDead) {
 			reviveCountdown = REVIVE_TIME;
 			System.out.println("DEAD!");
@@ -145,7 +143,7 @@ public class Player extends GameObject implements Serializable {
 				inventory.removeItem(ItemType.RespawnCrystal, inventory.getAmount(ItemType.RespawnCrystal));
 
 			game.playerDied(this);
-			super.die();
+			super.die(game);
 		}
 	}
 

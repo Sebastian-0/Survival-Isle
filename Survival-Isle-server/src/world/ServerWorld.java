@@ -1,7 +1,6 @@
 package world;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -10,25 +9,27 @@ import java.util.Random;
 import server.Connection;
 import util.Point;
 import world.WallTile.WallType;
+import world.WorldGenerator.GenerationResult;
 
 public class ServerWorld extends World implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private GameInterface game;
+	
+	private Random random;
+	
 	private WallTile[][] walls;
+	
 	private List<Point> wallTilesToUpdate; 
 	private List<Point> coast;
 	private List<Point> enemySpawnPoints;
-	private Random random;
 	
-	private GameInterface game;
 	
 	public ServerWorld(int width, int height, GameInterface game) {
 		super(width, height);
-		walls = new WallTile[width][height];
-		wallTilesToUpdate = new LinkedList<Point>();
-		enemySpawnPoints = new ArrayList<Point>();
 		this.game = game;
+		wallTilesToUpdate = new LinkedList<Point>();
 	}
 	
 	public void generateTerrain() {
@@ -37,206 +38,11 @@ public class ServerWorld extends World implements Serializable {
 		random.setSeed(seed);
 		System.out.println("World seed: " + seed);
 		
-		coast = generateGround(random);
-		generateForests(random);
-		generateMountains(random);
-		generateRivers(random, coast);
-		generateCoastline(random, coast);
-		generateEnemySpawnPoints(random);
-	}
-
-	private List<Point> generateGround(Random random) {
-		List<Point> coast = new ArrayList<>();
-		
-		ground[width/2][height/2] = GroundType.Grass.ordinal();
-		coast.add(new Point(width/2+1, height/2));
-		coast.add(new Point(width/2-1, height/2));
-		coast.add(new Point(width/2, height/2+1));
-		coast.add(new Point(width/2, height/2-1));
-		
-		for (int i = 0; i < width*height/2; i++) {
-			int index = random.nextInt(coast.size());
-			int x = (int) coast.get(index).x;
-			int y = (int) coast.remove(index).y;
-			
-			if (!isTileOfType(x, y, GroundType.Grass)) {
-				if (random.nextInt(20) == 0)
-					ground[x][y] = GroundType.Flowers.ordinal();
-				else
-				ground[x][y] = GroundType.Grass.ordinal();
-
-				if (x >= 2 && isTileOfType(x-1, y, GroundType.Water))
-					coast.add(new Point(x-1, y));
-				if (x < width-2 && isTileOfType(x+1, y, GroundType.Water))
-					coast.add(new Point(x+1, y));
-				if (y >= 2 && isTileOfType(x, y-1, GroundType.Water))
-					coast.add(new Point(x, y-1));
-				if (y < height-2 && isTileOfType(x, y+1, GroundType.Water))
-					coast.add(new Point(x, y+1));
-			}
-		}
-		
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				if (isTileOfType(i, j, GroundType.Water))
-					walls[i][j] = new WallTile(WallTile.WallType.Water);
-			}
-		}
-		
-		return coast;
-	}
-
-	private void generateForests(Random random) {
-		int quantity = Math.max(1,width*height/200);
-		int minSize = 3;
-		int maxSize = 11;
-		generateLocalEnvironment(random, WallTile.WallType.Forest, 
-				GroundType.Stump, quantity, minSize, maxSize);
-	}
-
-	private void generateMountains(Random random) {
-		int quantity = Math.max(1,width*height/800);
-		int minSize = 12;
-		int maxSize = 28;
-		generateLocalEnvironment(random, WallTile.WallType.Mountain, 
-				GroundType.Rock, quantity, minSize, maxSize);
-	}
-	
-	private void generateLocalEnvironment(Random random, WallTile.WallType wallType, 
-			GroundType groundType, int quantity, int minSize, int maxSize) {
-		List<Point> edge = new ArrayList<>();
-		
-		for (int i = 0; i < quantity;) {
-			int x0 = random.nextInt(width-2)+1;
-			int y0 = random.nextInt(height-2)+1;
-			
-			if (walls[x0][y0] == null) {
-				walls[x0][y0] = new WallTile(wallType);
-				ground[x0][y0] = groundType.ordinal();
-				addWallsToEdgeList(x0,y0, edge);
-				
-				int size = random.nextInt(maxSize-minSize) + minSize;
-				for (float j = 0; j < size && !edge.isEmpty();) {
-					int index = random.nextInt(edge.size());
-					int x = (int) edge.get(index).x;
-					int y = (int) edge.remove(index).y;
-					
-					if (walls[x][y] == null) {
-						walls[x][y] = new WallTile(wallType);
-						ground[x][y] = groundType.ordinal();
-						j++;
-						
-						addWallsToEdgeList(x,y, edge);
-					}
-				}
-				i++;
-			}
-			edge.clear();
-		}
-	}
-
-	private void addWallsToEdgeList(int x, int y, List<Point> edge) {
-		if (x >= 2 && x < width-2 && y >= 2 && y < height-2) {
-			if (walls[x+1][y] == null)
-				edge.add(new Point(x+1, y));
-			if (walls[x-1][y] == null)
-				edge.add(new Point(x-1, y));
-			if (walls[x][y+1] == null)
-				edge.add(new Point(x, y+1));
-			if (walls[x][y-1] == null)
-				edge.add(new Point(x, y-1));
-		}
-	}
-
-	private void generateRivers(Random random, List<Point> coast) {
-		for (int i = 0; i < Math.sqrt(width*height)/20; i++) {
-			int index = random.nextInt(coast.size());
-			int x = (int)coast.get(index).x;
-			int y = (int)coast.remove(index).y;
-			
-			if (isTileOfType(x, y, GroundType.Water)) {
-				int dx = 0;
-				int dy = -1;
-				
-				if (isTileOfType(x+1, y, GroundType.Grass)) {
-					dx = 1;
-					dy = 0;
-				} else if (isTileOfType(x, y+1, GroundType.Grass)) {
-					dx = 0;
-					dy = 1;
-				} else if (isTileOfType(x-1, y, GroundType.Grass)) {
-					dx = -1;
-					dy = 0;
-				} 
-				
-				x += dx;
-				y += dy;
-				
-				while (!isTileOfType(x, y, GroundType.Water)) {
-					ground[x][y] = GroundType.Water.ordinal();
-					walls[x][y] = new WallTile(WallTile.WallType.Water);
-					if (random.nextInt(4) < 1) {
-						if (random.nextBoolean()) {
-							int t = -dy;
-							dy = dx;
-							dx = t;
-						} else {
-							int t = dy;
-							dy = -dx;
-							dx = t;
-						}
-					}
-					x += dx;
-					y += dy;
-				}
-			} else
-				i--;
-		}
-	}
-	
-	private void generateCoastline(Random random, List<Point> coast) {
-		for (Point tile : coast) {
-			int x = (int) tile.x;
-			int y = (int) tile.y;
-			coastifyTile(x+1, y);
-			coastifyTile(x-1, y);
-			coastifyTile(x, y+1);
-			coastifyTile(x, y-1);
-			
-			if (isTileOfType(x, y, GroundType.Water)) {
-				ground[x][y] = GroundType.ShallowWater.ordinal();
-				walls[x][y] = null;
-			}
-		}
-	}
-
-	private void coastifyTile(int x, int y) {
-		if ((isTileOfType(x, y, GroundType.Grass) || isTileOfType(x, y, GroundType.Flowers)) 
-				&& walls[x][y] == null) {
-			ground[x][y] = GroundType.Beach.ordinal();
-		} else if (isTileOfType(x, y, GroundType.Water)) {
-			ground[x][y] = GroundType.ShallowWater.ordinal();
-			walls[x][y] = null;
-		}
-	}
-	
-	private boolean isTileOfType(int x, int y, GroundType type) {
-		return ground[x][y] == type.ordinal();
-	}
-
-	private void generateEnemySpawnPoints(Random random) {
-		int quantity = Math.max(1,width*height/500);
-		for (int i = 0; i < quantity; i++) {
-			int x = (int) (width * Math.min(6,Math.max(0,random.nextGaussian()+3)) / 6);
-			int y = (int) (height * Math.min(6,Math.max(0,random.nextGaussian()+3)) / 6);
-			
-			if (x < width && y < height && walls[x][y] == null) {
-				walls[x][y] = new WallTile(WallTile.WallType.EnemySpawn);
-				enemySpawnPoints.add(new Point(x,y));
-			}
-			else
-				i--;
-		}
+		GenerationResult result = new WorldGenerator().generateTerrain(width, height, random);
+		ground = result.ground;
+		walls = result.walls;
+		coast = result.coast;
+		enemySpawnPoints = result.enemySpawnPoints;
 	}
 	
 	public WallTile getWallTileAtPosition(Point position) {

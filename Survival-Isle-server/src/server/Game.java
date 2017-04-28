@@ -139,7 +139,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		if (players.containsKey(client)) {
 			player = players.get(client);
 		} else {
-			player = new Player(this);
+			player = new Player();
 			player.setPosition(world.getNewSpawnPoint());
 		}
 		addObject(player);

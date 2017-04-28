@@ -19,7 +19,7 @@ public class NetworkObject {
 	private Point targetPosition;
 	private Point currentPosition;
 	private Point drawnPosition;
-	private Point attackTarget;
+	private Point animationTarget;
 	private float movementInterpolation;
 	private float attackInterpolation;
 	private AnimationState animation;
@@ -33,7 +33,7 @@ public class NetworkObject {
 		previousPosition = new Point(x, y);
 		currentPosition = new Point(x, y);
 		drawnPosition = new Point(x, y);
-		attackTarget = new Point(0, 0);
+		animationTarget = new Point(0, 0);
 		this.id = id;
 		this.textureId = textureId;
 		this.isDead = false;
@@ -47,15 +47,18 @@ public class NetworkObject {
 		float dx = targetPosition.x - previousPosition.x;
 		float dy = targetPosition.y - previousPosition.y;
 		
-		if (animation == AnimationState.Attacking) {
+		switch (animation) {
+		case Attacking:
 			attackInterpolation = Math.min(1, attackInterpolation + deltaTime/ATTACK_TIME);
 			drawnPosition = drawnPosition.interpolateTo(
-					attackTarget, -MathUtils.sin(attackInterpolation*MathUtils.PI2)/2);
+					animationTarget, -MathUtils.sin(attackInterpolation*MathUtils.PI2)/2);
 			if (attackInterpolation == 1)
 				animation = AnimationState.Idle;
-			
-			dx = attackTarget.x - previousPosition.x;
-			dy = attackTarget.y - previousPosition.y;
+		case Targeting:
+			dx = animationTarget.x - previousPosition.x;
+			dy = animationTarget.y - previousPosition.y;
+			break;
+		default:
 		}
 		
 		if (Math.abs(dx) > 0 || Math.abs(dy) > 0) {
@@ -116,17 +119,18 @@ public class NetworkObject {
 		targetPosition.set(x, y);
 		movementInterpolation = 0;
 	}
+	
+	public void jumpToTarget() {
+		previousPosition.set(targetPosition);
+	}
 
-	public void setAttackTarget(int x, int y) {
-		attackTarget.set(x, y);
+	public void setAnimationTarget(int x, int y) {
+		animationTarget.set(x, y);
 		attackInterpolation = 0;
 	}
 
-	public void setAnimation(int animation) {
-		if (animation == AnimationState.Attacking.id)
-			this.animation = AnimationState.Attacking;
-		else
-			this.animation = AnimationState.Idle;
+	public void setAnimation(AnimationState animation) {
+		this.animation = animation;
 	}
 	
 	public void setIsDead(boolean isDead) {
