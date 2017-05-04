@@ -139,12 +139,13 @@ public class Player extends GameObject implements Serializable {
 			System.out.println("DEAD!");
 			shouldBeRemoved = true;
 			
-			if (inventory.getAmount(ItemType.RespawnCrystal) > 0) {
-				game.doForEachClient(c->c.sendChatMessage("Echoes", "A crystal was shattered!"));
+			int crystalCount = inventory.getAmount(ItemType.RespawnCrystal);
+			
+			if (crystalCount > 0) {
 				inventory.removeItem(ItemType.RespawnCrystal, inventory.getAmount(ItemType.RespawnCrystal));
 			}
 
-			game.playerDied(this);
+			game.playerDied(this, crystalCount);
 			super.die(game);
 		}
 	}

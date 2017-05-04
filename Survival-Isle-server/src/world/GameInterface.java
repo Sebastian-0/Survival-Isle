@@ -8,7 +8,7 @@ public interface GameInterface {
 
 	void addObject(GameObject object);
 	void doForEachClient(Consumer<ServerProtocolCoder> function);
-	void playerDied(Player player);
+	void playerDied(Player player, int crystalCount);
 	
 	PathFinder getPathFinder();
 	
