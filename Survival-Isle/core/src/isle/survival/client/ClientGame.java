@@ -5,11 +5,14 @@ import java.net.Socket;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 import isle.survival.input.InputProcessor;
+import isle.survival.shaders.Shaders;
 import isle.survival.ui.Ui;
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
@@ -37,6 +40,7 @@ public class ClientGame {
 	private SoundBase soundBase;
 	private InputProcessor inputProcessor;
 	private GameProtocolCoder coder;
+	private FrameBuffer frameBuffer;
 	
 	private ClientWorld world;
 	private WorldObjects worldObjects;
@@ -65,6 +69,8 @@ public class ClientGame {
 		if (IN_DEBUG_MODE) {
 			debugFont = new BitmapFont(Gdx.files.internal("debug.fnt"));
 		}
+
+		frameBuffer = new FrameBuffer(Format.RGBA4444, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 	}
 
 	public ClientProtocolCoder connectToServer(Socket socket) {
@@ -105,6 +111,8 @@ public class ClientGame {
 	}
 	
 	public void draw() {
+		frameBuffer.bind();
+		
 		Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
 		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -118,6 +126,19 @@ public class ClientGame {
 			world.drawShininess(xView, yView);
 		}
 		world.drawTime();
+		
+		spriteBatch.flush();
+		frameBuffer.end();
+
+		spriteBatch.setShader(Shaders.monochromeShader);
+		if (inventory.getAmount(ItemType.RespawnCrystal) > 0)
+			spriteBatch.getShader().setUniformf("colorIntensity", 1f);
+		else
+			spriteBatch.getShader().setUniformf("colorIntensity", 0.75f);
+		
+		spriteBatch.draw(frameBuffer.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, 1, 1);
+		spriteBatch.setShader(Shaders.colorShader);
+
 		
 		if (IN_DEBUG_MODE)
 			world.drawDebug(debugFont, xView, yView);
@@ -235,6 +256,7 @@ public class ClientGame {
 
 	public void dispose() {
 		ui.dispose();
+		frameBuffer.dispose();
 		if (IN_DEBUG_MODE)
 			debugFont.dispose();
 	}

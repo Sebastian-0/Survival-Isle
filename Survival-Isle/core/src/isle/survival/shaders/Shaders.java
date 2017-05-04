@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class Shaders {
 
 	public static ShaderProgram colorShader;
+	public static ShaderProgram monochromeShader;
 	
 	public static void initShaders() {
 		colorShader = initShader("shaders/default.vert", "shaders/color.frag");
@@ -18,6 +19,13 @@ public class Shaders {
 			colorShader.setUniformi("enabled", 0);
 			colorShader.setUniformf("tint", 1, 0, 0);
 			colorShader.end();
+		}
+
+		monochromeShader = initShader("shaders/default.vert", "shaders/monochrome.frag");
+		if (monochromeShader.isCompiled()) {
+			monochromeShader.begin();
+			monochromeShader.setUniformf("colorIntensity", 0);
+			monochromeShader.end();
 		}
 	}
 
