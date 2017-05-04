@@ -42,7 +42,7 @@ public class Connection {
 		try {
 			outStream.write(code);
 		} catch (java.io.IOException e) {
-			throw new ConnectionClosedException();
+			System.err.println("Connection to " + socket.getInetAddress() + " was lost!");
 		}
 	}
 

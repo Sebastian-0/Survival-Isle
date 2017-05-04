@@ -114,7 +114,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				}
 			}
 		} catch (ConnectionClosedException e) {
-			System.out.println("Host lost.");
+			System.out.println("Lost connection to host.");
 			closeSocket();
 			showTitleScreen();
 			Thread.currentThread().interrupt();

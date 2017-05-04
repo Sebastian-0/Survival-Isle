@@ -19,10 +19,10 @@ public class ClientListener extends Thread {
 //				System.out.println("Server received: " + code);
 				game.parseClientMessage(code, client);
 			}
-			catch (ConnectionClosedException e) {
-				game.removeClient(client);
+			catch (Throwable e) {
 				System.out.println("Client closed connection unexpectedly: " + client);
-				return;
+				e.printStackTrace();
+				break;
 			}
 		}
 		client.disconnect();

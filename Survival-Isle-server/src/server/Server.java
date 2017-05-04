@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Server {
 	
 	private final int port;
-	private Game game = new Game();
+	private Game game;
 	private ClientAccepter clientAccepter;
 	private ServerUpdater serverUpdater;
 	private boolean running;
@@ -29,6 +29,7 @@ public class Server {
 				break;
 			case "new":
 				if (!running) {
+					System.out.println("Starting game...");
 					game = new Game();
 					start();
 				} else {
@@ -38,6 +39,7 @@ public class Server {
 			case "load":
 				String filename = readFilename(in);
 				if (!running) {
+					System.out.println("Loading game...");
 					load(filename);
 					start();
 				} else {
@@ -64,7 +66,6 @@ public class Server {
 	public void load(String filename) {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filename)))) {
 			game = (Game) ois.readObject();
-			System.out.println("Game loaded");
 		} catch (ClassNotFoundException | IOException e) {
 			game = null;
 			System.out.println("Failed to load game");
@@ -73,12 +74,16 @@ public class Server {
 	}
 
 	public void save(Scanner in) {
-		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(readFilename(in))))) {
-			out.writeObject(game);
-			System.out.println("Game saved");
-		} catch (IOException e) {
-			System.out.println("Failed to save game");
-			System.out.println(e.getMessage());
+		if (game == null) {
+			System.out.println("No game has been run yet");
+		} else {
+			try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(readFilename(in))))) {
+				out.writeObject(game);
+				System.out.println("Game saved");
+			} catch (IOException e) {
+				System.out.println("Failed to save game");
+				System.out.println(e.getMessage());
+			}
 		}
 	}
 
@@ -87,10 +92,18 @@ public class Server {
 			running = true;
 
 			clientAccepter = new ClientAccepter(game, port);
-			clientAccepter.start();
-
-			serverUpdater = new ServerUpdater(game);
-			serverUpdater.start();
+			if (!clientAccepter.isPortAvailable()) {
+				System.out.println("The port " + port + " is already in use, start failed!");
+				game = null;
+				running = false;
+			} else {
+				clientAccepter.start();
+				
+				serverUpdater = new ServerUpdater(game, ()->stop());
+				serverUpdater.start();
+				
+				System.out.println("Game started");
+			}
 		}
 	}
 
