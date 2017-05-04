@@ -42,6 +42,10 @@ public abstract class MenuComponent {
 		font.draw(spriteBatch, text, position.x+4, position.y + size.y/2 + font.getCapHeight()/2);
 	}
 	
+	public boolean keyDown(int keycode) {
+		return false;
+	}
+	
 	public boolean keyTyped(char character) {
 		return false;
 	}

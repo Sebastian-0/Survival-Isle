@@ -1,6 +1,7 @@
 package isle.survival.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
@@ -13,13 +14,22 @@ public class TextField extends MenuComponent {
 		background = new Texture("text_field_background.png");
 		backgroundFocus = new Texture("text_field_background_focus.png");
 	}
+	
+	@Override
+	public boolean keyDown(int keycode) {
+		if (hasFocus) {
+			if (keycode == Keys.ENTER) {
+				hasFocus = false;
+			}
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public boolean keyTyped(char character) {		
 		if (hasFocus) {
-			if (character == 10 || character == 13) { //Enter
-				hasFocus = false;
-			} else if (character == 8) { //Backspace
+			if (character == 8) { //Backspace
 				if (text.length() > 0)
 					text = text.substring(0,text.length()-1);
 			}

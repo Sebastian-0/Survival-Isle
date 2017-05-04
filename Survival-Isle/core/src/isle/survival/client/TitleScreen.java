@@ -74,18 +74,22 @@ public class TitleScreen extends InputAdapter {
 	public boolean keyDown(int keycode) {
 		if (keycode == Input.Keys.ESCAPE)
 			backend.terminateProgram();
-		return false;
+		else {
+			boolean inField = (nameField.keyDown(keycode) || 
+							ipField.keyDown(keycode) || 
+							portField.keyDown(keycode));
+			if (!inField && keycode == Input.Keys.ENTER) {
+				startGame();
+			}
+		}
+		return true;
 	}
 	
 	@Override
 	public boolean keyTyped(char character) {
-		boolean inField = false;
-		inField = 	(nameField.keyTyped(character) 	|| 
-					ipField.keyTyped(character) 	|| 
-					portField.keyTyped(character));
-		if (!inField) {
-			startGame();
-		}
+		nameField.keyTyped(character); 
+		ipField.keyTyped(character); 
+		portField.keyTyped(character);
 		return true;
 	}
 

@@ -12,6 +12,8 @@ public class Connection {
 	private InputStream inStream;
 	private OutputStream outStream;
 	
+	private boolean hasReportedLostConnection;
+	
 	public Connection(Socket socket) {
 		this.socket = socket;
 		try {
@@ -41,8 +43,12 @@ public class Connection {
 	private void sendByte(int code) {
 		try {
 			outStream.write(code);
-		} catch (java.io.IOException e) {
-			System.err.println("Connection to " + socket.getInetAddress() + " was lost!");
+			hasReportedLostConnection = false;
+		} catch (IOException e) {
+			if (!hasReportedLostConnection) {
+				System.err.println("Connection to " + socket.getInetAddress() + " was lost!");
+				hasReportedLostConnection = true;
+			}
 		}
 	}
 
