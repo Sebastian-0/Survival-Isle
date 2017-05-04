@@ -1,6 +1,6 @@
 package server;
 
-public interface TimeInterface {
+public interface TimeListener {
 	void dayBegun(int day);
 	void nightBegun(int day);
 }
