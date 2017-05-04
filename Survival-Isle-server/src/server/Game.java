@@ -173,6 +173,8 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		client.sendInventory(player.getInventory());
 		players.put(client, player);
 		new ClientListener(this, client).start();
+		if (gameOver)
+			client.sendGameOver();
 	}
 	
 	@Override
