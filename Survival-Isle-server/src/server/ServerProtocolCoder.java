@@ -143,6 +143,11 @@ public class ServerProtocolCoder implements Serializable {
 		game.getWorld().sendDebug(connection);
 	}
 
+	public void sendGameOver() {
+		connection.sendCode(ServerProtocol.SendGameOver);
+		flush();
+	}
+
 	public void flush() {
 		connection.flush();
 	}

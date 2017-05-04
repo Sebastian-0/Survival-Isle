@@ -5,6 +5,7 @@ import java.net.Socket;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -43,10 +44,12 @@ public class ClientGame {
 	private Inventory inventory;
 	private float xView;
 	private float yView;
+	private boolean gameOver;
 	
 	private BitmapFont debugFont;
 	
 	private Ui ui;
+
 
 	public ClientGame(String name, SpriteBatch spriteBatch, TextureBase textureBase, SoundBase soundBase) {
 		this.name = name;
@@ -117,6 +120,13 @@ public class ClientGame {
 			world.drawDebug(debugFont, xView, yView);
 		
 		ui.draw(spriteBatch);
+		
+		if (gameOver) {
+			Texture t = textureBase.getTexture("game_over");
+			int x = Gdx.graphics.getWidth()/2 - t.getWidth()/2;
+			int y = Math.min(Gdx.graphics.getHeight()*2/3, Gdx.graphics.getHeight() - t.getHeight());
+			spriteBatch.draw(t, x, y);
+		}
 		
 		spriteBatch.end();
 	}
@@ -201,6 +211,9 @@ public class ClientGame {
 				String sender = coder.getConnection().receiveString();
 				String message = coder.getConnection().receiveString();
 				ui.getChatHistory().addMessage(sender, message);
+				break;
+			case SendGameOver:
+				gameOver = true;
 				break;
 			case SendDebug:
 				world.clearDebug();

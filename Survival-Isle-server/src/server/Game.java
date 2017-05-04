@@ -292,6 +292,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	private void gameOver() {
 		if (!gameOver) {
 			gameOver = true;
+			doForEachClient(c->c.sendGameOver());
 			System.out.println("GAME OVER!");
 		}
 	}
