@@ -50,25 +50,30 @@ public class TextureBase {
 	}
 	
 	private void setUpObjectTextures() {
-		objectTextures.put(0, new Texture("player_down.png"));
-		objectTextures.put(1, new Texture("player_right.png"));
-		objectTextures.put(2, new Texture("player_up.png"));
-		objectTextures.put(3, new Texture("player_left.png"));
-
-		objectTextures.put(4, new Texture("enemy_down.png"));
-		objectTextures.put(5, new Texture("enemy_right.png"));
-		objectTextures.put(6, new Texture("enemy_up.png"));
-		objectTextures.put(7, new Texture("enemy_left.png"));
+		objectTextures.put(0, new Texture("friend_down.png"));
+		objectTextures.put(1, new Texture("friend_right.png"));
+		objectTextures.put(2, new Texture("friend_up.png"));
+		objectTextures.put(3, new Texture("friend_left.png"));
 		
-		objectTextures.put(8, new Texture("turret_down.png"));
-		objectTextures.put(9, new Texture("turret_right.png"));
-		objectTextures.put(10, new Texture("turret_up.png"));
-		objectTextures.put(11, new Texture("turret_left.png"));
+		objectTextures.put(4, new Texture("player_down.png"));
+		objectTextures.put(5, new Texture("player_right.png"));
+		objectTextures.put(6, new Texture("player_up.png"));
+		objectTextures.put(7, new Texture("player_left.png"));
 
-		objectTextures.put(12, new Texture("empty.png"));
-		objectTextures.put(13, new Texture("empty.png"));
-		objectTextures.put(14, new Texture("empty.png"));
-		objectTextures.put(15, new Texture("empty.png"));
+		objectTextures.put(8, new Texture("enemy_down.png"));
+		objectTextures.put(9, new Texture("enemy_right.png"));
+		objectTextures.put(10, new Texture("enemy_up.png"));
+		objectTextures.put(11, new Texture("enemy_left.png"));
+		
+		objectTextures.put(12, new Texture("turret_down.png"));
+		objectTextures.put(13, new Texture("turret_right.png"));
+		objectTextures.put(14, new Texture("turret_up.png"));
+		objectTextures.put(15, new Texture("turret_left.png"));
+
+		objectTextures.put(16, new Texture("empty.png"));
+		objectTextures.put(17, new Texture("empty.png"));
+		objectTextures.put(18, new Texture("empty.png"));
+		objectTextures.put(19, new Texture("empty.png"));
 	}
 
 	public void dispose() {
