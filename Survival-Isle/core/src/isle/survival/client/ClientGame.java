@@ -114,6 +114,9 @@ public class ClientGame {
 		worldObjects.draw(xView, yView);
 		worldEffects.draw(xView, yView);
 		
+		if (inventory.getAmount(ItemType.RespawnCrystal) > 0) {
+			world.drawShininess(xView, yView);
+		}
 		world.drawTime();
 		
 		if (IN_DEBUG_MODE)
