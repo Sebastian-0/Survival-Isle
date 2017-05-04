@@ -19,7 +19,7 @@ public class ChatHistory {
 	private double recentMessagesTimer;
 	
 	public ChatHistory() {
-		font = new BitmapFont(Gdx.files.internal("font32.fnt"));
+		font = new BitmapFont(Gdx.files.internal("high_tower_text18.fnt"));
 		font.setColor(Color.BLACK);
 		messages = new Queue<>();
 		messages.ensureCapacity(HISTORY_SIZE_LIMIT);

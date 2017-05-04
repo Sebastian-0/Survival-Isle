@@ -79,12 +79,16 @@ public class TitleScreen extends InputAdapter {
 	
 	@Override
 	public boolean keyTyped(char character) {
-		nameField.keyTyped(character); 
-		ipField.keyTyped(character); 
-		portField.keyTyped(character);
+		boolean inField = false;
+		inField = 	(nameField.keyTyped(character) 	|| 
+					ipField.keyTyped(character) 	|| 
+					portField.keyTyped(character));
+		if (!inField) {
+			startGame();
+		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		int dw = getWidthOffset();
@@ -97,16 +101,21 @@ public class TitleScreen extends InputAdapter {
 		ipField.touchDown(screenX, screenY, pointer, button); 
 		portField.touchDown(screenX, screenY, pointer, button);
 		if (startButton.touchDown(screenX, screenY, pointer, button)) {
-			try {
-				backend.startNewGame(nameField.getText(), ipField.getText(), Integer.parseInt(portField.getText()));
-			} catch (NumberFormatException e) {
-				System.out.println("Illegal port number.");
-			}
+			startGame();
 		}
 		return true;
 	}
 	
 	
+	public void startGame() {
+		startButton.setFocus(true);
+		try {
+			backend.startNewGame(nameField.getText(), ipField.getText(), Integer.parseInt(portField.getText()));
+		} catch (NumberFormatException e) {
+			System.out.println("Illegal port number.");
+		}
+	}
+
 	public void dispose() {
 		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_FILE);
 		preferences.putString(KEY_USERNAME, nameField.getText());

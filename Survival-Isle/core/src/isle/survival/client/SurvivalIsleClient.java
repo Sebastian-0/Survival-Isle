@@ -109,7 +109,10 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					Thread.currentThread().interrupt();
 					break;
 				default:
-					game.parseServerMessage(code);
+					if (game != null)
+						game.parseServerMessage(code);
+					else
+						throw new ConnectionClosedException();
 					break;
 				}
 			}
