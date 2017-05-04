@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import server.Connection;
+import util.Point;
 import world.World;
 
 @SuppressWarnings("serial")
@@ -17,6 +18,7 @@ public class ClientWorld extends World {
 	private SpriteBatch spriteBatch;
 	private int[][] walls;
 	private float[][] debug;
+	private int[][] shiny;
 	private boolean isDaytime; 
 	private Texture nightTexture;
 	private double duskTimer;
@@ -35,20 +37,29 @@ public class ClientWorld extends World {
 		
 	}
 
-	public void drawTerrain(float xOffset, float yOffset) {
+	private Point startPoint(float xOffset, float yOffset) {
 		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
 		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
+		return new Point(startX, startY);
+	}
+	private Point endPoint(float xOffset, float yOffset) {
 		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH + 1, width));
 		int endY = (int) (Math.min((yOffset + Gdx.graphics.getHeight()) / TILE_HEIGHT + 1, height));
+		return new Point(endX, endY);
+	}
+
+	public void drawTerrain(float xOffset, float yOffset) {
+		Point start = startPoint(xOffset, yOffset);
+		Point end = endPoint(xOffset, yOffset);
 		
-		for (int i = startX; i < endX; i++) {
-			for (int j = startY; j < endY; j++) {
+		for (int i = (int) start.x; i < end.x; i++) {
+			for (int j = (int) start.y; j < end.y; j++) {
 				spriteBatch.draw(textureBase.getGroundTileTexture(ground[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
 			}
 		}
 		
-		for (int i = startX; i < endX; i++) {
-			for (int j = startY; j < endY; j++) {
+		for (int i = (int) start.x; i < end.x; i++) {
+			for (int j = (int) start.y; j < end.y; j++) {
 				if (walls[i][j] != -1)
 					spriteBatch.draw(textureBase.getWallTileTexture(walls[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
 			}
@@ -64,15 +75,28 @@ public class ClientWorld extends World {
 		}
 	}
 	
-	public void drawDebug(BitmapFont debugFont, float xOffset, float yOffset) {
-		int startX = (int) (Math.max(xOffset / TILE_WIDTH, 0));
-		int startY = (int) (Math.max(yOffset / TILE_HEIGHT, 0));
-		int endX = (int) (Math.min((xOffset + Gdx.graphics.getWidth()) / TILE_WIDTH + 1, width));
-		int endY = (int) (Math.min((yOffset + Gdx.graphics.getHeight()) / TILE_HEIGHT + 1, height));
+	public void drawShininess(float xOffset, float yOffset) {
+		Point start = startPoint(xOffset, yOffset);
+		Point end = endPoint(xOffset, yOffset);
 
+		for (int i = (int) start.x; i < end.x; i++) {
+			for (int j = (int) start.y; j < end.y; j++) {
+				if (shiny[i][j] == 1) {
+					spriteBatch.draw(textureBase.getTexture("shiny_tile"), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+				} else if (shiny[i][j] == -1) {
+					spriteBatch.draw(textureBase.getTexture("unshiny_tile"), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+				}
+			}
+		}
+	}
+	
+	public void drawDebug(BitmapFont debugFont, float xOffset, float yOffset) {
 		debugFont.setColor(Color.BLACK);
-		for (int i = startX; i < endX; i++) {
-			for (int j = startY; j < endY; j++) {
+
+		Point start = startPoint(xOffset, yOffset);
+		Point end = endPoint(xOffset, yOffset);
+		for (int i = (int) start.x; i < end.x; i++) {
+			for (int j = (int) start.y; j < end.y; j++) {
 				if (debug[i][j] != 0) {
 					float value = MathUtils.floor(debug[i][j]*100)/100f;
 //					if ((float)((int)value) == value)
@@ -106,6 +130,15 @@ public class ClientWorld extends World {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				walls[x][y] = connection.receiveInt();
+			}
+		}
+		
+		shiny = new int[width][height];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				shiny[x][y] = Math.random() < 0.2 ? 1 : 0;
+				if (shiny[x][y] == 0)
+					shiny[x][y] = Math.random() < 0.4 ? -1 : 0;
 			}
 		}
 
