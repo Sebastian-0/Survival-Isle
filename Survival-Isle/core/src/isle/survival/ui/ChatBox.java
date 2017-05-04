@@ -15,7 +15,7 @@ public class ChatBox {
 	private BitmapFont font;
 	
 	public ChatBox() {
-		font = new BitmapFont(Gdx.files.internal("font32.fnt"));
+		font = new BitmapFont(Gdx.files.internal("high_tower_text24.fnt"));
 		position = new Point();
 		size = new Point();
 		textField = new TextField(position, size, font, "");

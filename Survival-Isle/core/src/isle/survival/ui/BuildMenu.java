@@ -41,7 +41,7 @@ public class BuildMenu {
 		marker = textures.getTexture("marker");
 		textureBase = textures;
 	
-		BitmapFont font = new BitmapFont(Gdx.files.internal("font14.fnt"));
+		BitmapFont font = new BitmapFont(Gdx.files.internal("font18.fnt"));
 		this.font = font;
 		
 		setSelectedIndex(0);
