@@ -3,6 +3,7 @@ package isle.survival.client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +14,12 @@ import isle.survival.ui.TextField;
 import util.Point;
 
 public class TitleScreen extends InputAdapter {
+	
+	private static final String PREFERENCES_FILE = "survival_isle_preferences";
+	private static final String KEY_USERNAME = "username";
+	private static final String KEY_HOST = "host";
+	private static final String KEY_PORT = "port";
+	
 	private TitleScreenBackend backend;
 	private SpriteBatch spriteBatch;
 	private Texture texture;
@@ -27,10 +34,12 @@ public class TitleScreen extends InputAdapter {
 		texture = new Texture("title_screen.png");
 		this.spriteBatch = spriteBatch;
 		
+		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_FILE);
+		
 		font = new BitmapFont(Gdx.files.internal("dragonslapper.fnt"));
-		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, "player" + (int)Math.floor(Math.random()*100));
-		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, "localhost");
-		portField = new TextField(new Point(160, 160), new Point(320, 26), font, "1337");
+		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, preferences.getString(KEY_USERNAME, "Username"));
+		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, preferences.getString(KEY_HOST, "localhost"));
+		portField = new TextField(new Point(160, 160), new Point(320, 26), font, preferences.getString(KEY_PORT, "1337"));
 		startButton = new Button(new Point(256, 100), new Point(128, 28), font, " Join Game");
 	}
 	
@@ -89,7 +98,7 @@ public class TitleScreen extends InputAdapter {
 		portField.touchDown(screenX, screenY, pointer, button);
 		if (startButton.touchDown(screenX, screenY, pointer, button)) {
 			try {
-			backend.startNewGame(nameField.getText(), ipField.getText(), Integer.parseInt(portField.getText()));
+				backend.startNewGame(nameField.getText(), ipField.getText(), Integer.parseInt(portField.getText()));
 			} catch (NumberFormatException e) {
 				System.out.println("Illegal port number.");
 			}
@@ -99,6 +108,12 @@ public class TitleScreen extends InputAdapter {
 	
 	
 	public void dispose() {
+		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_FILE);
+		preferences.putString(KEY_USERNAME, nameField.getText());
+		preferences.putString(KEY_HOST, ipField.getText());
+		preferences.putString(KEY_PORT, portField.getText());
+		preferences.flush();
+		
 		font.dispose();
 	}
 }

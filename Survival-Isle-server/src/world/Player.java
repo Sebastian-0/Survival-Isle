@@ -44,28 +44,28 @@ public class Player extends GameObject implements Serializable {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MoveUp:
-			if (!shouldBeRemoved) {
+			if (!shouldBeRemoved && !game.isGameOver()) {
 				actOnWorld(game, 0, 1);
 				game.doForEachClient(updateObject);
 				updateToolAfterPlayerMove(game);
 			}
 			break;
 		case MoveLeft:
-			if (!shouldBeRemoved) {
+			if (!shouldBeRemoved && !game.isGameOver()) {
 				actOnWorld(game, -1, 0);
 				game.doForEachClient(updateObject);
 				updateToolAfterPlayerMove(game);
 			}
 			break;
 		case MoveDown:
-			if (!shouldBeRemoved) {
+			if (!shouldBeRemoved && !game.isGameOver()) {
 				actOnWorld(game, 0, -1);
 				game.doForEachClient(updateObject);
 				updateToolAfterPlayerMove(game);
 			}
 			break;
 		case MoveRight:
-			if (!shouldBeRemoved) {
+			if (!shouldBeRemoved && !game.isGameOver()) {
 				actOnWorld(game, 1, 0);
 				game.doForEachClient(updateObject);
 				updateToolAfterPlayerMove(game);
@@ -73,7 +73,7 @@ public class Player extends GameObject implements Serializable {
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
-			if (!shouldBeRemoved) {
+			if (!shouldBeRemoved && !game.isGameOver()) {
 				try {
 					selectedTool = Tool.values()[toolIndex];
 				} catch (ArrayIndexOutOfBoundsException e) {
@@ -82,7 +82,7 @@ public class Player extends GameObject implements Serializable {
 			}
 			break;
 		case ActivateTool:
-			if (!shouldBeRemoved) {
+			if (!shouldBeRemoved && !game.isGameOver()) {
 				toolActive = true;
 				selectedTool.use(game, this);
 			}

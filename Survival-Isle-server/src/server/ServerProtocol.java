@@ -15,5 +15,6 @@ public enum ServerProtocol {
 	SendClose,
 	AckClose,
 	SendChatMessage, 
-	SendDebug;
+	SendDebug,
+	SendGameOver;
 }

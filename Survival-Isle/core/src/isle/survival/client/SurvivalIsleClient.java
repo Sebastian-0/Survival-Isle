@@ -144,7 +144,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		textureBase.dispose();
 		spriteBatch.dispose();
 		soundBase.dispose();
-		game.dispose();
+		if (game != null)
+			game.dispose();
 		game = null;
 		titleScreen.dispose();
 

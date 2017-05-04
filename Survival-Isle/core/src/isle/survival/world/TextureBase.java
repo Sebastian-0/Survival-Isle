@@ -10,7 +10,7 @@ public class TextureBase {
 	private ObjectMap<Integer, Texture> objectTextures;
 	
 	private ObjectMap<String, Texture> textures;
-	
+
 	private Texture defaultTexture;
 
 	public TextureBase() {

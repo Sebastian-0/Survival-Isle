@@ -23,7 +23,7 @@ import world.ServerWorld;
 import world.Time;
 import world.WorldObjects;
 
-public class Game implements GameInterface, TimeInterface, Serializable {
+public class Game implements GameInterface, TimeListener, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -40,6 +40,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	private Time time;
 
 	private boolean gameOver;
+	private boolean shouldStopUpdating;
 	
 	public Game() {
 		world = new ServerWorld(200, 150, this);
@@ -52,13 +53,17 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		spawnEnemies(deltaTime);
-		time.advanceTime(this, deltaTime);
-		worldObjects.update(this, deltaTime);
-		updateDeadPlayers(deltaTime);
-		
-		updateWallTiles();
-		sendInventoryUpdates();
+		if (!shouldStopUpdating) {
+			if (gameOver)
+				shouldStopUpdating = true;
+			spawnEnemies(deltaTime);
+			time.advanceTime(this, deltaTime);
+			worldObjects.update(this, deltaTime);
+			updateDeadPlayers(deltaTime);
+			
+			updateWallTiles();
+			sendInventoryUpdates();
+		}
 		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
@@ -168,6 +173,8 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		client.sendInventory(player.getInventory());
 		players.put(client, player);
 		new ClientListener(this, client).start();
+		if (gameOver)
+			client.sendGameOver();
 	}
 	
 	@Override
@@ -228,7 +235,11 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 			break;
 		case SendChatMessage:
 			String message = client.getConnection().receiveString();
-			doForEachClient(c -> c.sendChatMessage(client.getName(), message));
+			if (message.startsWith("/")) {
+				parseCheatCode(client, message);
+			}
+			else
+				doForEachClient(c -> c.sendChatMessage(client.getName(), message));
 			break;
 		case DebugRequest:
 			client.sendDebug(this);
@@ -236,6 +247,20 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 		default:
 			System.out.println("Server received unexpected message: " + code);
 			break;
+		}
+	}
+
+	private void parseCheatCode(ServerProtocolCoder client, String message) {
+		if (message.equals("/night")) {
+			time.advanceToNight(this);
+			doForEachClient(c -> c.sendChatMessage("", "Night suddenly falls on " + client.getName() + "."));
+		} else if (message.equals("/day")) {
+			time.advanceToDay(this);
+			doForEachClient(c -> c.sendChatMessage("", "Dawn comes quickly as " + client.getName() + " praises the sun."));
+		} else if (message.equals("/payday")) {
+			players.get(client).getInventory().addItem(ItemType.Stone, 100);
+			players.get(client).getInventory().addItem(ItemType.Wood, 100);
+			doForEachClient(c -> c.sendChatMessage("", "Through shady stock market deals, " + client.getName() + " suddenly got filthy rich."));
 		}
 	}
 
@@ -292,7 +317,12 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	private void gameOver() {
 		if (!gameOver) {
 			gameOver = true;
+			doForEachClient(c->c.sendGameOver());
 			System.out.println("GAME OVER!");
 		}
+	}
+	
+	public boolean isGameOver() {
+		return gameOver;
 	}
 }

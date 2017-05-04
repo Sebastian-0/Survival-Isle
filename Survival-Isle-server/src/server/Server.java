@@ -2,7 +2,6 @@ package server;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,7 +20,7 @@ public class Server {
 		this.port = port;
 	}
 
-	public void readConsoleInput() throws IOException {
+	public void readConsoleInput() {
 		Scanner in = new Scanner(System.in);
 		while (in.hasNext()) {
 			switch(in.next().toLowerCase()) {
@@ -62,24 +61,25 @@ public class Server {
 		}
 	}
 
-	public void load(String filename) throws IOException, FileNotFoundException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filename)));
-		try {
+	public void load(String filename) {
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filename)))) {
 			game = (Game) ois.readObject();
 			System.out.println("Game loaded");
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException | IOException e) {
 			game = null;
 			System.out.println("Failed to load game");
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-		ois.close();
 	}
 
-	public void save(Scanner in) throws IOException, FileNotFoundException {
-		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(readFilename(in))));
-		out.writeObject(game);
-		out.close();
-		System.out.println("Game saved");
+	public void save(Scanner in) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File(readFilename(in))))) {
+			out.writeObject(game);
+			System.out.println("Game saved");
+		} catch (IOException e) {
+			System.out.println("Failed to save game");
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void start() {
@@ -111,7 +111,7 @@ public class Server {
 		return filename;
 	}
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		int port = 1337;
 		if (args.length >= 1)
 			port = Integer.parseInt(args[0]);
