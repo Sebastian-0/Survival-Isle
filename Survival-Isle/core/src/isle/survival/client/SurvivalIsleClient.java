@@ -70,10 +70,10 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	
 	@Override
 	public void render() {
-		if (game == null) {
-			titleScreen.draw();
-		} else {
-			synchronized (this) {
+		synchronized (this) {
+			if (game == null) {
+				titleScreen.draw();
+			} else {
 				game.update();
 				game.draw();	
 			}
