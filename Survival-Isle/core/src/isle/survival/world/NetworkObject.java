@@ -150,6 +150,10 @@ public class NetworkObject {
 			painTimer = 0.5f;
 	}
 
+	public void setTextureId(int texId) {
+		textureId = texId;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof NetworkObject && ((NetworkObject) o).id == id)

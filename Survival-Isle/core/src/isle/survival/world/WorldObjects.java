@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 import server.Connection;
 import world.GameObject.AnimationState;
+import world.ObjectType;
 import world.World;
 
 public class WorldObjects {
@@ -126,6 +127,7 @@ public class WorldObjects {
 		for (NetworkObject object : objects) {
 			if (object.getId() == id) {
 				player = object;
+				object.setTextureId(ObjectType.Friend.ordinal());
 				break;
 			}
 		}
