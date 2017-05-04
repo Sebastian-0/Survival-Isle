@@ -39,7 +39,7 @@ public abstract class MenuComponent {
 		else
 			spriteBatch.draw(background, position.x, position.y, size.x, size.y);
 			
-		font.draw(spriteBatch, text, position.x+4, position.y + size.y);
+		font.draw(spriteBatch, text, position.x+4, position.y + size.y/2 + font.getCapHeight()/2);
 	}
 	
 	public boolean keyTyped(char character) {
