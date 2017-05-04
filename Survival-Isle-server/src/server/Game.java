@@ -52,13 +52,15 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		spawnEnemies(deltaTime);
-		time.advanceTime(this, deltaTime);
-		worldObjects.update(this, deltaTime);
-		updateDeadPlayers(deltaTime);
-		
-		updateWallTiles();
-		sendInventoryUpdates();
+		if (!gameOver) {
+			spawnEnemies(deltaTime);
+			time.advanceTime(this, deltaTime);
+			worldObjects.update(this, deltaTime);
+			updateDeadPlayers(deltaTime);
+			
+			updateWallTiles();
+			sendInventoryUpdates();
+		}
 		removeLeavingClients();
 		initNewClients();
 		clients.forEach(client -> client.flush());
