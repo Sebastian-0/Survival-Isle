@@ -89,6 +89,6 @@ public class Enemy extends GameObject implements Serializable {
 	protected void die(GameInterface game) {
 		super.die(game);
 		shouldBeRemoved = true;
-		game.getWorld().increasePathMultiplier(getPosition(), 1, 0.1f);
+		game.getWorld().increaseTemporaryPathCost(getPosition(), 1, 1f);
 	}
 }

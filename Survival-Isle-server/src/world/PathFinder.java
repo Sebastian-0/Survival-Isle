@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import util.Point;
 
 public class PathFinder {
-	private static final int STEP_COST = 100;
+	private static final int STEP_COST = 1;
 	
 	private ServerWorld world;
 
@@ -45,18 +45,18 @@ public class PathFinder {
 	private void addNeighbour(State state, Node node, int dx, int dy) {
 		Point neighbour = new Point(node.position.x + dx, node.position.y + dy);
 		if (isValidPosition(state, neighbour)) {
-			Node tile = getTile(state, neighbour);
-			if (!tile.isClosed) {
-				int stepCost = getStepCost(neighbour);
-				int oldCost = tile.fCost;
-				tile.fCost = Math.min(oldCost, node.gCost + stepCost + getHeuristic(state, neighbour));
-				if (tile.fCost < oldCost) {
-					if (tile.isInList)
-						state.openNodes.remove(tile);
-					state.openNodes.add(tile);
-					tile.gCost = node.gCost + stepCost;
-					tile.parent = node;
-					tile.isInList = true;
+			Node neighbourTile = getTile(state, neighbour);
+			if (!neighbourTile.isClosed) {
+				float stepCost = getStepCost(neighbour);
+				float oldCost = neighbourTile.fCost;
+				neighbourTile.fCost = Math.min(oldCost, node.gCost + stepCost + getHeuristic(state, neighbour));
+				if (neighbourTile.fCost < oldCost) {
+					if (neighbourTile.isInList)
+						state.openNodes.remove(neighbourTile);
+					state.openNodes.add(neighbourTile);
+					neighbourTile.gCost = node.gCost + stepCost;
+					neighbourTile.parent = node;
+					neighbourTile.isInList = true;
 				}
 			}
 		}
@@ -77,13 +77,15 @@ public class PathFinder {
 		return node;
 	}
 	
-	private int getStepCost(Point position) {
-		return (int) (STEP_COST * world.getPathMultiplierAt(position));
+	private float getStepCost(Point position) {
+//		if (world.getAdditionalPathCostAt(position) > 1) {
+//			System.out.println("Additional: " + world.getAdditionalPathCostAt(position) + " vs. " + STEP_COST * world.getPathMultiplierAt(position));
+//		}
+		return STEP_COST * world.getPathMultiplierAt(position) + world.getAdditionalPathCostAt(position);
 	}
 	
-	private int getHeuristic(State state, Point position) {
-		return (int) (Math.abs(position.x - state.end.x) +
-					Math.abs(position.y - state.end.y)); 
+	private float getHeuristic(State state, Point position) {
+		return Math.abs(position.x - state.end.x) + Math.abs(position.y - state.end.y); 
 	}
 	
 	private List<Point> constructPath(Node node) {
@@ -114,8 +116,8 @@ public class PathFinder {
 		Point position;
 		Node parent;
 
-		int gCost;
-		int fCost;
+		float gCost;
+		float fCost;
 		boolean isClosed;
 		boolean isInList;
 		
@@ -127,7 +129,7 @@ public class PathFinder {
 
 		@Override
 		public int compareTo(Node other) {
-			return fCost - other.fCost;
+			return (int) Math.signum(fCost - other.fCost);
 		}
 	}
 }

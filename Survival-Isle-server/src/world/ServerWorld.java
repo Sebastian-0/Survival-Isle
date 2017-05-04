@@ -14,13 +14,13 @@ import world.WorldGenerator.GenerationResult;
 public class ServerWorld extends World implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private static final float PATH_MULTIPLIER_DECAY = 0.9f;
+	private static final float PATH_COST_DECAY = 0.9f;
 	
 	private GameInterface game;
 	
 	private Random random;
 	
-	private float[][] temporaryPathMultipliers;
+	private float[][] temporaryPathCost;
 	private WallTile[][] walls;
 	
 	private List<Point> wallTilesToUpdate; 
@@ -31,9 +31,9 @@ public class ServerWorld extends World implements Serializable {
 	public ServerWorld(int width, int height, GameInterface game) {
 		super(width, height);
 		this.game = game;
-		temporaryPathMultipliers = new float[width][height];
+		temporaryPathCost = new float[width][height];
 		wallTilesToUpdate = new LinkedList<Point>();
-		decreasePathMultipliers();
+		decreaseTemporaryPathCost();
 	}
 	
 	public void generateTerrain() {
@@ -135,7 +135,7 @@ public class ServerWorld extends World implements Serializable {
 	}
 	
 	public float getPathMultiplierAt(Point position) {
-		float multiplier = temporaryPathMultipliers[(int) position.x][(int) position.y];
+		float multiplier = 1;
 		
 		WallTile tile = getWallTileAtPosition(position);
 		if (tile != null) {
@@ -145,26 +145,24 @@ public class ServerWorld extends World implements Serializable {
 		return multiplier;
 	}
 	
-	public void decreasePathMultipliers() {
+	public float getAdditionalPathCostAt(Point position) {
+		return temporaryPathCost[(int) position.x][(int) position.y];
+	}
+	
+	public void decreaseTemporaryPathCost() {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				float multiplier = temporaryPathMultipliers[x][y];
-				multiplier = Math.max(1,  (multiplier - 1) * PATH_MULTIPLIER_DECAY);
-				temporaryPathMultipliers[x][y] = multiplier;
+				temporaryPathCost[x][y] *= PATH_COST_DECAY;
 			}
 		}
 	}
 	
-	public void increasePathMultiplier(Point center, int radius, float percentageIncrease) {
-		if (percentageIncrease < 0)
-			throw new IllegalArgumentException("The increase must be >= 0: " + percentageIncrease); // the array values should never be < 1
-		
+	public void increaseTemporaryPathCost(Point center, int radius, float amount) {
 		for (int dx = -radius; dx <= radius; dx++) {
 			for (int dy = -radius; dy <= radius; dy++) {
 				Point position = new Point(center.x + dx, center.y + dy);
 				if (isInBounds(position)) {
-					float increase = (float) (percentageIncrease / (1 + Math.sqrt(dx*dx + dy*dy)));
-					temporaryPathMultipliers[(int) position.x][(int) position.y] *= (1 + increase);
+					temporaryPathCost[(int) position.x][(int) position.y] += amount/(1 + Math.sqrt(dx*dx + dy*dy));
 				}
 			}
 		}
@@ -211,11 +209,11 @@ public class ServerWorld extends World implements Serializable {
 	public void sendDebug(Connection connection) {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (temporaryPathMultipliers[i][j] != 1) {
+				if (temporaryPathCost[i][j] != 0) {
 					connection.sendInt(1);
 					connection.sendInt(i);
 					connection.sendInt(j);
-					connection.sendString(temporaryPathMultipliers[i][j]+"");
+					connection.sendString(temporaryPathCost[i][j]+"");
 				}
 			}
 		}

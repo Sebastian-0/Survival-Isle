@@ -28,7 +28,7 @@ import world.Tool;
 import world.World;
 
 public class ClientGame {
-	private final boolean IN_DEBUG_MODE = false;
+	private final boolean IN_DEBUG_MODE = true;
 	
 	private String name;
 	private TextureBase textureBase;

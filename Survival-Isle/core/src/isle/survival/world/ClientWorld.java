@@ -74,7 +74,11 @@ public class ClientWorld extends World {
 		for (int i = startX; i < endX; i++) {
 			for (int j = startY; j < endY; j++) {
 				if (debug[i][j] != 0) {
-					debugFont.draw(spriteBatch, ""+(MathUtils.floor(debug[i][j]*100)/100f), i*TILE_WIDTH - xOffset, (j+1)*TILE_HEIGHT - yOffset);
+					float value = MathUtils.floor(debug[i][j]*100)/100f;
+//					if ((float)((int)value) == value)
+						debugFont.draw(spriteBatch, ""+(int)value, i*TILE_WIDTH - xOffset, (j+1)*TILE_HEIGHT - yOffset);
+//					else
+//						debugFont.draw(spriteBatch, ""+value, i*TILE_WIDTH - xOffset, (j+1)*TILE_HEIGHT - yOffset);
 				}
 			}
 		}
