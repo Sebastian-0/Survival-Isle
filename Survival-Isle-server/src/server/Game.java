@@ -6,8 +6,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import util.Point;
@@ -299,8 +301,27 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	}
 
 	@Override
-	public void playerDied(Player player) {
+	public void playerDied(Player player, int crystalCount) {
 		deadPlayers.add(player);
+
+		String name = "Noname";
+		Iterator<Entry<ServerProtocolCoder, Player>> iterator = players.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<ServerProtocolCoder, Player> e = iterator.next();
+			if (e.getValue() == player) {
+				name = e.getKey().getName();
+				break;
+			}
+		}
+		final String n = name;
+
+		if (crystalCount == 0)
+			doForEachClient(c->c.sendChatMessage("Echoes", n + " has died."));
+		else if (crystalCount == 1)
+			doForEachClient(c->c.sendChatMessage("Echoes", "As " + n + " dies, their crystal shatters!"));
+		else
+			doForEachClient(c->c.sendChatMessage("Echoes", "As " + n + " dies, their " + crystalCount + " crystals shatter!"));
+		
 		checkForRespawnCrystals();
 	}
 	
