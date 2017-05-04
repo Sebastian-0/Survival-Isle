@@ -30,7 +30,7 @@ public class Server {
 			case "new":
 				if (!running) {
 					System.out.println("Starting game...");
-					game = new Game();
+					newGame();
 					start();
 				} else {
 					System.out.println("Can not start game if already started");
@@ -61,6 +61,10 @@ public class Server {
 				break;
 			}
 		}
+	}
+
+	public void newGame() {
+		game = new Game();
 	}
 
 	public void load(String filename) {

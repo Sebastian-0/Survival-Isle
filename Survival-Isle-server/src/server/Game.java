@@ -339,6 +339,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 		if (!gameOver) {
 			gameOver = true;
 			doForEachClient(c->c.sendGameOver());
+			doForEachClient(c->c.sendChatMessage("Echoes", "With the breaking of the last crystal, the world is plunged into darkness..."));
 			System.out.println("GAME OVER!");
 		}
 	}

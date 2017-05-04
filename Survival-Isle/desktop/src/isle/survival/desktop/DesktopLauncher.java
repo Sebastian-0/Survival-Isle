@@ -12,6 +12,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class DesktopLauncher {
 	public static void main (String[] arg) throws IOException {
 		Server server = new Server(1337);
+		server.newGame();
 		server.start();
 		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
