@@ -24,12 +24,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 
 	private ClientGame game;
 	
-	private String name; //TODO: move to where game should be created
 	private TitleScreen titleScreen;
-	
-	public SurvivalIsleClient(String name) {
-		this.name = name;
-	}
 	
 	@Override
 	public void create () {
@@ -38,11 +33,10 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		soundBase = new SoundBase();
 		
 		titleScreen = new TitleScreen(this, spriteBatch);
+		Gdx.input.setInputProcessor(titleScreen);
 		
 		Shaders.initShaders();
 		spriteBatch.setShader(Shaders.colorShader);
-
-		startNewGame(name, "localhost", 1337);
 	}
 
 	@Override
@@ -50,8 +44,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		game = new ClientGame(name, spriteBatch, textureBase, soundBase);
 		connectToServer(ip, port);
 		if (coder == null) {
-			game = null;
-			Gdx.input.setInputProcessor(titleScreen);
+			showTitleScreen();
 		}
 	}
 	
@@ -98,8 +91,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				case FailedToConnect:
 					System.out.println("User name already in use.");
 					closeSocket();
-					game = null;
-					Gdx.input.setInputProcessor(titleScreen);
+					showTitleScreen();
 					terminateProgram();
 					Thread.currentThread().interrupt();
 					break;
@@ -113,8 +105,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					break;
 				case AckClose:
 					closeSocket();
-					game = null;
-					Gdx.input.setInputProcessor(titleScreen);
+					showTitleScreen();
 					Thread.currentThread().interrupt();
 					break;
 				default:
@@ -125,10 +116,14 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		} catch (ConnectionClosedException e) {
 			System.out.println("Host lost.");
 			closeSocket();
-			game = null;
-			Gdx.input.setInputProcessor(titleScreen);
+			showTitleScreen();
 			Thread.currentThread().interrupt();
 		}
+	}
+
+	private void showTitleScreen() {
+		game = null;
+		Gdx.input.setInputProcessor(titleScreen);
 	}
 
 	private void closeSocket() {

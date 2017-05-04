@@ -77,8 +77,7 @@ public class InputProcessor extends InputAdapter {
 			coder.sendActivateTool();
 			break;
 		case Input.Keys.ESCAPE:
-			Gdx.app.exit();
-			Thread.currentThread().interrupt();
+			coder.sendClose();
 			break;
 		default:
 			return false;

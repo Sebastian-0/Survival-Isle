@@ -4,8 +4,6 @@ import isle.survival.client.SurvivalIsleClient;
 
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
 import server.Server;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -16,12 +14,9 @@ public class DesktopLauncher {
 		Server server = new Server(1337);
 		server.start();
 		
-		String name = JOptionPane.showInputDialog("Enter name");
-		if (name != null) {
-			LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-			config.width = 800;
-			config.height = 600;
-			new LwjglApplication(new SurvivalIsleClient(name), config);
-		}
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = 800;
+		config.height = 600;
+		new LwjglApplication(new SurvivalIsleClient(), config);
 	}
 }
