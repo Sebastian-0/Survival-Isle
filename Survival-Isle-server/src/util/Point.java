@@ -62,4 +62,9 @@ public class Point implements Serializable {
 		y1 -= y2;
 		return (x1 * x1 + y1 * y1);
 	}
+	
+	@Override
+	public int hashCode() {
+		return (x + " " + y).hashCode();
+	}
 }

@@ -1,10 +1,13 @@
 package world;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
 
 import server.Connection;
 import util.Point;
@@ -218,5 +221,39 @@ public class ServerWorld extends World implements Serializable {
 			}
 		}
 		connection.sendInt(0);
+	}
+
+	public Point getFreeWallTile(Point position) {
+		Queue<Point> toSearch = new LinkedList<>();
+		Set<Point> searched = new HashSet<>();
+		toSearch.offer(position);
+		
+		while (!toSearch.isEmpty()) {
+			Point p = toSearch.poll(); 
+			if (walls[(int) p.x][(int) p.y] == null)
+				return p;
+
+			Point next = new Point(p.x-1, p.y);
+			if (p.x >= 0 && !searched.contains(next)) {
+				searched.add(next);
+				toSearch.offer(next);
+			}
+			next = new Point(p.x+1, p.y);
+			if (p.x < width && !searched.contains(next)) {
+				searched.add(next);
+				toSearch.offer(next);
+			}
+			next = new Point(p.x, p.y-1);
+			if (p.y >= 0 && !searched.contains(next)) {
+				searched.add(next);
+				toSearch.offer(next);
+			}
+			next = new Point(p.x, p.y+1);
+			if (p.x < height && !searched.contains(next)) {
+				searched.add(next);
+				toSearch.offer(next);
+			}
+		}
+		return null;
 	}
 }

@@ -131,6 +131,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 				clients.remove(client);
 				Player player = players.get(client);
 				removeObject(player);
+				dropPlayerCrystals(player);
 				doForEachClient(c -> c.sendChatMessage(client.getName(), "has left the game"));
 				if (deadPlayers.contains(player)) {
 					deadPlayers.remove(player);
@@ -139,6 +140,19 @@ public class Game implements GameInterface, TimeListener, Serializable {
 				}
 			}
 			leavingClients.clear();
+		}
+	}
+
+	private void dropPlayerCrystals(Player player) {
+		int amount = player.getInventory().getAmount(ItemType.RespawnCrystal);
+		player.getInventory().removeItem(ItemType.RespawnCrystal, amount);
+		for (; amount > 0; amount--) {
+			Point p = world.getFreeWallTile(player.getPosition());
+			if (p != null) {
+				new RespawnCrystal().instanciate(p, this);
+			} else {
+				checkForRespawnCrystals();
+			}
 		}
 	}
 
