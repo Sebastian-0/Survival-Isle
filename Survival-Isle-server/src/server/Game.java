@@ -40,6 +40,7 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	private Time time;
 
 	private boolean gameOver;
+	private boolean shouldStopUpdating;
 	
 	public Game() {
 		world = new ServerWorld(200, 150, this);
@@ -52,7 +53,9 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		if (!gameOver) {
+		if (!shouldStopUpdating) {
+			if (gameOver)
+				shouldStopUpdating = true;
 			spawnEnemies(deltaTime);
 			time.advanceTime(this, deltaTime);
 			worldObjects.update(this, deltaTime);
@@ -297,5 +300,9 @@ public class Game implements GameInterface, TimeInterface, Serializable {
 			doForEachClient(c->c.sendGameOver());
 			System.out.println("GAME OVER!");
 		}
+	}
+	
+	public boolean isGameOver() {
+		return gameOver;
 	}
 }

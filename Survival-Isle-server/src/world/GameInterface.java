@@ -16,4 +16,5 @@ public interface GameInterface {
 	WorldObjects getObjects();
 	
 	void checkForRespawnCrystals();
+	boolean isGameOver();
 }
