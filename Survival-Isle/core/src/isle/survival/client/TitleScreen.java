@@ -79,9 +79,18 @@ public class TitleScreen extends InputAdapter {
 	
 	@Override
 	public boolean keyTyped(char character) {
-		nameField.keyTyped(character); 
-		ipField.keyTyped(character); 
-		portField.keyTyped(character);
+		boolean inField = false;
+		inField = 	(nameField.keyTyped(character) 	|| 
+					ipField.keyTyped(character) 	|| 
+					portField.keyTyped(character));
+		if (!inField) {
+			startButton.setFocus(true);
+			try {
+				backend.startNewGame(nameField.getText(), ipField.getText(), Integer.parseInt(portField.getText()));
+			} catch (NumberFormatException e) {
+				System.out.println("Illegal port number.");
+			}
+		}
 		return true;
 	}
 	

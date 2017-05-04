@@ -29,8 +29,9 @@ public class TextField extends MenuComponent {
 			else if (character >= 32 && character < 127) {
 				text += character;
 			}
+			return true;
 		}
-		return hasFocus;
+		return false;
 	}
 	
 	@Override
