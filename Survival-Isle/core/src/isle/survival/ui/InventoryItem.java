@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class InventoryItem {
 	public static final int HEIGHT = 32;
 	public static final float ANIMATION_TIME = 1f;
+	private static final int PADDING = 8;
 	
 	private Texture image;
 	private String text;
@@ -59,7 +60,7 @@ public class InventoryItem {
 				image.getWidth() * scale, 
 				image.getHeight() * scale);
 		
-		x += image.getWidth();
+		x += image.getWidth() + PADDING;
 		float y = position.y + image.getHeight() / 2 + font.getCapHeight()/2;
 		font.draw(spriteBatch, text, x, y);
 		x += layout.width;
