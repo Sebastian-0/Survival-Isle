@@ -75,18 +75,23 @@ public class ClientWorld extends World {
 		}
 	}
 	
-	public void drawShininess(float xOffset, float yOffset) {
-		Point start = startPoint(xOffset, yOffset);
-		Point end = endPoint(xOffset, yOffset);
-
-		for (int i = (int) start.x; i < end.x; i++) {
-			for (int j = (int) start.y; j < end.y; j++) {
-				if (shiny[i][j] == 1) {
-					spriteBatch.draw(textureBase.getTexture("shiny_tile"), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
-				} else if (shiny[i][j] == -1) {
-					spriteBatch.draw(textureBase.getTexture("unshiny_tile"), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+	public void drawShininess(float xOffset, float yOffset, int intensity) {
+		if (intensity > 0) {
+			Point start = startPoint(xOffset, yOffset);
+			Point end = endPoint(xOffset, yOffset);
+			
+			spriteBatch.setColor(1, 1, 1, 0.01f * Math.min(intensity, 3));
+	
+			for (int i = (int) start.x; i < end.x; i++) {
+				for (int j = (int) start.y; j < end.y; j++) {
+					if (shiny[i][j] == 1) {
+						spriteBatch.draw(textureBase.getTexture("shiny_tile"), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+					} else if (shiny[i][j] == -1) {
+						spriteBatch.draw(textureBase.getTexture("unshiny_tile"), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+					}
 				}
 			}
+			spriteBatch.setColor(1, 1, 1, 1);
 		}
 	}
 	
