@@ -49,6 +49,7 @@ public class ClientGame {
 	private float xView;
 	private float yView;
 	private boolean gameOver;
+	private float gameOverFadeTimer;
 	
 	private BitmapFont debugFont;
 	
@@ -107,10 +108,15 @@ public class ClientGame {
 			coder.sendDebugRequest();
 		}
 		
+		if (gameOver)
+			gameOverFadeTimer = Math.min(gameOverFadeTimer + deltaTime/4, 0.8f);
+		
 		coder.flush();
 	}
 	
 	public void draw() {
+		Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
+		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 		frameBuffer.bind();
 		
 		Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
@@ -131,10 +137,12 @@ public class ClientGame {
 		frameBuffer.end();
 
 		spriteBatch.setShader(Shaders.monochromeShader);
-		if (inventory.getAmount(ItemType.RespawnCrystal) > 0)
-			spriteBatch.getShader().setUniformf("colorIntensity", 1f);
-		else
-			spriteBatch.getShader().setUniformf("colorIntensity", 0.75f);
+		
+		float colorIntensity = inventory.getAmount(ItemType.RespawnCrystal) > 0 ? 1 : 0.75f;
+		if (gameOver)
+			colorIntensity *= 1-gameOverFadeTimer;
+		
+		spriteBatch.getShader().setUniformf("colorIntensity", colorIntensity);
 		
 		spriteBatch.draw(frameBuffer.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, 1, 1);
 		spriteBatch.setShader(Shaders.colorShader);
