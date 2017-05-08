@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.Point;
+import world.WallTile.WallType;
 
 public class Enemy extends GameObject implements Serializable {
 	
@@ -67,6 +68,11 @@ public class Enemy extends GameObject implements Serializable {
 						animationState = AnimationState.Attacking;
 						animationTarget.set(nextPosition);
 						shouldSendUpdate = true;
+						
+						if (wallTile.getType() == WallType.RespawnCrystal && 
+								game.getWorld().getWallTileAtPosition(nextPosition) == null) {
+							game.doForEachClient(c->c.sendChatMessage("Echoes", "A crystal was shattered!"));
+						}
 					}
 				} else {
 					path.clear();

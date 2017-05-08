@@ -155,4 +155,9 @@ public class ServerProtocolCoder implements Serializable {
 	public void disconnect() {
 		connection.close();
 	}
+
+	public void sendDeathCount(int deathCount) {
+		connection.sendCode(ServerProtocol.SendDeathCount);
+		connection.sendInt(deathCount);
+	}
 }

@@ -20,6 +20,7 @@ public class Player extends GameObject implements Serializable {
 	private transient Tool selectedTool;
 	private transient boolean toolActive;
 	private double reviveCountdown;
+	private int deathCount;
 	
 	public Player() {
 		type = ObjectType.Player;
@@ -143,9 +144,12 @@ public class Player extends GameObject implements Serializable {
 			
 			if (crystalCount > 0) {
 				inventory.removeItem(ItemType.RespawnCrystal, inventory.getAmount(ItemType.RespawnCrystal));
+				deathCount = 0;
+			} else {
+				deathCount++;
 			}
 
-			game.playerDied(this, crystalCount);
+			game.playerDied(this, crystalCount, deathCount);
 			super.die(game);
 		}
 	}

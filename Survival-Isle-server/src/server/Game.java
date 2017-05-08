@@ -315,7 +315,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	}
 
 	@Override
-	public void playerDied(Player player, int crystalCount) {
+	public void playerDied(Player player, int crystalCount, int deathCount) {
 		deadPlayers.add(player);
 
 		String name = "Noname";
@@ -324,6 +324,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 			Entry<ServerProtocolCoder, Player> e = iterator.next();
 			if (e.getValue() == player) {
 				name = e.getKey().getName();
+				e.getKey().sendDeathCount(deathCount);
 				break;
 			}
 		}

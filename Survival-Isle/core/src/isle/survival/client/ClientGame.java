@@ -50,10 +50,13 @@ public class ClientGame {
 	private float yView;
 	private boolean gameOver;
 	private float gameOverFadeTimer;
+	private int deathCount;
 	
 	private BitmapFont debugFont;
 	
 	private Ui ui;
+
+	
 
 
 	public ClientGame(String name, SpriteBatch spriteBatch, TextureBase textureBase, SoundBase soundBase) {
@@ -138,7 +141,7 @@ public class ClientGame {
 
 		spriteBatch.setShader(Shaders.monochromeShader);
 		
-		float colorIntensity = inventory.getAmount(ItemType.RespawnCrystal) > 0 ? 1 : 0.75f;
+		float colorIntensity = inventory.getAmount(ItemType.RespawnCrystal) > 0 ? 1 : Math.max(0.9f - 0.1f*deathCount, 0.3f);
 		if (gameOver)
 			colorIntensity *= 1-gameOverFadeTimer;
 		
@@ -246,6 +249,9 @@ public class ClientGame {
 				break;
 			case SendGameOver:
 				gameOver = true;
+				break;
+			case SendDeathCount:
+				deathCount = coder.getConnection().receiveInt();
 				break;
 			case SendDebug:
 				world.clearDebug();
