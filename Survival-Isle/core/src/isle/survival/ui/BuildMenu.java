@@ -7,6 +7,7 @@ import java.util.Set;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -31,7 +32,9 @@ public class BuildMenu {
 		
 		BuildItem.whiteTexture = textures.getTexture("white");
 		items = new Array<>();
-		items.add(new BuildItem(Tool.Pickaxe, textures.getTexture("pickaxe"), inventory));
+		Texture pickaxe = textures.getTexture("pickaxe");
+		pickaxe.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		items.add(new BuildItem(Tool.Pickaxe, pickaxe, inventory));
 		items.add(new BuildItem(Tool.WoodWall, textures.getTexture("buildwoodwall"), inventory));
 		items.add(new BuildItem(Tool.StoneWall, textures.getTexture("buildstonewall"), inventory));
 		items.add(new BuildItem(Tool.Turret, textures.getTexture("buildturret"), inventory));
