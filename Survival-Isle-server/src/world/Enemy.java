@@ -18,9 +18,13 @@ public class Enemy extends GameObject implements Serializable {
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
 	private int pathAgeInSteps;
+	private int maxHp;
 	
-	public Enemy() {
+	public Enemy(int difficulty) {
 		type = ObjectType.Enemy;
+		
+		maxHp = 100 + difficulty * 5;
+		hp = getMaxHp();
 	}
 	
 	@Override
@@ -82,7 +86,7 @@ public class Enemy extends GameObject implements Serializable {
 
 	@Override
 	protected int getMaxHp() {
-		return 100;
+		return maxHp;
 	}
 	
 	@Override
