@@ -260,4 +260,9 @@ public class ClientGame {
 		if (IN_DEBUG_MODE)
 			debugFont.dispose();
 	}
+
+	public void resize(int width, int height) {
+		frameBuffer.dispose();
+		frameBuffer = new FrameBuffer(Format.RGBA4444, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+	}
 }
