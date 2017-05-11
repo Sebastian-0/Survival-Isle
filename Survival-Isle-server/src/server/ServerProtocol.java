@@ -17,5 +17,6 @@ public enum ServerProtocol {
 	SendChatMessage, 
 	SendDebug,
 	SendGameOver, 
-	SendDeathCount;
+	SendDeathCount, 
+	SendTileDamage;
 }
