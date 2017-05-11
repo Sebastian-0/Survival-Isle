@@ -3,6 +3,8 @@ package world;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.function.Consumer;
 
 import server.ClientProtocol;
@@ -14,11 +16,14 @@ public class Player extends GameObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final double REVIVE_TIME = 5;
 	private static final int DAMAGE = 5;
+	private static final double MOVEMENT_TIME = .3;
 	
 	
 	private Inventory inventory;
 	private transient Tool selectedTool;
 	private transient boolean toolActive;
+	private Queue<ClientProtocol> moves;
+	private double movementCounter;
 	private double reviveCountdown;
 	private int deathCount;
 	
@@ -27,6 +32,7 @@ public class Player extends GameObject implements Serializable {
 		inventory = new Inventory();
 		inventory.addItem(ItemType.RespawnCrystal, 1);
 		selectedTool = Tool.Pickaxe;
+		moves = new LinkedList<>();
 	}
 
 	public Inventory getInventory() {
@@ -36,41 +42,63 @@ public class Player extends GameObject implements Serializable {
 	@Override
 	public void update(GameInterface game, double deltaTime) {
 		super.update(game, deltaTime);
+			
+		movementCounter += deltaTime;
+		if (moves.size() > 0) {
+			updateMovement(game, deltaTime);
+		}
+		
 		sendUpdateIfHurt(game);
 	}
 
+	private void updateMovement(GameInterface game, double deltaTime) {
+		if (movementCounter > MOVEMENT_TIME) {
+			movementCounter = 0;
+			Consumer<ServerProtocolCoder> updateObject = c->c.sendUpdateObject(this);
+			ClientProtocol move = moves.poll();
+			switch (move) {
+			case MoveUp:
+				if (!shouldBeRemoved && !game.isGameOver()) {
+					actOnWorld(game, 0, 1);
+					game.doForEachClient(updateObject);
+					updateToolAfterPlayerMove(game);
+				}
+				break;
+			case MoveLeft:
+				if (!shouldBeRemoved && !game.isGameOver()) {
+					actOnWorld(game, -1, 0);
+					game.doForEachClient(updateObject);
+					updateToolAfterPlayerMove(game);
+				}
+				break;
+			case MoveDown:
+				if (!shouldBeRemoved && !game.isGameOver()) {
+					actOnWorld(game, 0, -1);
+					game.doForEachClient(updateObject);
+					updateToolAfterPlayerMove(game);
+				}
+				break;
+			case MoveRight:
+				if (!shouldBeRemoved && !game.isGameOver()) {
+					actOnWorld(game, 1, 0);
+					game.doForEachClient(updateObject);
+					updateToolAfterPlayerMove(game);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	public void parseMessage(ServerProtocolCoder client, GameInterface game) {
-		Consumer<ServerProtocolCoder> updateObject = c->c.sendUpdateObject(this);
-		
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MoveUp:
-			if (!shouldBeRemoved && !game.isGameOver()) {
-				actOnWorld(game, 0, 1);
-				game.doForEachClient(updateObject);
-				updateToolAfterPlayerMove(game);
-			}
-			break;
 		case MoveLeft:
-			if (!shouldBeRemoved && !game.isGameOver()) {
-				actOnWorld(game, -1, 0);
-				game.doForEachClient(updateObject);
-				updateToolAfterPlayerMove(game);
-			}
-			break;
 		case MoveDown:
-			if (!shouldBeRemoved && !game.isGameOver()) {
-				actOnWorld(game, 0, -1);
-				game.doForEachClient(updateObject);
-				updateToolAfterPlayerMove(game);
-			}
-			break;
 		case MoveRight:
-			if (!shouldBeRemoved && !game.isGameOver()) {
-				actOnWorld(game, 1, 0);
-				game.doForEachClient(updateObject);
-				updateToolAfterPlayerMove(game);
-			}
+			moves.add(code);
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
