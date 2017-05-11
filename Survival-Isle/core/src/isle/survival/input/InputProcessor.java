@@ -9,19 +9,17 @@ import isle.survival.ui.BuildMenu;
 import isle.survival.ui.ChatBox;
 import isle.survival.ui.Ui;
 import isle.survival.world.NetworkObject;
+import world.Player;
 
 public class InputProcessor extends InputAdapter {
 	
-	private static final float MOVEMENT_TIME = NetworkObject.MOVEMENT_TIME;
+	private static final float MOVEMENT_TIME = (float) Player.MOVEMENT_TIME;
 	
 	private GameProtocolCoder coder;
 	private BuildMenu buildMenu;
 	private ChatBox chatBox;
 	
-	private float movingUpCounter;
-	private float movingLeftCounter;
-	private float movingDownCounter;
-	private float movingRightCounter;
+	private float movementCounter;
 
 	public InputProcessor(Ui ui, GameProtocolCoder coder) {
 		this.buildMenu = ui.getBuildMenu();
@@ -38,22 +36,22 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.W:
 		case Input.Keys.UP:
 			coder.sendMoveUp();
-			movingUpCounter = MOVEMENT_TIME;
+			movementCounter += MOVEMENT_TIME;
 			break;
 		case Input.Keys.A:
 		case Input.Keys.LEFT:
 			coder.sendMoveLeft();
-			movingLeftCounter = MOVEMENT_TIME;
+			movementCounter += MOVEMENT_TIME;
 			break;
 		case Input.Keys.S:
 		case Input.Keys.DOWN:
 			coder.sendMoveDown();
-			movingDownCounter = MOVEMENT_TIME;
+			movementCounter += MOVEMENT_TIME;
 			break;
 		case Input.Keys.D:
 		case Input.Keys.RIGHT:
 			coder.sendMoveRight();
-			movingRightCounter = MOVEMENT_TIME;
+			movementCounter += MOVEMENT_TIME;
 			break;
 		case Input.Keys.Q:
 			buildMenu.decrementSelection();
@@ -131,33 +129,26 @@ public class InputProcessor extends InputAdapter {
 		if (chatBox.isEnabled())
 			return;
 		
-		if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))
-			movingUpCounter -= deltaTime;
-		if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))
-			movingLeftCounter-= deltaTime;
-		if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))
-			movingDownCounter -= deltaTime;
-		if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-			movingRightCounter -= deltaTime;
+		movementCounter -= deltaTime;
 		
-		if (movingUpCounter < 0) {
-			movingUpCounter += MOVEMENT_TIME;
-			coder.sendMoveUp();
-		}
-
-		if (movingLeftCounter < 0) {
-			movingLeftCounter += MOVEMENT_TIME;
-			coder.sendMoveLeft();
-		}
-
-		if (movingDownCounter < 0) {
-			movingDownCounter += MOVEMENT_TIME;
-			coder.sendMoveDown();
-		}
-
-		if (movingRightCounter < 0) {
-			movingRightCounter += MOVEMENT_TIME;
-			coder.sendMoveRight();
+		if (movementCounter <= 0) {
+			movementCounter = 0;
+			if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+				movementCounter += MOVEMENT_TIME;
+				coder.sendMoveUp();
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+				movementCounter += MOVEMENT_TIME;
+				coder.sendMoveLeft();
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+				movementCounter += MOVEMENT_TIME;
+				coder.sendMoveDown();
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+				movementCounter += MOVEMENT_TIME;
+				coder.sendMoveRight();
+			}
 		}
 	}
 }

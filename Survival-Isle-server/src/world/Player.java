@@ -16,7 +16,7 @@ public class Player extends GameObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final double REVIVE_TIME = 5;
 	private static final int DAMAGE = 5;
-	private static final double MOVEMENT_TIME = .3;
+	public static final double MOVEMENT_TIME = .3;
 	
 	
 	private Inventory inventory;
