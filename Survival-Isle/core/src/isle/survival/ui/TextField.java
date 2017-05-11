@@ -9,8 +9,8 @@ import util.Point;
 
 public class TextField extends MenuComponent {
 	
-	public TextField(Point position, Point size, BitmapFont font, String text) {
-		super(position, size, font, text);
+	public TextField(Point position, Point size, BitmapFont font, String defaultText, String text) {
+		super(position, size, font, defaultText, text);
 		background = new Texture("text_field_background.png");
 		backgroundFocus = new Texture("text_field_background_focus.png");
 	}

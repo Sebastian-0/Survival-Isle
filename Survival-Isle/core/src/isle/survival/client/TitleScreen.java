@@ -37,9 +37,9 @@ public class TitleScreen extends InputAdapter {
 		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_FILE);
 		
 		font = new BitmapFont(Gdx.files.internal("dragonslapper.fnt"));
-		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, preferences.getString(KEY_USERNAME, "Username"));
-		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, preferences.getString(KEY_HOST, "localhost"));
-		portField = new TextField(new Point(160, 160), new Point(320, 26), font, preferences.getString(KEY_PORT, "1337"));
+		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, "Enter username...", preferences.getString(KEY_USERNAME, "Username"));
+		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, "Enter host IP...", preferences.getString(KEY_HOST, "localhost"));
+		portField = new TextField(new Point(160, 160), new Point(320, 26), font, "Enter port number...", preferences.getString(KEY_PORT, "1337"));
 		startButton = new Button(new Point(256, 100), new Point(128, 28), font, " Join Game");
 	}
 	

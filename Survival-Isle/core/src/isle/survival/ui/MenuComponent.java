@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import util.Point;
 
 public abstract class MenuComponent {
+	protected String defaultText;
 	protected String text;
 	protected boolean hasFocus;
 	protected Point position;
@@ -16,13 +17,14 @@ public abstract class MenuComponent {
 	protected Texture background;
 	protected Texture backgroundFocus;
 	
-	public MenuComponent(Point position, Point size, BitmapFont font, String text) {
+	public MenuComponent(Point position, Point size, BitmapFont font, String defaultText, String text) {
 		this.position = position;
 		this.size = size;
 		this.font = font;
 		this.font.setColor(Color.BLACK);
 		hasFocus = false;
 		this.text = text;
+		this.defaultText = defaultText;
 	}
 
 	public void setFocus(boolean focus) {
@@ -39,7 +41,13 @@ public abstract class MenuComponent {
 		else
 			spriteBatch.draw(background, position.x, position.y, size.x, size.y);
 			
-		font.draw(spriteBatch, text, position.x+4, position.y + size.y/2 + font.getCapHeight()/2);
+		if (text.equals("")) {
+			font.setColor(Color.GRAY);
+			font.draw(spriteBatch, defaultText, position.x+4, position.y + size.y/2 + font.getCapHeight()/2);
+		} else {
+			font.setColor(Color.BLACK);
+			font.draw(spriteBatch, text, position.x+4, position.y + size.y/2 + font.getCapHeight()/2);
+		}
 	}
 	
 	public boolean keyDown(int keycode) {

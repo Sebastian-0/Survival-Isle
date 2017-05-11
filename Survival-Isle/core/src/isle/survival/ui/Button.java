@@ -9,7 +9,7 @@ import util.Point;
 public class Button extends MenuComponent {
 	
 	public Button(Point position, Point size, BitmapFont font, String text) {
-		super(position, size, font, text);
+		super(position, size, font, "", text);
 		background = new Texture("button_background.png");
 		backgroundFocus = new Texture("button_background.png");
 	}

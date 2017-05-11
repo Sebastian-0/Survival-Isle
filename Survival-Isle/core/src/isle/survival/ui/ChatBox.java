@@ -18,7 +18,7 @@ public class ChatBox {
 		font = new BitmapFont(Gdx.files.internal("high_tower_text24.fnt"));
 		position = new Point();
 		size = new Point();
-		textField = new TextField(position, size, font, "");
+		textField = new TextField(position, size, font, "Enter text...", "");
 		textField.setFocus(true);
 	}
 	
