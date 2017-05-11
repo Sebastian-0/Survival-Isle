@@ -160,4 +160,11 @@ public class ServerProtocolCoder implements Serializable {
 		connection.sendCode(ServerProtocol.SendDeathCount);
 		connection.sendInt(deathCount);
 	}
+
+	public void sendTileDamage(int x, int y, int damageNumber) {
+		connection.sendCode(ServerProtocol.SendTileDamage);
+		connection.sendInt(x);
+		connection.sendInt(y);
+		connection.sendInt(damageNumber);
+	}
 }

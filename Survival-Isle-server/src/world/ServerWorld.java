@@ -71,6 +71,8 @@ public class ServerWorld extends World implements Serializable {
 			if (tile.damage(damage)) {
 				wallTilesToUpdate.add(position);
 				setWallTile(position, null);
+			} else {
+				game.doForEachClient(client->client.sendTileDamage((int)position.x, (int)position.y, tile.getDamageNumber()));
 			}
 			return true;
 		}
@@ -88,6 +90,8 @@ public class ServerWorld extends World implements Serializable {
 				tile.dropItems(source.getInventory());
 				wallTilesToUpdate.add(new Point(x, y));
 				walls[x][y] = null;
+			} else {
+				game.doForEachClient(client->client.sendTileDamage((int)x, (int)y, tile.getDamageNumber()));
 			}
 			return true;
 		}

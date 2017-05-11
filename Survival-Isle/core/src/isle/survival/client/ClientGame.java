@@ -252,6 +252,9 @@ public class ClientGame {
 			case SendDeathCount:
 				deathCount = coder.getConnection().receiveInt();
 				break;
+			case SendTileDamage:
+				world.receiveTileDamage(coder.getConnection());
+				break;
 			case SendDebug:
 				world.clearDebug();
 				while (coder.getConnection().receiveInt() == 1) {

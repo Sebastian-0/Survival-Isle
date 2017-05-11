@@ -120,4 +120,9 @@ public class WallTile implements Serializable {
 		}
 		return Math.max(type.pathMultiplier * healthMultiplier, 1);
 	}
+
+
+	public int getDamageNumber() {
+		return (int)(3 - 3 * health / (float)type.health);
+	}
 }

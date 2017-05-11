@@ -17,6 +17,7 @@ public class ClientWorld extends World {
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
 	private int[][] walls;
+	private int[][] damage;
 	private float[][] debug;
 	private int[][] shiny;
 	private boolean isDaytime; 
@@ -28,6 +29,7 @@ public class ClientWorld extends World {
 		this.spriteBatch = spriteBatch;
 		ground = new int[0][0];
 		walls = new int[0][0];
+		damage = new int[0][0];
 		debug = new float[0][0];
 		isDaytime = true;
 		
@@ -62,6 +64,8 @@ public class ClientWorld extends World {
 			for (int j = (int) start.y; j < end.y; j++) {
 				if (walls[i][j] != -1)
 					spriteBatch.draw(textureBase.getWallTileTexture(walls[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
+				if (damage[i][j] != -1)
+					spriteBatch.draw(textureBase.getTexture("cracks_" + damage[i][j]), i*TILE_WIDTH - xOffset, j*TILE_HEIGHT - yOffset);
 			}
 		}
 		
@@ -132,18 +136,17 @@ public class ClientWorld extends World {
 		}
 
 		walls = new int[width][height];
+		shiny = new int[width][height];
+		damage = new int[width][height];
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				walls[x][y] = connection.receiveInt();
-			}
-		}
-		
-		shiny = new int[width][height];
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
+
 				shiny[x][y] = Math.random() < 0.2 ? 1 : 0;
 				if (shiny[x][y] == 0)
 					shiny[x][y] = Math.random() < 0.4 ? -1 : 0;
+				
+				damage[x][y] = -1;
 			}
 		}
 
@@ -158,6 +161,7 @@ public class ClientWorld extends World {
 			int y = connection.receiveInt();
 			int id = connection.receiveInt();
 			walls[x][y] = id;
+			damage[x][y] = -1;
 		}
 	}
 
@@ -166,6 +170,13 @@ public class ClientWorld extends World {
 		isDaytime = t == 1;
 		if (t == 2)
 			duskTimer = DUSK_TIME;
+	}
+	
+	public void receiveTileDamage(Connection connection) {
+			int x = connection.receiveInt();
+			int y = connection.receiveInt();
+			int d = connection.receiveInt();
+			damage[x][y] = d;
 	}
 
 	public void clearDebug() {
