@@ -87,7 +87,7 @@ public class ClientGame {
 	private void initOnceConnected() {
 		ui = new Ui(textureBase, inventory, coder, worldObjects);
 		
-		inputProcessor = new InputProcessor(ui, coder);
+		inputProcessor = new InputProcessor(ui, coder, soundBase);
 		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	

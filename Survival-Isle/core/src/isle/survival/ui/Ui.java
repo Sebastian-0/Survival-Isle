@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.client.GameProtocolCoder;
-import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
 import isle.survival.world.WorldObjects;
 import world.Inventory;

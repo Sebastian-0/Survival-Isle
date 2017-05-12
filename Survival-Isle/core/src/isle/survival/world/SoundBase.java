@@ -7,7 +7,9 @@ import server.Connection;
 import com.badlogic.gdx.audio.Sound;
 
 public class SoundBase {
-	ObjectMap<Integer, Sound> sounds;
+	private ObjectMap<Integer, Sound> sounds;
+	private boolean muteMusic;
+	private boolean muteSound;
 	
 	public SoundBase() {
 		sounds = new ObjectMap<>();
@@ -23,7 +25,17 @@ public class SoundBase {
 	}
 	
 	public void playSound(Connection coder) {
-		int id = coder.receiveInt();
-		sounds.get(id).play((float)0.5);
+		if (!muteSound) {
+			int id = coder.receiveInt();
+			sounds.get(id).play((float)0.5);
+		}
+	}
+	
+	public void toggleMuteSound() {
+		muteSound = !muteSound;
+	}
+
+	public void toggleMuteMusic() {
+		muteMusic = !muteMusic;
 	}
 }

@@ -8,6 +8,7 @@ import isle.survival.client.GameProtocolCoder;
 import isle.survival.ui.BuildMenu;
 import isle.survival.ui.ChatBox;
 import isle.survival.ui.Ui;
+import isle.survival.world.SoundBase;
 import world.Player;
 
 public class InputProcessor extends InputAdapter {
@@ -17,13 +18,16 @@ public class InputProcessor extends InputAdapter {
 	private GameProtocolCoder coder;
 	private BuildMenu buildMenu;
 	private ChatBox chatBox;
+	private SoundBase soundBase;
 	
 	private float movementCounter;
 
-	public InputProcessor(Ui ui, GameProtocolCoder coder) {
+
+	public InputProcessor(Ui ui, GameProtocolCoder coder, SoundBase soundBase) {
 		this.buildMenu = ui.getBuildMenu();
 		this.chatBox = ui.getChatBox();
 		this.coder = coder;
+		this.soundBase = soundBase;
 	}
 
 	@Override
@@ -76,6 +80,9 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.ESCAPE:
 			coder.sendClose();
 			break;
+		case Input.Keys.M:
+			soundBase.toggleMuteSound();
+			soundBase.toggleMuteMusic();
 		default:
 			return false;
 		}
