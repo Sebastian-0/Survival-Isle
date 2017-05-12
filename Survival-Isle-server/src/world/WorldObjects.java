@@ -14,14 +14,21 @@ import server.Connection;
 public class WorldObjects implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	private transient List<GameObject> objects;
+	private transient List<GameObject> addList;
 	
 	public WorldObjects() {
 		objects = new ArrayList<>();
+		addList = new ArrayList<>();
 	}
 
 	public void update(GameInterface game, double deltaTime) {
+		for (GameObject gameObject : addList) {
+			objects.add(gameObject);
+		}
+		addList.clear();
+		
 		Iterator<GameObject> iterator = objects.iterator();
 		while (iterator.hasNext()) {
 			GameObject object = iterator.next();
@@ -36,6 +43,10 @@ public class WorldObjects implements Serializable {
 	
 	public void addObject(GameObject object) {
 		objects.add(object);
+	}
+	
+	public void addObjectLater(GameObject object) {
+		addList.add(object);
 	}
 	
 	public void removeObject(GameObject object) {

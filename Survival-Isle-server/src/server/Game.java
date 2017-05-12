@@ -89,7 +89,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 			Player player = deadPlayers.get(i);
 			if (player.revive(deltaTime)) {
 				player.setPosition(getRespawnPoint(player));
-				addObject(player);
+				addObjectNow(player);
 				players.entrySet().stream().filter((entry)->(entry.getValue() == player)).findAny().orElse(null).getKey().sendSetPlayer(player);
 				deadPlayers.remove(i);
 				i--;
@@ -185,7 +185,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 			player = new Player();
 			player.setPosition(world.getNewSpawnPoint());
 		}
-		addObject(player);
+		addObjectNow(player);
 		client.sendSetPlayer(player);
 		client.sendInventory(player.getInventory());
 		players.put(client, player);
@@ -194,9 +194,14 @@ public class Game implements GameInterface, TimeListener, Serializable {
 			client.sendGameOver();
 	}
 	
+	public void addObjectNow(GameObject object) {
+		worldObjects.addObject(object);
+		clients.forEach((c)->c.sendCreateObject(object));
+	}
+	
 	@Override
 	public void addObject(GameObject object) {
-		worldObjects.addObject(object);
+		worldObjects.addObjectLater(object);
 		clients.forEach((c)->c.sendCreateObject(object));
 	}
 	
