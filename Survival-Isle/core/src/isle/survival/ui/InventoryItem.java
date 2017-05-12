@@ -6,6 +6,7 @@ import world.ItemType;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -39,6 +40,8 @@ public class InventoryItem {
 		
 		position = new Point();
 		scale = 1;
+		
+//		image.setFilter(TextureFilter.Nearest, TextureFilter.Linear);
 	}
 	
 	public void setPosition(int x, int y) {

@@ -130,6 +130,7 @@ public class NetworkObject {
 	
 	public void jumpToTarget() {
 		previousPosition.set(targetPosition);
+		currentPosition.set(targetPosition);
 	}
 
 	public void setAnimationTarget(int x, int y) {
