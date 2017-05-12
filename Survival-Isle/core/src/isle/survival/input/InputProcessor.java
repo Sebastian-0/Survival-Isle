@@ -8,7 +8,6 @@ import isle.survival.client.GameProtocolCoder;
 import isle.survival.ui.BuildMenu;
 import isle.survival.ui.ChatBox;
 import isle.survival.ui.Ui;
-import isle.survival.world.NetworkObject;
 import world.Player;
 
 public class InputProcessor extends InputAdapter {
@@ -36,22 +35,22 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.W:
 		case Input.Keys.UP:
 			coder.sendMoveUp();
-			movementCounter += MOVEMENT_TIME;
+			movementCounter = MOVEMENT_TIME;
 			break;
 		case Input.Keys.A:
 		case Input.Keys.LEFT:
 			coder.sendMoveLeft();
-			movementCounter += MOVEMENT_TIME;
+			movementCounter = MOVEMENT_TIME;
 			break;
 		case Input.Keys.S:
 		case Input.Keys.DOWN:
 			coder.sendMoveDown();
-			movementCounter += MOVEMENT_TIME;
+			movementCounter = MOVEMENT_TIME;
 			break;
 		case Input.Keys.D:
 		case Input.Keys.RIGHT:
 			coder.sendMoveRight();
-			movementCounter += MOVEMENT_TIME;
+			movementCounter = MOVEMENT_TIME;
 			break;
 		case Input.Keys.Q:
 			buildMenu.decrementSelection();
@@ -134,19 +133,19 @@ public class InputProcessor extends InputAdapter {
 		if (movementCounter <= 0) {
 			movementCounter = 0;
 			if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-				movementCounter += MOVEMENT_TIME;
+				movementCounter = MOVEMENT_TIME;
 				coder.sendMoveUp();
 			}
 			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-				movementCounter += MOVEMENT_TIME;
+				movementCounter = MOVEMENT_TIME;
 				coder.sendMoveLeft();
 			}
 			if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-				movementCounter += MOVEMENT_TIME;
+				movementCounter = MOVEMENT_TIME;
 				coder.sendMoveDown();
 			}
 			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-				movementCounter += MOVEMENT_TIME;
+				movementCounter = MOVEMENT_TIME;
 				coder.sendMoveRight();
 			}
 		}

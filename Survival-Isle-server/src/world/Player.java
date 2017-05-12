@@ -22,8 +22,10 @@ public class Player extends GameObject implements Serializable {
 	private Inventory inventory;
 	private transient Tool selectedTool;
 	private transient boolean toolActive;
-	private Queue<ClientProtocol> moves;
-	private double movementCounter;
+	private Queue<ClientProtocol> movesH;
+	private Queue<ClientProtocol> movesV;
+	private double movementCounterH;
+	private double movementCounterV;
 	private double reviveCountdown;
 	private int deathCount;
 	
@@ -32,7 +34,8 @@ public class Player extends GameObject implements Serializable {
 		inventory = new Inventory();
 		inventory.addItem(ItemType.RespawnCrystal, 1);
 		selectedTool = Tool.Pickaxe;
-		moves = new LinkedList<>();
+		movesH = new LinkedList<>();
+		movesV = new LinkedList<>();
 	}
 
 	public Inventory getInventory() {
@@ -42,52 +45,64 @@ public class Player extends GameObject implements Serializable {
 	@Override
 	public void update(GameInterface game, double deltaTime) {
 		super.update(game, deltaTime);
-			
-		movementCounter += deltaTime;
-		if (moves.size() > 0) {
-			updateMovement(game, deltaTime);
-		}
+		
+		if (movementCounterH < MOVEMENT_TIME)
+			movementCounterH += deltaTime;
+		if (movementCounterV < MOVEMENT_TIME)
+			movementCounterV += deltaTime;
+
+		updateMovement(game, deltaTime);
 		
 		sendUpdateIfHurt(game);
 	}
 
 	private void updateMovement(GameInterface game, double deltaTime) {
-		if (movementCounter > MOVEMENT_TIME) {
-			movementCounter = 0;
-			Consumer<ServerProtocolCoder> updateObject = c->c.sendUpdateObject(this);
-			ClientProtocol move = moves.poll();
-			switch (move) {
-			case MoveUp:
-				if (!shouldBeRemoved && !game.isGameOver()) {
-					actOnWorld(game, 0, 1);
-					game.doForEachClient(updateObject);
-					updateToolAfterPlayerMove(game);
-				}
-				break;
-			case MoveLeft:
-				if (!shouldBeRemoved && !game.isGameOver()) {
-					actOnWorld(game, -1, 0);
-					game.doForEachClient(updateObject);
-					updateToolAfterPlayerMove(game);
-				}
-				break;
-			case MoveDown:
-				if (!shouldBeRemoved && !game.isGameOver()) {
-					actOnWorld(game, 0, -1);
-					game.doForEachClient(updateObject);
-					updateToolAfterPlayerMove(game);
-				}
-				break;
-			case MoveRight:
-				if (!shouldBeRemoved && !game.isGameOver()) {
-					actOnWorld(game, 1, 0);
-					game.doForEachClient(updateObject);
-					updateToolAfterPlayerMove(game);
-				}
-				break;
-			default:
-				break;
+		if (!movesH.isEmpty() && movementCounterH >= MOVEMENT_TIME) {
+			movementCounterH -= MOVEMENT_TIME;
+			ClientProtocol move = movesH.poll();
+			move(game, move);
+		}
+		
+		if (!movesV.isEmpty() && movementCounterV >= MOVEMENT_TIME) {
+			movementCounterV -= MOVEMENT_TIME;
+			ClientProtocol move = movesV.poll();
+			move(game, move);
+		}
+	}
+
+	private void move(GameInterface game, ClientProtocol move) {
+		Consumer<ServerProtocolCoder> updateObject = c->c.sendUpdateObject(this);
+		switch (move) {
+		case MoveUp:
+			if (!shouldBeRemoved && !game.isGameOver()) {
+				actOnWorld(game, 0, 1);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
 			}
+			break;
+		case MoveLeft:
+			if (!shouldBeRemoved && !game.isGameOver()) {
+				actOnWorld(game, -1, 0);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
+			break;
+		case MoveDown:
+			if (!shouldBeRemoved && !game.isGameOver()) {
+				actOnWorld(game, 0, -1);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
+			break;
+		case MoveRight:
+			if (!shouldBeRemoved && !game.isGameOver()) {
+				actOnWorld(game, 1, 0);
+				game.doForEachClient(updateObject);
+				updateToolAfterPlayerMove(game);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -95,10 +110,18 @@ public class Player extends GameObject implements Serializable {
 		ClientProtocol code = client.receiveCode();
 		switch (code) {
 		case MoveUp:
-		case MoveLeft:
 		case MoveDown:
+			if (!movesV.isEmpty() && !movesV.contains(code))
+				movesV.clear();
+			else
+				movesV.add(code);
+			break;
+		case MoveLeft:
 		case MoveRight:
-			moves.add(code);
+			if (!movesH.isEmpty() && !movesH.contains(code))
+				movesH.clear();
+			else
+				movesH.add(code);
 			break;
 		case SelectTool:
 			int toolIndex = client.getConnection().receiveInt();
