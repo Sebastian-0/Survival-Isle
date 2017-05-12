@@ -20,26 +20,42 @@ public class Enemy extends GameObject implements Serializable {
 	private double movementCounter = 0;
 	private int pathAgeInSteps;
 	private int maxHp;
+
+	private boolean lockTarget;
+	private boolean prioritizeCrystals;
+	private GameObject target;
 	
 	public Enemy(int difficulty) {
 		type = ObjectType.Enemy;
 		
 		maxHp = 100 + difficulty * 5;
 		hp = getMaxHp();
+		
+		lockTarget = Math.random() < 0.66;
+		prioritizeCrystals = Math.random() < 0.66;
 	}
 	
 	@Override
 	public void update(GameInterface game, double deltaTime) {
 		super.update(game, deltaTime);
 
-		List<GameObject> targets = new ArrayList<>();
-		targets.addAll(game.getObjects().getObjectsOfType(Player.class));
-		targets.addAll(game.getObjects().getObjectsOfType(RespawnCrystal.class));
-		GameObject closestPlayer = getClosestObject(targets);
+		if (target == null || target.shouldBeRemoved || !lockTarget) {
+			List<GameObject> targets = new ArrayList<>();
+			targets.addAll(game.getObjects().getObjectsOfType(Player.class));
+			if (prioritizeCrystals) {
+				for (int i = 0; i < targets.size(); i++) {
+					if (((Player)targets.get(i)).getInventory().getAmount(ItemType.RespawnCrystal) == 0) {
+						targets.remove(i);
+					}
+				}
+			}
+			targets.addAll(game.getObjects().getObjectsOfType(RespawnCrystal.class));
+			target = getClosestObject(targets);
+		}
 		
 		if (path.isEmpty()) {
-			if (closestPlayer != null) {
-				path = game.getPathFinder().search(position, closestPlayer.position);
+			if (target != null) {
+				path = game.getPathFinder().search(position, target.position);
 				if (!path.isEmpty())
 					path.remove(0);
 			}
@@ -51,8 +67,8 @@ public class Enemy extends GameObject implements Serializable {
 		movementCounter += deltaTime;
 		if (movementCounter > MOVEMENT_TIME) {
 			movementCounter = 0;
-			if (closestPlayer != null && closestPlayer.position.equals(position)) {
-				closestPlayer.damage(game, PLAYER_DAMAGE);
+			if (target != null && target.position.equals(position)) {
+				target.damage(game, PLAYER_DAMAGE);
 				animationState = AnimationState.Attacking;
 				animationTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
 				animationTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);

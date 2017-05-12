@@ -55,7 +55,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		if (!shouldStopUpdating) {
+		if (!shouldStopUpdating && !clients.isEmpty()) {
 			if (gameOver)
 				shouldStopUpdating = true;
 			spawnEnemies(deltaTime);
@@ -226,6 +226,11 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	public void dayBegun(int day) {
 		doForEachClient(c->c.sendTimeEvent(1));
 		System.out.println("Dawn of day " + day);
+		players.forEach((c, p) -> {
+			p.restoreHealth();
+			if (clients.contains(c))
+				c.sendUpdateObject(p);
+		});
 		List<Enemy> enemies = worldObjects.getObjectsOfType(Enemy.class);
 		enemies.forEach((e)->removeObject(e));
 	}
@@ -360,6 +365,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 		}
 	}
 	
+	@Override
 	public boolean isGameOver() {
 		return gameOver;
 	}
