@@ -113,14 +113,14 @@ public class Player extends GameObject implements Serializable {
 		case MoveDown:
 			if (!movesV.isEmpty() && !movesV.contains(code))
 				movesV.clear();
-			else
+			else if (movesV.isEmpty())
 				movesV.add(code);
 			break;
 		case MoveLeft:
 		case MoveRight:
 			if (!movesH.isEmpty() && !movesH.contains(code))
 				movesH.clear();
-			else
+			else if (movesH.isEmpty())
 				movesH.add(code);
 			break;
 		case SelectTool:
