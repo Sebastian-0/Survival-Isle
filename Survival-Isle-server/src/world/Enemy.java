@@ -22,6 +22,7 @@ public class Enemy extends GameObject implements Serializable {
 	private int maxHp;
 
 	private boolean lockTarget;
+	private boolean prioritizeCrystals;
 	private GameObject target;
 	
 	public Enemy(int difficulty) {
@@ -31,6 +32,7 @@ public class Enemy extends GameObject implements Serializable {
 		hp = getMaxHp();
 		
 		lockTarget = Math.random() < 0.66;
+		prioritizeCrystals = Math.random() < 0.66;
 	}
 	
 	@Override
@@ -40,6 +42,13 @@ public class Enemy extends GameObject implements Serializable {
 		if (target == null || target.shouldBeRemoved || !lockTarget) {
 			List<GameObject> targets = new ArrayList<>();
 			targets.addAll(game.getObjects().getObjectsOfType(Player.class));
+			if (prioritizeCrystals) {
+				for (int i = 0; i < targets.size(); i++) {
+					if (((Player)targets.get(i)).getInventory().getAmount(ItemType.RespawnCrystal) == 0) {
+						targets.remove(i);
+					}
+				}
+			}
 			targets.addAll(game.getObjects().getObjectsOfType(RespawnCrystal.class));
 			target = getClosestObject(targets);
 		}
