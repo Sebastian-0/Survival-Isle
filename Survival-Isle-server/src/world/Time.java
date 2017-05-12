@@ -9,7 +9,7 @@ public class Time implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static final int DAY_DURATION = 60;
-	private static final int NIGHT_DURATION = 60;
+	private static final int NIGHT_DURATION = 65;
 	private double time;
 	private int day;
 	

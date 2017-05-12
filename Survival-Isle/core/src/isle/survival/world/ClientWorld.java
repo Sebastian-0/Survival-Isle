@@ -165,11 +165,18 @@ public class ClientWorld extends World {
 		}
 	}
 
-	public void receiveTimeEvent(Connection connection) {
+	public void receiveTimeEvent(Connection connection, SoundBase soundBase) {
 		int t = connection.receiveInt();
 		isDaytime = t == 1;
 		if (t == 2)
 			duskTimer = DUSK_TIME;
+		if (isDaytime) {
+			soundBase.stopSound(0);
+			soundBase.playSound(1);
+		} else {
+			soundBase.playSound(0);
+			soundBase.stopSound(1);
+		}
 	}
 	
 	public void receiveTileDamage(Connection connection) {

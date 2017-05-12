@@ -233,7 +233,7 @@ public class ClientGame {
 				inventory.receiveInventory(coder.getConnection());
 				break;
 			case TimeEvent:
-				world.receiveTimeEvent(coder.getConnection());
+				world.receiveTimeEvent(coder.getConnection(), soundBase);
 				break;
 			case SendWorldWallTiles:
 				world.receiveWallTiles(coder.getConnection());
