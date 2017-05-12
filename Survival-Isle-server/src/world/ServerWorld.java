@@ -17,7 +17,7 @@ import world.WorldGenerator.GenerationResult;
 public class ServerWorld extends World implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private static final float PATH_COST_DECAY = 0.9f;
+	private static final float PATH_COST_DECAY = 0.75f;
 	
 	private GameInterface game;
 	
