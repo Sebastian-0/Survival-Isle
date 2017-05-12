@@ -55,7 +55,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	}
 
 	public synchronized void update(double deltaTime) {
-		if (!shouldStopUpdating) {
+		if (!shouldStopUpdating && !clients.isEmpty()) {
 			if (gameOver)
 				shouldStopUpdating = true;
 			spawnEnemies(deltaTime);
