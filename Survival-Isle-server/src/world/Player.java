@@ -216,4 +216,8 @@ public class Player extends GameObject implements Serializable {
 		}
 		return false;
 	}
+
+	public void restoreHealth() {
+		hp = getMaxHp();
+	}
 }
