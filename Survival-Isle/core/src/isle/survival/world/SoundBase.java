@@ -38,6 +38,8 @@ public class SoundBase {
 		//TODO: add sounds played from server
 		names.put(SoundType.EnemyAttack.ordinal(), "enemy_attack");
 		names.put(SoundType.PlayerDeath.ordinal(), "player_death");
+		names.put(SoundType.CrystalBreak.ordinal(), "crystal_break");
+		names.put(SoundType.GameOver.ordinal(), "game_over");
 	}
 	
 	public void dispose() {

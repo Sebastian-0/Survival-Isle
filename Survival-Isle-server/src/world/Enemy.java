@@ -89,6 +89,7 @@ public class Enemy extends GameObject implements Serializable {
 						if (wallTile.getType() == WallType.RespawnCrystal && 
 								game.getWorld().getWallTileAtPosition(nextPosition) == null) {
 							game.doForEachClient(c->c.sendChatMessage("Echoes", "A crystal was shattered!"));
+							game.doForEachClient(c->c.sendPlaySound(SoundType.CrystalBreak));
 						}
 					}
 				} else {

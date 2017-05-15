@@ -195,6 +195,7 @@ public class Player extends GameObject implements Serializable {
 			int crystalCount = inventory.getAmount(ItemType.RespawnCrystal);
 			
 			if (crystalCount > 0) {
+				game.doForEachClient(c->c.sendPlaySound(SoundType.CrystalBreak));
 				inventory.removeItem(ItemType.RespawnCrystal, inventory.getAmount(ItemType.RespawnCrystal));
 				deathCount = 0;
 			} else {

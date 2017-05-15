@@ -23,6 +23,7 @@ import world.PathFinder;
 import world.Player;
 import world.RespawnCrystal;
 import world.ServerWorld;
+import world.SoundType;
 import world.Time;
 import world.WorldObjects;
 
@@ -371,6 +372,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 			gameOver = true;
 			doForEachClient(c->c.sendGameOver());
 			doForEachClient(c->c.sendChatMessage("Echoes", "With the breaking of the last crystal, the world is plunged into darkness..."));
+			doForEachClient(c->c.sendPlaySound(SoundType.GameOver));
 			System.out.println("GAME OVER!");
 		}
 	}

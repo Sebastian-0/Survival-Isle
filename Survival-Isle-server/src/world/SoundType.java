@@ -2,5 +2,7 @@ package world;
 
 public enum SoundType {
 	EnemyAttack, 
-	PlayerDeath;
+	PlayerDeath, 
+	CrystalBreak, 
+	GameOver;
 }
