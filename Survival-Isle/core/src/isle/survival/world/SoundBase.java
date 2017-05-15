@@ -140,8 +140,8 @@ public class SoundBase {
 		}
 	}
 
-	public void setVolumeOfSound(String name, long soundId, float volume) {
-		getSound(name).setVolume(soundId, volume);
+	public void setVolumeOfMusic(String name, long soundId, float volume) {
+		getMusic(name).setVolume(soundId, volume);
 	}
 
 	public boolean isSoundMuted() {
