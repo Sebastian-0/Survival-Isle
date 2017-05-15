@@ -1,8 +1,11 @@
 package isle.survival.world;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 import server.Connection;
 
@@ -42,8 +45,17 @@ public class SoundBase {
 		sounds.get(id).stop();
 	}
 	
+	private void stopAll() {
+		Iterator<Entry<Integer, Sound>> i = sounds.iterator();
+		while (i.hasNext()) {
+			i.next().value.stop();
+		}
+	}
+	
 	public void toggleMuteSound() {
 		muteSound = !muteSound;
+		if (muteSound)
+			stopAll();
 	}
 
 	public void toggleMuteMusic() {
