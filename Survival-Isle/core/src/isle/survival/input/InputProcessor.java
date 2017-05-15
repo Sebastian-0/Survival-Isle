@@ -17,12 +17,14 @@ public class InputProcessor extends InputAdapter {
 	private GameProtocolCoder coder;
 	private BuildMenu buildMenu;
 	private ChatBox chatBox;
+	private Ui ui;
 	
 	private float movementCounter;
 
 	public InputProcessor(Ui ui, GameProtocolCoder coder) {
 		this.buildMenu = ui.getBuildMenu();
 		this.chatBox = ui.getChatBox();
+		this.ui = ui;
 		this.coder = coder;
 	}
 
@@ -69,6 +71,9 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.NUM_9:
 			int toolIndex = keycode - Input.Keys.NUM_1;
 			buildMenu.setSelectedIndex(toolIndex);
+			break;
+		case Input.Keys.F1:
+			ui.toggleUI();
 			break;
 		case Input.Keys.SPACE:
 			coder.sendActivateTool();
