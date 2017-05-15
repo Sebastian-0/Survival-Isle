@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.ui.Button;
+import isle.survival.ui.TextArea;
 import isle.survival.ui.TextField;
 import util.Point;
 
@@ -27,7 +28,9 @@ public class TitleScreen extends InputAdapter {
 	private TextField ipField;
 	private TextField portField;
 	private Button startButton;
+	private TextArea errorMessageArea;
 	private BitmapFont font;
+	private BitmapFont errorFont;
 	
 	public TitleScreen(TitleScreenBackend backend, SpriteBatch spriteBatch) {
 		this.backend = backend;
@@ -41,6 +44,9 @@ public class TitleScreen extends InputAdapter {
 		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, "Enter host IP...", preferences.getString(KEY_HOST, "localhost"));
 		portField = new TextField(new Point(160, 160), new Point(320, 26), font, "Enter port number...", preferences.getString(KEY_PORT, "1337"));
 		startButton = new Button(new Point(256, 100), new Point(128, 28), font, " Join Game");
+		
+		errorFont = new BitmapFont(Gdx.files.internal("font32.fnt")); 
+		errorMessageArea = new TextArea(new Point(160, 30), new Point(320, 24), errorFont, "", "");
 	}
 	
 	public void draw() {
@@ -57,6 +63,7 @@ public class TitleScreen extends InputAdapter {
 		ipField.draw(spriteBatch);
 		portField.draw(spriteBatch);
 		startButton.draw(spriteBatch);
+		errorMessageArea.draw(spriteBatch);
 		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(-dw, -dh, 0));
 		
 		spriteBatch.end();
@@ -112,12 +119,17 @@ public class TitleScreen extends InputAdapter {
 	
 	
 	public void startGame() {
+		errorMessageArea.setText("");
 		startButton.setFocus(true);
 		try {
 			backend.startNewGame(nameField.getText(), ipField.getText(), Integer.parseInt(portField.getText()));
 		} catch (NumberFormatException e) {
 			System.out.println("Illegal port number.");
 		}
+	}
+	
+	public void setErrorMessage(String error) {
+		errorMessageArea.setText(error);
 	}
 
 	public void dispose() {
@@ -128,5 +140,6 @@ public class TitleScreen extends InputAdapter {
 		preferences.flush();
 		
 		font.dispose();
+		errorFont.dispose();
 	}
 }

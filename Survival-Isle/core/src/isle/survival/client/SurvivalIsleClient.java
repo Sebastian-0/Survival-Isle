@@ -59,10 +59,9 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 			
 			System.out.println("Connected to host.");
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			System.out.println("Error: Host not found.");
+			titleScreen.setErrorMessage("Error: Host not found.");
 		} catch (IOException e) {
-			System.out.println("Error: Could not connect to host. Connection refused.");
+			titleScreen.setErrorMessage("Error: Could not connect to host. Connection refused.");
 		}
 	}
 	
@@ -94,18 +93,16 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 			synchronized (this) {
 				switch (code) {
 				case FailedToConnect:
-					System.out.println("User name already in use.");
+					titleScreen.setErrorMessage("User name already in use.");
 					closeSocket();
 					showTitleScreen();
-					terminateProgram();
 					Thread.currentThread().interrupt();
 					break;
 				case SendClose:
-					System.out.println("Disconnected from host.");
+					titleScreen.setErrorMessage("Disconnected from host.");
 					coder.acknowledgeClose();
 					closeSocket();
-					Gdx.input.setInputProcessor(titleScreen);
-					terminateProgram();
+					showTitleScreen();
 					Thread.currentThread().interrupt();
 					break;
 				case AckClose:
@@ -122,7 +119,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				}
 			}
 		} catch (ConnectionClosedException e) {
-			System.out.println("Lost connection to host.");
+			titleScreen.setErrorMessage("Lost connection to host.");
 			closeSocket();
 			showTitleScreen();
 			Thread.currentThread().interrupt();
@@ -131,6 +128,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 
 	private void showTitleScreen() {
 		game = null;
+		coder = null;
 		Gdx.input.setInputProcessor(titleScreen);
 	}
 
