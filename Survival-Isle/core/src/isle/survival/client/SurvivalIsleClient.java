@@ -70,6 +70,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		spriteBatch.setProjectionMatrix(spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height));
 		if (game != null)
 			game.resize(width, height);
+		titleScreen.resize(width, height);
 	}
 	
 	@Override

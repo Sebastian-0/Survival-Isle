@@ -16,4 +16,8 @@ public class TextArea extends MenuComponent {
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
 }
