@@ -281,7 +281,10 @@ public class Game implements GameInterface, TimeListener, Serializable {
 		if (message.equals("/night")) {
 			time.advanceToNight(this);
 			doForEachClient(c -> c.sendChatMessage("", "Night suddenly falls on " + client.getName() + "."));
-		} else if (message.equals("/day")) {
+		} else if (message.equals("/kill")) {
+			doForEachClient(c -> c.sendChatMessage("", "The pressure proved too much for " + client.getName() + "..."));
+			players.get(client).damage(this, 100000);
+		}else if (message.equals("/day")) {
 			time.advanceToDay(this);
 			doForEachClient(c -> c.sendChatMessage("", "Dawn comes quickly as " + client.getName() + " praises the sun."));
 		} else if (message.equals("/payday")) {
