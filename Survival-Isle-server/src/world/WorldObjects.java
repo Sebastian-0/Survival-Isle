@@ -71,10 +71,12 @@ public class WorldObjects implements Serializable {
 	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
 		ois.defaultReadObject();
 		objects = (List<GameObject>) ois.readObject();
+		addList = (List<GameObject>) ois.readObject();
 	}
 	
 	private void writeObject(ObjectOutputStream oos) throws IOException {
 		oos.defaultWriteObject();
 		oos.writeObject(objects.stream().filter(o -> !(o instanceof Player)).collect(Collectors.toCollection(ArrayList::new)));
+		oos.writeObject(addList.stream().filter(o -> !(o instanceof Player)).collect(Collectors.toCollection(ArrayList::new)));
 	}
 }

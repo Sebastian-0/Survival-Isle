@@ -188,6 +188,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 		addObjectNow(player);
 		client.sendSetPlayer(player);
 		client.sendInventory(player.getInventory());
+		players.remove(client); // You must remove the pair first, otherwise the key won't be replaced (only the value will be)
 		players.put(client, player);
 		new ClientListener(this, client).start();
 		if (gameOver)
