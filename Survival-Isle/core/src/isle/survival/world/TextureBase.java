@@ -107,6 +107,7 @@ public class TextureBase {
 			textures.put(name, texture);
 			return texture;
 		} catch (GdxRuntimeException e) {
+			textures.put(name, defaultTexture);
 			return defaultTexture;
 		}
 	}
