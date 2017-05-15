@@ -14,6 +14,7 @@ The following list are all the valid commands:
 - new: Creates a new game world and starts it
 - save filename: Saves the currently running game to the specified file
 - load filename: Loads the game from specified file 
+- list: Prints a list of all connected players
 - stop: Terminates the current game without closing the program
 - quit/exit: Terminates the current game and closes the program
 - help: Displays this list of commands
