@@ -24,17 +24,18 @@ public class ParticleBase {
 		effects.forEach((p) -> {p.value.dispose();}); 
 	}
 	
-	public ParticleEffect getTexture(String name) {
+	public ParticleEffect getEffect(String name) {
 		if (effects.containsKey(name)) {
 			return new ParticleEffect(effects.get(name));
 		}
 		
 		try {
 			ParticleEffect effect = new ParticleEffect();
-			effect.load(Gdx.files.internal(PARTICLE_FOLDER + name), Gdx.files.internal(PARTICLE_FOLDER));
+			effect.load(Gdx.files.internal(PARTICLE_FOLDER + name + ".p"), Gdx.files.internal(PARTICLE_FOLDER));
 			effects.put(name, effect);
 			return effect;
 		} catch (GdxRuntimeException e) {
+			System.out.println("Failed to load the particle effect: " + name + ".p");
 			effects.put(name, defaultEffect);
 			return defaultEffect;
 		}
