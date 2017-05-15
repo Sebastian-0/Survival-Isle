@@ -42,6 +42,7 @@ public class ClientAccepter extends Thread {
 					ServerProtocolCoder client = new ServerProtocolCoder(socket);
 					game.addClient(client);
 				} catch (SocketException | ConnectionClosedException e) {
+					System.out.println("A client failed to join: " + e.getMessage());
 				}
 			}
 		} catch (IOException e) {
