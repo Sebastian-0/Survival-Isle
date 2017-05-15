@@ -46,7 +46,7 @@ public class SoundBase {
 		sounds.get(id).stop();
 	}
 	
-	private void stopAll() {
+	public void stopAll() {
 		Iterator<Entry<Integer, Sound>> i = sounds.iterator();
 		while (i.hasNext()) {
 			i.next().value.stop();
