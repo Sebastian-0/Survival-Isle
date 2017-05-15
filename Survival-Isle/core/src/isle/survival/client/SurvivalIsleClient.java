@@ -61,7 +61,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		} catch (UnknownHostException e) {
 			titleScreen.setErrorMessage("Error: Host not found.");
 		} catch (IOException e) {
-			titleScreen.setErrorMessage("Error: Could not connect to host. Connection refused.");
+			titleScreen.setErrorMessage("Could not connect to host, connection refused.");
 		}
 	}
 	
