@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Scanner;
 
 import util.Point;
@@ -51,6 +52,11 @@ public class Server {
 				break;
 			case "save":
 				save(in);
+				break;
+			case "list":
+				List<String> players = game.getPlayerNames();
+				System.out.println("Currently there are " + players.size() + " player(s) online:");
+				players.stream().forEach(p->System.out.println(p));
 				break;
 			case "stop":
 				stop();

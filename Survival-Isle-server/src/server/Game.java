@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -377,5 +378,14 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	@Override
 	public boolean isGameOver() {
 		return gameOver;
+	}
+	
+	public List<String> getPlayerNames() {
+		List<String> names = new ArrayList<>();
+		clients.stream().forEach(c->names.add(c.getName()));
+		Collator collator = Collator.getInstance();
+		collator.setStrength(Collator.SECONDARY);
+		names.sort(collator);
+		return names;
 	}
 }
