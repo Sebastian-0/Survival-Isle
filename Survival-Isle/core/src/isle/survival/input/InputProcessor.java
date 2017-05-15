@@ -8,6 +8,7 @@ import isle.survival.client.GameProtocolCoder;
 import isle.survival.ui.BuildMenu;
 import isle.survival.ui.ChatBox;
 import isle.survival.ui.Ui;
+import isle.survival.world.SoundBase;
 import world.Player;
 
 public class InputProcessor extends InputAdapter {
