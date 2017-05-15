@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class ParticleBase {
-	private static final String PARTICLE_FOLDER = "particles" + File.pathSeparator;
+	private static final String PARTICLE_FOLDER = "particles" + File.separator;
 	
 	private ObjectMap<String, ParticleEffect> effects;
 
@@ -17,6 +17,12 @@ public class ParticleBase {
 	public ParticleBase() {
 		effects = new ObjectMap<>();
 		defaultEffect = new ParticleEffect();
+		
+		setupEffects();
+	}
+
+	private void setupEffects() {
+		getEffect("enemy_death");
 	}
 
 	public void dispose() {
