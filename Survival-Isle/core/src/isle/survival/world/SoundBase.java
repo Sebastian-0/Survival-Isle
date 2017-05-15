@@ -28,6 +28,8 @@ public class SoundBase {
 	private void setUpSounds() {
 		defaultSound = Gdx.audio.newSound(Gdx.files.internal("sound/default.wav"));
 		//TODO: add sounds played from server
+		getMusic("DayMusic");
+		getMusic("NightMusic");
 	}
 	
 	public void dispose() {
