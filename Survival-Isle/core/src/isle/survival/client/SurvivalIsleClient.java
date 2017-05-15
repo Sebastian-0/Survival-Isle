@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import isle.survival.shaders.Shaders;
+import isle.survival.world.ParticleBase;
 import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
 import server.ConnectionClosedException;
@@ -17,6 +18,7 @@ import server.ServerProtocol;
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface, TitleScreenBackend {
 	private SpriteBatch spriteBatch;
 	private TextureBase textureBase;
+	private ParticleBase particleBase;
 	private SoundBase soundBase;
 
 	private Socket socket;
@@ -30,6 +32,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 	public void create () {
 		spriteBatch = new SpriteBatch();
 		textureBase = new TextureBase();
+		particleBase = new ParticleBase();
 		soundBase = new SoundBase();
 		
 		titleScreen = new TitleScreen(this, spriteBatch);
@@ -41,7 +44,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 
 	@Override
 	public void startNewGame(String name, String ip, int port) {
-		game = new ClientGame(name, spriteBatch, textureBase, soundBase);
+		game = new ClientGame(name, spriteBatch, textureBase, particleBase, soundBase);
 		connectToServer(ip, port);
 		if (coder == null) {
 			showTitleScreen();
