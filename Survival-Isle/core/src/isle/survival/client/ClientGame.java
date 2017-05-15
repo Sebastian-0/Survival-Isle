@@ -49,6 +49,8 @@ public class ClientGame implements ClientGameInterface {
 	private WorldObjects worldObjects;
 	private WorldEffects worldEffects;
 	private Inventory inventory;
+	private float xTile;
+	private float yTile;
 	private float xView;
 	private float yView;
 	private boolean gameOver;
@@ -101,9 +103,14 @@ public class ClientGame implements ClientGameInterface {
 		
 		NetworkObject player = worldObjects.getPlayer();
 		if (player != null) {
-			xView = player.getX() * World.TILE_WIDTH - Gdx.graphics.getWidth()/2;
-			yView = player.getY() * World.TILE_HEIGHT - Gdx.graphics.getHeight()/2;
+			xTile = player.getX();
+			yTile = player.getY();
+			xView = xTile * World.TILE_WIDTH - Gdx.graphics.getWidth()/2;
+			yView = yTile * World.TILE_HEIGHT - Gdx.graphics.getHeight()/2;
 		}
+		
+		
+		soundBase.setCameraPosition(xTile, yTile);
 		
 		inputProcessor.update(deltaTime);
 		ui.update(deltaTime);
