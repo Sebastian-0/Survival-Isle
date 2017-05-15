@@ -48,7 +48,7 @@ public class SoundBase {
 				sounds.put(name, sound);
 				return sound;
 			} catch (GdxRuntimeException e2) {
-				System.out.println(e);
+				System.out.println("Failed to load a sound \""+ name + ".wav\" or \"" + name + ".mp3\"");
 				sounds.put(name, defaultSound);
 				return defaultSound;
 			}

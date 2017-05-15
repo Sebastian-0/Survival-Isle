@@ -107,6 +107,7 @@ public class TextureBase {
 			textures.put(name, texture);
 			return texture;
 		} catch (GdxRuntimeException e) {
+			System.out.println("Failed to load the texture: " + name + ".png");
 			textures.put(name, defaultTexture);
 			return defaultTexture;
 		}

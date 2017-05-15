@@ -237,7 +237,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 				c.sendUpdateObject(p);
 		});
 		List<Enemy> enemies = worldObjects.getObjectsOfType(Enemy.class);
-		enemies.forEach((e)->removeObject(e));
+		enemies.forEach((e)->{e.spawnDeathEffect(this); removeObject(e);});
 	}
 	
 	@Override

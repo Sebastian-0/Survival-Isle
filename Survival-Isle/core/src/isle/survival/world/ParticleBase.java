@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class ParticleBase {
-	private static final String PARTICLE_FOLDER = "particles" + File.pathSeparator;
+	private static final String PARTICLE_FOLDER = "particles" + File.separator;
 	
 	private ObjectMap<String, ParticleEffect> effects;
 
@@ -17,6 +17,12 @@ public class ParticleBase {
 	public ParticleBase() {
 		effects = new ObjectMap<>();
 		defaultEffect = new ParticleEffect();
+		
+		setupEffects();
+	}
+
+	private void setupEffects() {
+		getEffect("enemy_death");
 	}
 
 	public void dispose() {
@@ -24,17 +30,18 @@ public class ParticleBase {
 		effects.forEach((p) -> {p.value.dispose();}); 
 	}
 	
-	public ParticleEffect getTexture(String name) {
+	public ParticleEffect getEffect(String name) {
 		if (effects.containsKey(name)) {
 			return new ParticleEffect(effects.get(name));
 		}
 		
 		try {
 			ParticleEffect effect = new ParticleEffect();
-			effect.load(Gdx.files.internal(PARTICLE_FOLDER + name), Gdx.files.internal(PARTICLE_FOLDER));
+			effect.load(Gdx.files.internal(PARTICLE_FOLDER + name + ".p"), Gdx.files.internal(PARTICLE_FOLDER));
 			effects.put(name, effect);
 			return effect;
 		} catch (GdxRuntimeException e) {
+			System.out.println("Failed to load the particle effect: " + name + ".p");
 			effects.put(name, defaultEffect);
 			return defaultEffect;
 		}

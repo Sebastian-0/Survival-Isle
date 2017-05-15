@@ -116,6 +116,10 @@ public class Enemy extends GameObject implements Serializable {
 		super.die(game);
 		shouldBeRemoved = true;
 		game.getWorld().increaseTemporaryPathCost(getPosition(), 1, 1f);
+		spawnDeathEffect(game);
+	}
+	
+	public void spawnDeathEffect(GameInterface game) {
 		game.doForEachClient(s->s.sendCreateEffect(EffectType.EnemyDied, getId()));
 	}
 }
