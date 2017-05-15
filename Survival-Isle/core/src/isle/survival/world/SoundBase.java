@@ -39,12 +39,19 @@ public class SoundBase {
 		}
 		
 		try {
-			Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/" + name + ".mp3"));
+			Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/" + name + ".wav"));
 			sounds.put(name, sound);
 			return sound;
 		} catch (GdxRuntimeException e) {
-			sounds.put(name, defaultSound);
-			return defaultSound;
+			try {
+				Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/" + name + ".mp3"));
+				sounds.put(name, sound);
+				return sound;
+			} catch (GdxRuntimeException e2) {
+				System.out.println(e);
+				sounds.put(name, defaultSound);
+				return defaultSound;
+			}
 		}
 	}
 	
@@ -75,12 +82,12 @@ public class SoundBase {
 	
 	public void toggleMuteSound() {
 		muteSound = !muteSound;
-		if (muteSound)
-			stopAll();
 	}
 
 	public void toggleMuteMusic() {
 		muteMusic = !muteMusic;
+		if (muteMusic)
+			stopAll();
 	}
 
 	public void setVolumeOfSound(String name, long soundId, float volume) {
