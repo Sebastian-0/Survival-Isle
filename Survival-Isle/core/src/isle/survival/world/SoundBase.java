@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 import server.Connection;
 import util.Point;
+import world.SoundType;
 
 public class SoundBase {
 	private static final float FALLOFF_DISTANCE = 20;
@@ -31,9 +32,12 @@ public class SoundBase {
 	
 	private void setUpSounds() {
 		defaultSound = Gdx.audio.newSound(Gdx.files.internal("sound/default.wav"));
-		//TODO: add sounds played from server
 		getMusic("DayMusic");
 		getMusic("NightMusic");
+
+		//TODO: add sounds played from server
+		names.put(SoundType.EnemyAttack.ordinal(), "enemy_attack");
+		names.put(SoundType.PlayerDeath.ordinal(), "player_death");
 	}
 	
 	public void dispose() {
@@ -75,10 +79,17 @@ public class SoundBase {
 	}
 	
 	public void playSound(Connection coder) {
-		if (!muteSound) {
-			int id = coder.receiveInt();
-			getSound(names.get(id)).play(0.3f);
+		int id = coder.receiveInt();
+		String name = names.get(id);
+		
+		if (coder.receiveInt() == 0) {
+			playSound(name, 1);
+		} else {
+			int x = coder.receiveInt();
+			int y = coder.receiveInt();
+			playSoundAtPosition(name, new Point(x, y));
 		}
+		
 	}
 
 	public long playSound(String name, float volumeMultiplier) {
@@ -92,6 +103,7 @@ public class SoundBase {
 		float dx = soundPos.x-cameraPos.x;
 		float dy = soundPos.y-cameraPos.y;
 		float volume = Math.max(0, 1 - (float) Math.sqrt(dx*dx+dy*dy)/FALLOFF_DISTANCE);
+		System.out.println("Sound " + name + " at: " + volume + "%");
 		
 		return playSound(name, volume);
 	}

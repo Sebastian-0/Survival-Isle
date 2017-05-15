@@ -201,6 +201,7 @@ public class Player extends GameObject implements Serializable {
 				deathCount++;
 			}
 
+			game.doForEachClient(c->c.sendPlaySound(SoundType.PlayerDeath, getPosition()));
 			game.playerDied(this, crystalCount, deathCount);
 			super.die(game);
 		}

@@ -28,6 +28,7 @@ import isle.survival.world.effects.ProjectileType;
 import isle.survival.world.effects.ResourceEffect;
 import server.Connection;
 import server.ServerProtocol;
+import util.Point;
 import world.EffectType;
 import world.Inventory;
 import world.ItemType;
@@ -234,6 +235,7 @@ public class ClientGame implements ClientGameInterface {
 						System.out.println("Invalid object id: " + objectId);
 					}
 				} else if (type == EffectType.Projectile) {
+					
 					ProjectileType projectileType = ProjectileType.values()[coder.getConnection().receiveInt()];
 					int originId = coder.getConnection().receiveInt();
 					int targetId = coder.getConnection().receiveInt();
@@ -241,12 +243,14 @@ public class ClientGame implements ClientGameInterface {
 					NetworkObject originObject = worldObjects.getObject(originId);
 					NetworkObject targetObject = worldObjects.getObject(targetId);
 					if (originObject != null && targetObject != null) {
+						soundBase.playSoundAtPosition("turret_fire", new Point(originObject.getX(), originObject.getY()));
 						worldEffects.addEffect(new ProjectileEffect(originObject, targetObject, projectileType, textureBase));
 					}
 				} else if (type == EffectType.EnemyDied) {
 					int objectId = coder.getConnection().receiveInt();
 					NetworkObject enemy = worldObjects.getObject(objectId);
 					if (enemy != null) {
+						soundBase.playSoundAtPosition("enemy_death", new Point(enemy.getX(), enemy.getY()));
 						worldEffects.addEffect(new EnemyDiedEffect(enemy, particleBase));
 					}
 				}

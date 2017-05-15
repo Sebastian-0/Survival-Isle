@@ -3,11 +3,13 @@ package server;
 import java.io.Serializable;
 import java.net.Socket;
 
+import util.Point;
 import world.EffectType;
 import world.GameInterface;
 import world.GameObject;
 import world.Inventory;
 import world.ServerWorld;
+import world.SoundType;
 import world.WorldObjects;
 
 public class ServerProtocolCoder implements Serializable {
@@ -116,10 +118,19 @@ public class ServerProtocolCoder implements Serializable {
 		connection.sendCode(ServerProtocol.FailedToConnect);
 		connection.flush();
 	}
-	
-	public void sendPlaySound(int id) {
+
+	public void sendPlaySound(SoundType sound) {
 		connection.sendCode(ServerProtocol.PlaySound);
-		connection.sendInt(id);
+		connection.sendInt(sound.ordinal());
+		connection.sendInt(0);
+	}
+
+	public void sendPlaySound(SoundType sound, Point position) {
+		connection.sendCode(ServerProtocol.PlaySound);
+		connection.sendInt(sound.ordinal());
+		connection.sendInt(1);
+		connection.sendInt((int) position.x);
+		connection.sendInt((int) position.y);
 	}
 
 	public void sendClose() {

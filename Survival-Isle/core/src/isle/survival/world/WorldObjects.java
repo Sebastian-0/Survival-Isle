@@ -108,6 +108,7 @@ public class WorldObjects {
 		
 		boolean isHurt = connection.receiveInt() == 1;
 		object.setIsHurt(isHurt);
+		
 		int hp = connection.receiveInt();
 		object.setHp(hp);
 	}

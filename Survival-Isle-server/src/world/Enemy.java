@@ -73,6 +73,7 @@ public class Enemy extends GameObject implements Serializable {
 				animationTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
 				animationTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
 				shouldSendUpdate = true;
+				game.doForEachClient(c->c.sendPlaySound(SoundType.EnemyAttack, getPosition()));
 			} else if (!path.isEmpty()) {
 				Point nextPosition = path.remove(0);
 				WallTile wallTile = game.getWorld().getWallTileAtPosition(nextPosition);
