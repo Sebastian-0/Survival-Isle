@@ -13,6 +13,8 @@ import world.World;
 
 @SuppressWarnings("serial")
 public class ClientWorld extends World {
+	private static final String DAY_MUSIC_NAME = "DayMusic";
+	private static final String NIGHT_MUSIC_NAME = "NightMusic";
 	private static final int DUSK_TIME = 3;
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
@@ -126,7 +128,7 @@ public class ClientWorld extends World {
 			duskTimer = Math.min(DUSK_TIME, duskTimer+deltaTime);
 
 			if (nightMusicId != -1) {
-				soundBase.setVolumeOfSound(0, nightMusicId, (float)(duskTimer/DUSK_TIME) *0.5f);
+				soundBase.setVolumeOfSound(NIGHT_MUSIC_NAME, nightMusicId, (float)(duskTimer/DUSK_TIME) *0.5f);
 			}
 		} else if (isDaytime && duskTimer > 0)
 			duskTimer = Math.max(0, duskTimer-deltaTime);
@@ -179,13 +181,13 @@ public class ClientWorld extends World {
 		if (t == 2)
 			duskTimer = DUSK_TIME;
 		if (isDaytime) {
-			soundBase.stopSound(0);
-			soundBase.stopSound(1);
-			soundBase.playSound(1);
+			soundBase.stopSound(NIGHT_MUSIC_NAME);
+			soundBase.stopSound(DAY_MUSIC_NAME);
+			soundBase.playSound(DAY_MUSIC_NAME);
 		} else {
-			soundBase.stopSound(0);
-			soundBase.stopSound(1);
-			nightMusicId = soundBase.playSound(0);
+			soundBase.stopSound(NIGHT_MUSIC_NAME);
+			soundBase.stopSound(DAY_MUSIC_NAME);
+			nightMusicId = soundBase.playSound(NIGHT_MUSIC_NAME);
 		}
 	}
 	
