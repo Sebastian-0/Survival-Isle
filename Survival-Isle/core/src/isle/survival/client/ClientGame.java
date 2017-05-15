@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
+import isle.survival.input.ClientGameInterface;
 import isle.survival.input.InputProcessor;
 import isle.survival.shaders.Shaders;
 import isle.survival.ui.Ui;
@@ -33,9 +34,7 @@ import world.ItemType;
 import world.Tool;
 import world.World;
 
-public class ClientGame {
-	private final boolean IN_DEBUG_MODE = false;
-
+public class ClientGame implements ClientGameInterface {
 	private TextureBase textureBase;
 	private ParticleBase particleBase;
 	private SoundBase soundBase;
@@ -55,7 +54,8 @@ public class ClientGame {
 	private boolean gameOver;
 	private float gameOverFadeTimer;
 	private int deathCount;
-	
+
+	private boolean inDebugMode;
 	private BitmapFont debugFont;
 	
 	private Ui ui;
@@ -73,9 +73,7 @@ public class ClientGame {
 		worldEffects = new WorldEffects(textureBase, spriteBatch);
 		inventory = new Inventory();
 		
-		if (IN_DEBUG_MODE) {
-			debugFont = new BitmapFont(Gdx.files.internal("debug.fnt"));
-		}
+		debugFont = new BitmapFont(Gdx.files.internal("debug.fnt"));
 
 		frameBuffer = new FrameBuffer(Format.RGBA4444, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 	}
@@ -90,7 +88,7 @@ public class ClientGame {
 	private void initOnceConnected() {
 		ui = new Ui(textureBase, inventory, coder, worldObjects);
 		
-		inputProcessor = new InputProcessor(ui, coder, soundBase);
+		inputProcessor = new InputProcessor(ui, this, coder, soundBase);
 		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	
@@ -110,7 +108,7 @@ public class ClientGame {
 		inputProcessor.update(deltaTime);
 		ui.update(deltaTime);
 		
-		if (IN_DEBUG_MODE) {
+		if (inDebugMode) {
 			coder.sendDebugRequest();
 		}
 		
@@ -153,7 +151,7 @@ public class ClientGame {
 		spriteBatch.setShader(Shaders.colorShader);
 
 		
-		if (IN_DEBUG_MODE)
+		if (inDebugMode)
 			world.drawDebug(debugFont, xView, yView);
 		
 		ui.draw(spriteBatch);
@@ -290,12 +288,16 @@ public class ClientGame {
 	public void dispose() {
 		ui.dispose();
 		frameBuffer.dispose();
-		if (IN_DEBUG_MODE)
-			debugFont.dispose();
+		debugFont.dispose();
 	}
 
 	public void resize(int width, int height) {
 		frameBuffer.dispose();
 		frameBuffer = new FrameBuffer(Format.RGBA4444, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+	}
+
+	@Override
+	public void toggleDebug() {
+		inDebugMode = !inDebugMode;
 	}
 }

@@ -129,7 +129,6 @@ public class ClientWorld extends World {
 
 			if (nightMusicId != -1) {
 				soundBase.setVolumeOfMusic(NIGHT_MUSIC_NAME, nightMusicId, (float)(duskTimer/DUSK_TIME) *0.5f);
-				System.out.println((float)(duskTimer/DUSK_TIME) *0.5f);
 			}
 		} else if (isDaytime && duskTimer > 0)
 			duskTimer = Math.max(0, duskTimer-deltaTime);

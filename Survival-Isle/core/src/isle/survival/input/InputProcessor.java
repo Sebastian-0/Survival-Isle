@@ -14,7 +14,8 @@ import world.Player;
 public class InputProcessor extends InputAdapter {
 	
 	private static final float MOVEMENT_TIME = (float) Player.MOVEMENT_TIME;
-	
+
+	private ClientGameInterface game;
 	private GameProtocolCoder coder;
 	private BuildMenu buildMenu;
 	private ChatBox chatBox;
@@ -23,12 +24,14 @@ public class InputProcessor extends InputAdapter {
 	
 	private float movementCounter;
 
-	public InputProcessor(Ui ui, GameProtocolCoder coder, SoundBase soundBase) {
+
+	public InputProcessor(Ui ui, ClientGameInterface game ,GameProtocolCoder coder, SoundBase soundBase) {
 		this.buildMenu = ui.getBuildMenu();
 		this.chatBox = ui.getChatBox();
 		this.ui = ui;
 		this.coder = coder;
 		this.soundBase = soundBase;
+		this.game = game;
 	}
 
 	@Override
@@ -83,6 +86,9 @@ public class InputProcessor extends InputAdapter {
 			break;
 		case Input.Keys.F1:
 			ui.toggleUI();
+			break;
+		case Input.Keys.F2:
+			game.toggleDebug();
 			break;
 		case Input.Keys.SPACE:
 			coder.sendActivateTool();
