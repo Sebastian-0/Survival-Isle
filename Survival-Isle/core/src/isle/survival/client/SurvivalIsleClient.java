@@ -119,11 +119,12 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 					break;
 				}
 			}
-		} catch (ConnectionClosedException e) {
+		} catch (Throwable e) {
 			titleScreen.setErrorMessage("Lost connection to host.");
 			closeSocket();
 			showTitleScreen();
 			Thread.currentThread().interrupt();
+			throw e;
 		}
 	}
 

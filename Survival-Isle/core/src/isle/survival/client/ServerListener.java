@@ -1,7 +1,5 @@
 package isle.survival.client;
 
-import server.ConnectionClosedException;
-
 public class ServerListener extends Thread {
 	
 	private ClientInterface client;
@@ -16,7 +14,8 @@ public class ServerListener extends Thread {
 		while (!interrupted()) {
 			try {
 				client.parseServerMessage();
-			} catch (ConnectionClosedException e) {
+			} catch (Throwable e) {
+				System.out.println("Server closed connection unexpectedly");
 				e.printStackTrace();
 				break;
 			}
