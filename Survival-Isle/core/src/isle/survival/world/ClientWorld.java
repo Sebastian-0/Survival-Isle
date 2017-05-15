@@ -182,13 +182,13 @@ public class ClientWorld extends World {
 		if (t == 2)
 			duskTimer = DUSK_TIME;
 		if (isDaytime) {
-			soundBase.stopSound(NIGHT_MUSIC_NAME);
-			soundBase.stopSound(DAY_MUSIC_NAME);
-			soundBase.playSound(DAY_MUSIC_NAME);
+			soundBase.stopMusic(NIGHT_MUSIC_NAME);
+			soundBase.stopMusic(DAY_MUSIC_NAME);
+			soundBase.playMusic(DAY_MUSIC_NAME);
 		} else {
-			soundBase.stopSound(NIGHT_MUSIC_NAME);
-			soundBase.stopSound(DAY_MUSIC_NAME);
-			nightMusicId = soundBase.playSound(NIGHT_MUSIC_NAME);
+			soundBase.stopMusic(NIGHT_MUSIC_NAME);
+			soundBase.stopMusic(DAY_MUSIC_NAME);
+			nightMusicId = soundBase.playMusic(NIGHT_MUSIC_NAME);
 		}
 	}
 	
