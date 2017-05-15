@@ -103,7 +103,6 @@ public class SoundBase {
 		float dx = soundPos.x-cameraPos.x;
 		float dy = soundPos.y-cameraPos.y;
 		float volume = Math.max(0, 1 - (float) Math.sqrt(dx*dx+dy*dy)/FALLOFF_DISTANCE);
-		System.out.println("Sound " + name + " at: " + volume + "%");
 		
 		return playSound(name, volume);
 	}
