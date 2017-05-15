@@ -8,6 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
+import util.Point;
+
 public class Server {
 	
 	private final int port;
@@ -28,9 +30,10 @@ public class Server {
 				System.out.println("Help is not yet implemented.");
 				break;
 			case "new":
+				Point size = readSize(in);
 				if (!running) {
+					newGame((int) size.x, (int) size.y);
 					System.out.println("Starting game...");
-					newGame();
 					start();
 				} else {
 					System.out.println("Can not start game if already started");
@@ -63,8 +66,44 @@ public class Server {
 		}
 	}
 
-	public void newGame() {
-		game = new Game();
+	private Point readSize(Scanner in) {
+		String[] sizes = in.nextLine().trim().split("\\s");
+		Point size = new Point();
+		try {
+			switch (sizes.length) {
+			case 2:
+				size.x = Integer.parseInt(sizes[0]);
+				size.y = Integer.parseInt(sizes[1]);
+				break;
+			case 1:
+				if (!sizes[0].isEmpty()) {
+					size.x = size.y = Integer.parseInt(sizes[0]);
+					break;
+				}
+			default:
+				size.x = 200;
+				size.y = 150;
+				break;
+			}
+			
+			if (size.x < 50 || size.y < 50)
+				System.out.println("Size too small");
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid world size");
+		}
+		
+		if (size.x < 50)
+			size.x = 50;
+		if (size.y < 50)
+			size.y = 50;
+		
+		System.out.printf("Creating world of size: (%.0f, %.0f)\n", size.x, size.y);
+		
+		return size;
+	}
+
+	public void newGame(int width, int height) {
+		game = new Game(width, height);
 	}
 
 	public void load(String filename) {
