@@ -44,8 +44,8 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	private boolean gameOver;
 	private boolean shouldStopUpdating;
 	
-	public Game() {
-		world = new ServerWorld(200, 150, this);
+	public Game(int width, int height) {
+		world = new ServerWorld(width, height, this);
 		world.generateTerrain();
 		
 		worldObjects = new WorldObjects();

@@ -14,6 +14,7 @@ public class Ui {
 	private ChatBox chatBox;
 	private ChatHistory chatHistory;
 	private HealthBar healthBar;
+	private boolean enabled;
 	
 	public Ui(TextureBase textures, Inventory inventory, GameProtocolCoder coder, WorldObjects objects) {
 		buildMenu = new BuildMenu(textures, inventory, coder);
@@ -21,27 +22,34 @@ public class Ui {
 		chatBox = new ChatBox();
 		chatHistory = new ChatHistory();
 		healthBar = new HealthBar(objects);
+		enabled = true;
 	}
 
+	public void toggleUI() {
+		enabled = !enabled;
+	}
+	
 	public void draw(SpriteBatch spriteBatch) {
-		buildMenu.positionItems();
-		int x = Gdx.graphics.getWidth()/2 - buildMenu.getWidth()/2;
-		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(x, 0, 0));
-		buildMenu.draw(spriteBatch);
-		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(-x, 0, 0));
-		
-		int y = Gdx.graphics.getHeight() - inventoryMenu.getHeight();
-		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(0, y, 0));
-		inventoryMenu.draw(spriteBatch);
-		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(0, -y, 0));
-
-		if (chatBox.isEnabled() || chatHistory.hasResentMessages())
-			chatHistory.draw(spriteBatch);
-		
-		if (chatBox.isEnabled())
-			chatBox.draw(spriteBatch);
-		
-		healthBar.draw(spriteBatch);
+		if(enabled) {
+			buildMenu.positionItems();
+			int x = Gdx.graphics.getWidth()/2 - buildMenu.getWidth()/2;
+			spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(x, 0, 0));
+			buildMenu.draw(spriteBatch);
+			spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(-x, 0, 0));
+			
+			int y = Gdx.graphics.getHeight() - inventoryMenu.getHeight();
+			spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(0, y, 0));
+			inventoryMenu.draw(spriteBatch);
+			spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(0, -y, 0));
+	
+			if (chatBox.isEnabled() || chatHistory.hasResentMessages())
+				chatHistory.draw(spriteBatch);
+			
+			if (chatBox.isEnabled())
+				chatBox.draw(spriteBatch);
+			
+			healthBar.draw(spriteBatch);
+		}
 	}
 	
 	public void update(double deltaTime) {

@@ -19,13 +19,14 @@ public class InputProcessor extends InputAdapter {
 	private BuildMenu buildMenu;
 	private ChatBox chatBox;
 	private SoundBase soundBase;
+	private Ui ui;
 	
 	private float movementCounter;
-
 
 	public InputProcessor(Ui ui, GameProtocolCoder coder, SoundBase soundBase) {
 		this.buildMenu = ui.getBuildMenu();
 		this.chatBox = ui.getChatBox();
+		this.ui = ui;
 		this.coder = coder;
 		this.soundBase = soundBase;
 	}
@@ -74,16 +75,15 @@ public class InputProcessor extends InputAdapter {
 			int toolIndex = keycode - Input.Keys.NUM_1;
 			buildMenu.setSelectedIndex(toolIndex);
 			break;
+		case Input.Keys.F1:
+			ui.toggleUI();
+			break;
 		case Input.Keys.SPACE:
 			coder.sendActivateTool();
 			break;
 		case Input.Keys.ESCAPE:
 			coder.sendClose();
-			soundBase.stopAll();
 			break;
-		case Input.Keys.M:
-			soundBase.toggleMuteSound();
-			soundBase.toggleMuteMusic();
 		default:
 			return false;
 		}

@@ -29,8 +29,10 @@ public class TitleScreen extends InputAdapter {
 	private TextField portField;
 	private Button startButton;
 	private TextArea errorMessageArea;
+	private TextArea creditsArea;
 	private BitmapFont font;
 	private BitmapFont errorFont;
+	private BitmapFont creditsFont;
 	
 	public TitleScreen(TitleScreenBackend backend, SpriteBatch spriteBatch) {
 		this.backend = backend;
@@ -38,7 +40,7 @@ public class TitleScreen extends InputAdapter {
 		this.spriteBatch = spriteBatch;
 		
 		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_FILE);
-		
+
 		font = new BitmapFont(Gdx.files.internal("dragonslapper.fnt"));
 		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, "Enter username...", preferences.getString(KEY_USERNAME, "Username"));
 		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, "Enter host IP...", preferences.getString(KEY_HOST, "localhost"));
@@ -47,6 +49,13 @@ public class TitleScreen extends InputAdapter {
 		
 		errorFont = new BitmapFont(Gdx.files.internal("font32.fnt")); 
 		errorMessageArea = new TextArea(new Point(160, 30), new Point(320, 24), errorFont, "", "");
+
+		creditsFont = new BitmapFont(Gdx.files.internal("credits.fnt"));
+		int x = 320-Gdx.graphics.getWidth()/2;
+		
+		creditsArea = new TextArea(new Point(x, -32), new Point(0, 0), creditsFont, "", 
+				"Game by Mattias Gustafsson, Sebastian Hjelm, Markus Olsson, Måns Åhlander\n"
+				+ "Music by Grandvision, F4LL0UT (www.newgrounds.com)");
 	}
 	
 	public void draw() {
@@ -64,6 +73,7 @@ public class TitleScreen extends InputAdapter {
 		portField.draw(spriteBatch);
 		startButton.draw(spriteBatch);
 		errorMessageArea.draw(spriteBatch);
+		creditsArea.draw(spriteBatch);
 		spriteBatch.setTransformMatrix(spriteBatch.getTransformMatrix().translate(-dw, -dh, 0));
 		
 		spriteBatch.end();
@@ -141,5 +151,9 @@ public class TitleScreen extends InputAdapter {
 		
 		font.dispose();
 		errorFont.dispose();
+	}
+
+	public void resize(int width, int height) {
+		creditsArea.setPosition(new Point(320-Gdx.graphics.getWidth()/2, 240-Gdx.graphics.getHeight()/2+32));
 	}
 }
