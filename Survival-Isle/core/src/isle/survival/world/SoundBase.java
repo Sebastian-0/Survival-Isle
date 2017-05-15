@@ -73,13 +73,13 @@ public class SoundBase {
 	public void playSound(Connection coder) {
 		if (!muteSound) {
 			int id = coder.receiveInt();
-			getSound(names.get(id)).play((float)0.5);
+			getSound(names.get(id)).play((float)0.3);
 		}
 	}
 
 	public long playSound(String name) {
 		if (!muteSound) {
-			return getSound(name).play((float)0.5);
+			return getSound(name).play((float)0.3);
 		}
 		return -1;
 	}
@@ -140,7 +140,15 @@ public class SoundBase {
 		}
 	}
 
-	public void setVolumeOfSound(String name, long soundId, float volume) {
-		getSound(name).setVolume(soundId, volume);
+	public void setVolumeOfMusic(String name, long soundId, float volume) {
+		getMusic(name).setVolume(soundId, volume);
+	}
+
+	public boolean isSoundMuted() {
+		return muteSound;
+	}
+	
+	public boolean isMusicMuted() {
+		return muteMusic;
 	}
 }

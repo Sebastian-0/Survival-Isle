@@ -10,13 +10,13 @@ public class Time implements Serializable {
 	
 	private static final int DAY_DURATION = 60;
 	private static final int NIGHT_DURATION = 65;
-	private static final int LONG_NIGHT_DURATION = 171;
+	private static final int LONG_NIGHT_DURATION = 157;
 	private double time;
 	private int day;
 	
 	public void advanceTime(TimeListener timeListener, double deltaTime) {
 		boolean wasDay = isDaytime();
-		boolean nightmare = day > 0 && day % 10 == 0;
+		boolean nightmare = day > 0 && day % 8 == 0;
 		
 		time += deltaTime;
 		if (time > DAY_DURATION + NIGHT_DURATION && !nightmare || time > DAY_DURATION + LONG_NIGHT_DURATION)

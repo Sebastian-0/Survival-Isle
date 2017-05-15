@@ -89,6 +89,7 @@ public class InputProcessor extends InputAdapter {
 			break;
 		case Input.Keys.ESCAPE:
 			coder.sendClose();
+			soundBase.stopAll();
 			break;
 		default:
 			return false;
