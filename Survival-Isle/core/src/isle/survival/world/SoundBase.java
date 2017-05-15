@@ -9,19 +9,23 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 import server.Connection;
+import util.Point;
 
 public class SoundBase {
+	private static final float FALLOFF_DISTANCE = 20;
 	private ObjectMap<String, Sound> sounds;
 	private ObjectMap<String, Sound> music;
 	private ObjectMap<Integer, String> names;
 	private boolean muteMusic;
 	private boolean muteSound;
 	private Sound defaultSound;
+	private Point cameraPos;
 	
 	public SoundBase() {
 		sounds = new ObjectMap<>();
 		music = new ObjectMap<>();
 		names = new ObjectMap<>();
+		cameraPos = new Point();
 		setUpSounds();
 	}
 	
@@ -73,15 +77,23 @@ public class SoundBase {
 	public void playSound(Connection coder) {
 		if (!muteSound) {
 			int id = coder.receiveInt();
-			getSound(names.get(id)).play((float)0.3);
+			getSound(names.get(id)).play(0.3f);
 		}
 	}
 
-	public long playSound(String name) {
+	public long playSound(String name, float volumeMultiplier) {
 		if (!muteSound) {
-			return getSound(name).play((float)0.3);
+			return getSound(name).play(0.3f * volumeMultiplier);
 		}
 		return -1;
+	}
+
+	public long playSoundAtPosition(String name, Point soundPos) {
+		float dx = soundPos.x-cameraPos.x;
+		float dy = soundPos.y-cameraPos.y;
+		float volume = Math.max(0, 1 - (float) Math.sqrt(dx*dx+dy*dy)/FALLOFF_DISTANCE);
+		
+		return playSound(name, volume);
 	}
 	
 	public void stopSound(String name) {
@@ -90,10 +102,10 @@ public class SoundBase {
 
 	public long playMusic(String name) {
 		if (!muteMusic) {
-			return getMusic(name).play((float)0.5);
+			return getMusic(name).play(0.5f);
 		}
 		
-		long m = getMusic(name).play((float)0.5);
+		long m = getMusic(name).play(0.5f);
 		getMusic(name).pause();
 		return m;
 	}
@@ -150,5 +162,10 @@ public class SoundBase {
 	
 	public boolean isMusicMuted() {
 		return muteMusic;
+	}
+
+	public void setCameraPosition(float cameraX, float cameraY) {
+		cameraPos.x = cameraX;
+		cameraPos.y = cameraY;
 	}
 }
