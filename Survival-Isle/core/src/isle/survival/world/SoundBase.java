@@ -143,4 +143,12 @@ public class SoundBase {
 	public void setVolumeOfSound(String name, long soundId, float volume) {
 		getSound(name).setVolume(soundId, volume);
 	}
+
+	public boolean isSoundMuted() {
+		return muteSound;
+	}
+	
+	public boolean isMusicMuted() {
+		return muteMusic;
+	}
 }

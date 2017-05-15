@@ -157,6 +157,14 @@ public class ClientGame {
 			world.drawDebug(debugFont, xView, yView);
 		
 		ui.draw(spriteBatch);
+
+		if (soundBase.isSoundMuted()) {
+			spriteBatch.draw(textureBase.getTexture("mute_sound"), Gdx.graphics.getWidth()-32, 96);
+		}
+
+		if (soundBase.isMusicMuted()) {
+			spriteBatch.draw(textureBase.getTexture("mute_music"), Gdx.graphics.getWidth()-32, 64);
+		}
 		
 		if (gameOver) {
 			Texture t = textureBase.getTexture("game_over");
