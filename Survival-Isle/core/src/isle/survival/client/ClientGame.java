@@ -65,7 +65,7 @@ public class ClientGame {
 		this.textureBase = textureBase;
 		this.soundBase = soundBase;
 
-		world = new ClientWorld(textureBase, spriteBatch);
+		world = new ClientWorld(textureBase, spriteBatch, soundBase);
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
 		worldEffects = new WorldEffects(textureBase, spriteBatch);
 		inventory = new Inventory();
@@ -233,7 +233,7 @@ public class ClientGame {
 				inventory.receiveInventory(coder.getConnection());
 				break;
 			case TimeEvent:
-				world.receiveTimeEvent(coder.getConnection(), soundBase);
+				world.receiveTimeEvent(coder.getConnection());
 				break;
 			case SendWorldWallTiles:
 				world.receiveWallTiles(coder.getConnection());

@@ -35,10 +35,11 @@ public class SoundBase {
 		}
 	}
 
-	public void playSound(int id) {
+	public long playSound(int id) {
 		if (!muteSound) {
-			sounds.get(id).play((float)0.5);
+			return sounds.get(id).play((float)0.5);
 		}
+		return -1;
 	}
 
 	public void stopSound(int id) {
@@ -60,5 +61,9 @@ public class SoundBase {
 
 	public void toggleMuteMusic() {
 		muteMusic = !muteMusic;
+	}
+
+	public void setVolumeOfSound(int id, long soundId, float volume) {
+		sounds.get(id).setVolume(soundId, volume);
 	}
 }
