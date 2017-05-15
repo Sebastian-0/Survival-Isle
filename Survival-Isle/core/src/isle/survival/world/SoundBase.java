@@ -4,49 +4,70 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 import server.Connection;
 
 public class SoundBase {
-	private ObjectMap<Integer, Sound> sounds;
+	private ObjectMap<String, Sound> sounds;
+	private ObjectMap<Integer, String> names;
 	private boolean muteMusic;
 	private boolean muteSound;
+	private Sound defaultSound;
 	
 	public SoundBase() {
 		sounds = new ObjectMap<>();
+		names = new ObjectMap<>();
 		setUpSounds();
 	}
 	
 	private void setUpSounds() {
-		sounds.put(0, Gdx.audio.newSound(Gdx.files.internal("sound/372443_Rise.mp3")));
-		sounds.put(1, Gdx.audio.newSound(Gdx.files.internal("sound/730287_Elves-of-the-West.mp3")));
+		defaultSound = Gdx.audio.newSound(Gdx.files.internal("sound/default.wav"));
+		//TODO: add sounds played from server
 	}
 	
 	public void dispose() {
 		sounds.forEach((t) -> {t.value.dispose();}); 
+		defaultSound.dispose();
+	}
+	
+	private Sound getSound(String name) {
+		if (sounds.containsKey(name)) {
+			return sounds.get(name);
+		}
+		
+		try {
+			Sound sound = Gdx.audio.newSound(Gdx.files.internal("sound/" + name + ".mp3"));
+			sounds.put(name, sound);
+			return sound;
+		} catch (GdxRuntimeException e) {
+			sounds.put(name, defaultSound);
+			return defaultSound;
+		}
 	}
 	
 	public void playSound(Connection coder) {
 		if (!muteSound) {
 			int id = coder.receiveInt();
-			sounds.get(id).play((float)0.5);
+			getSound(names.get(id)).play((float)0.5);
 		}
 	}
 
-	public void playSound(int id) {
+	public long playSound(String name) {
 		if (!muteSound) {
-			sounds.get(id).play((float)0.5);
+			return getSound(name).play((float)0.5);
 		}
+		return -1;
 	}
 
-	public void stopSound(int id) {
-		sounds.get(id).stop();
+	public void stopSound(String name) {
+		getSound(name).stop();
 	}
 	
-	private void stopAll() {
-		Iterator<Entry<Integer, Sound>> i = sounds.iterator();
+	public void stopAll() {
+		Iterator<Entry<String, Sound>> i = sounds.iterator();
 		while (i.hasNext()) {
 			i.next().value.stop();
 		}
@@ -60,5 +81,9 @@ public class SoundBase {
 
 	public void toggleMuteMusic() {
 		muteMusic = !muteMusic;
+	}
+
+	public void setVolumeOfSound(String name, long soundId, float volume) {
+		getSound(name).setVolume(soundId, volume);
 	}
 }

@@ -79,6 +79,7 @@ public class InputProcessor extends InputAdapter {
 			break;
 		case Input.Keys.ESCAPE:
 			coder.sendClose();
+			soundBase.stopAll();
 			break;
 		case Input.Keys.M:
 			soundBase.toggleMuteSound();
