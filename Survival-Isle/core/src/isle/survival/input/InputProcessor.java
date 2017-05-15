@@ -75,6 +75,12 @@ public class InputProcessor extends InputAdapter {
 			int toolIndex = keycode - Input.Keys.NUM_1;
 			buildMenu.setSelectedIndex(toolIndex);
 			break;
+		case Input.Keys.M:
+			soundBase.toggleMuteMusic();
+			break;
+		case Input.Keys.N:
+			soundBase.toggleMuteSound();
+			break;
 		case Input.Keys.F1:
 			ui.toggleUI();
 			break;

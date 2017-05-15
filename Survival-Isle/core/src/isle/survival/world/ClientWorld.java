@@ -172,6 +172,7 @@ public class ClientWorld extends World {
 			int id = connection.receiveInt();
 			walls[x][y] = id;
 			damage[x][y] = -1;
+			soundBase.playSound("break_tile");
 		}
 	}
 
@@ -192,10 +193,11 @@ public class ClientWorld extends World {
 	}
 	
 	public void receiveTileDamage(Connection connection) {
-			int x = connection.receiveInt();
-			int y = connection.receiveInt();
-			int d = connection.receiveInt();
-			damage[x][y] = d;
+		int x = connection.receiveInt();
+		int y = connection.receiveInt();
+		int d = connection.receiveInt();
+		damage[x][y] = d;
+		soundBase.playSound("hit_tile");
 	}
 
 	public void clearDebug() {
