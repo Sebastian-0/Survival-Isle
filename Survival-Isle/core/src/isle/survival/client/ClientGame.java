@@ -16,10 +16,12 @@ import isle.survival.shaders.Shaders;
 import isle.survival.ui.Ui;
 import isle.survival.world.ClientWorld;
 import isle.survival.world.NetworkObject;
+import isle.survival.world.ParticleBase;
 import isle.survival.world.SoundBase;
 import isle.survival.world.TextureBase;
 import isle.survival.world.WorldEffects;
 import isle.survival.world.WorldObjects;
+import isle.survival.world.effects.EnemyDiedEffect;
 import isle.survival.world.effects.ProjectileEffect;
 import isle.survival.world.effects.ProjectileType;
 import isle.survival.world.effects.ResourceEffect;
@@ -33,11 +35,13 @@ import world.World;
 
 public class ClientGame {
 	private final boolean IN_DEBUG_MODE = false;
+
+	private TextureBase textureBase;
+	private ParticleBase particleBase;
+	private SoundBase soundBase;
 	
 	private String name;
-	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
-	private SoundBase soundBase;
 	private InputProcessor inputProcessor;
 	private GameProtocolCoder coder;
 	private FrameBuffer frameBuffer;
@@ -56,16 +60,15 @@ public class ClientGame {
 	
 	private Ui ui;
 
-	
 
-
-	public ClientGame(String name, SpriteBatch spriteBatch, TextureBase textureBase, SoundBase soundBase) {
+	public ClientGame(String name, SpriteBatch spriteBatch, TextureBase textureBase, ParticleBase particleBase, SoundBase soundBase) {
 		this.name = name;
 		this.spriteBatch = spriteBatch;
 		this.textureBase = textureBase;
+		this.particleBase = particleBase;
 		this.soundBase = soundBase;
 
-		world = new ClientWorld(textureBase, spriteBatch);
+		world = new ClientWorld(textureBase, spriteBatch, soundBase);
 		worldObjects = new WorldObjects(textureBase, spriteBatch);
 		worldEffects = new WorldEffects(textureBase, spriteBatch);
 		inventory = new Inventory();
@@ -87,7 +90,7 @@ public class ClientGame {
 	private void initOnceConnected() {
 		ui = new Ui(textureBase, inventory, coder, worldObjects);
 		
-		inputProcessor = new InputProcessor(ui, coder);
+		inputProcessor = new InputProcessor(ui, coder, soundBase);
 		Gdx.input.setInputProcessor(inputProcessor);
 	}
 	
@@ -226,6 +229,12 @@ public class ClientGame {
 					NetworkObject targetObject = worldObjects.getObject(targetId);
 					if (originObject != null && targetObject != null) {
 						worldEffects.addEffect(new ProjectileEffect(originObject, targetObject, projectileType, textureBase));
+					}
+				} else if (type == EffectType.EnemyDied) {
+					int objectId = coder.getConnection().receiveInt();
+					NetworkObject enemy = worldObjects.getObject(objectId);
+					if (enemy != null) {
+						worldEffects.addEffect(new EnemyDiedEffect(enemy, particleBase));
 					}
 				}
 				break;

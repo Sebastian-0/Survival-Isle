@@ -13,9 +13,12 @@ import world.World;
 
 @SuppressWarnings("serial")
 public class ClientWorld extends World {
+	private static final String DAY_MUSIC_NAME = "DayMusic";
+	private static final String NIGHT_MUSIC_NAME = "NightMusic";
 	private static final int DUSK_TIME = 3;
 	private TextureBase textureBase;
 	private SpriteBatch spriteBatch;
+	private SoundBase soundBase;
 	private int[][] walls;
 	private int[][] damage;
 	private float[][] debug;
@@ -23,10 +26,12 @@ public class ClientWorld extends World {
 	private boolean isDaytime; 
 	private Texture nightTexture;
 	private double duskTimer;
+	private long nightMusicId;
 	
-	public ClientWorld(TextureBase textureBase, SpriteBatch spriteBatch) {
+	public ClientWorld(TextureBase textureBase, SpriteBatch spriteBatch, SoundBase soundBase) {
 		this.textureBase = textureBase;
 		this.spriteBatch = spriteBatch;
+		this.soundBase = soundBase;
 		ground = new int[0][0];
 		walls = new int[0][0];
 		damage = new int[0][0];
@@ -36,7 +41,7 @@ public class ClientWorld extends World {
 		nightTexture = new Texture("night.png");
 		duskTimer = 0;
 		
-		
+		nightMusicId = -1;
 	}
 
 	private Point startPoint(float xOffset, float yOffset) {
@@ -119,10 +124,15 @@ public class ClientWorld extends World {
 	
 	
 	public void update(double deltaTime) {
-		if (!isDaytime && duskTimer < DUSK_TIME)
+		if (!isDaytime && duskTimer < DUSK_TIME) {
 			duskTimer = Math.min(DUSK_TIME, duskTimer+deltaTime);
-		else if (isDaytime && duskTimer > 0)
+
+			if (nightMusicId != -1) {
+				soundBase.setVolumeOfSound(NIGHT_MUSIC_NAME, nightMusicId, (float)(duskTimer/DUSK_TIME) *0.5f);
+			}
+		} else if (isDaytime && duskTimer > 0)
 			duskTimer = Math.max(0, duskTimer-deltaTime);
+		
 	}
 	
 	public void receive(Connection connection) {
@@ -170,6 +180,15 @@ public class ClientWorld extends World {
 		isDaytime = t == 1;
 		if (t == 2)
 			duskTimer = DUSK_TIME;
+		if (isDaytime) {
+			soundBase.stopSound(NIGHT_MUSIC_NAME);
+			soundBase.stopSound(DAY_MUSIC_NAME);
+			soundBase.playSound(DAY_MUSIC_NAME);
+		} else {
+			soundBase.stopSound(NIGHT_MUSIC_NAME);
+			soundBase.stopSound(DAY_MUSIC_NAME);
+			nightMusicId = soundBase.playSound(NIGHT_MUSIC_NAME);
+		}
 	}
 	
 	public void receiveTileDamage(Connection connection) {

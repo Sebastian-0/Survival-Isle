@@ -72,8 +72,8 @@ public class Game implements GameInterface, TimeListener, Serializable {
 	}
 
 	private void spawnEnemies(double deltaTime) {
-		double difficulty = 3 / (0.5+players.size()/2.0);
-		if (!time.isDaytime() && Math.random() * difficulty  / Math.min(time.getDay()+1,5) < deltaTime) {
+		double difficulty = 3 / (0.5+clients.size()/2.0);
+		if (!time.isDaytime() && Math.random() * difficulty / Math.min(time.getDay()+1,5) < deltaTime) {
 			Enemy e = new Enemy(time.getDay());
 			worldObjects.addObject(e);
 			e.setPosition(world.getRandomEnemySpawnPoint());

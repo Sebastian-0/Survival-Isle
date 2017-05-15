@@ -17,6 +17,7 @@ public class Player extends GameObject implements Serializable {
 	private static final double REVIVE_TIME = 5;
 	private static final int DAMAGE = 5;
 	public static final double MOVEMENT_TIME = .3;
+	public static final int MAX_HEALTH = 100;
 	
 	
 	private Inventory inventory;
@@ -181,7 +182,7 @@ public class Player extends GameObject implements Serializable {
 
 	@Override
 	protected int getMaxHp() {
-		return 100;
+		return MAX_HEALTH;
 	}
 
 	@Override

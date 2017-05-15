@@ -17,15 +17,17 @@ public class InputProcessor extends InputAdapter {
 	private GameProtocolCoder coder;
 	private BuildMenu buildMenu;
 	private ChatBox chatBox;
+	private SoundBase soundBase;
 	private Ui ui;
 	
 	private float movementCounter;
 
-	public InputProcessor(Ui ui, GameProtocolCoder coder) {
+	public InputProcessor(Ui ui, GameProtocolCoder coder, SoundBase soundBase) {
 		this.buildMenu = ui.getBuildMenu();
 		this.chatBox = ui.getChatBox();
 		this.ui = ui;
 		this.coder = coder;
+		this.soundBase = soundBase;
 	}
 
 	@Override
