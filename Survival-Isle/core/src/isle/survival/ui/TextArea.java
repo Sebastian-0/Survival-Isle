@@ -9,7 +9,7 @@ public class TextArea extends MenuComponent {
 	
 	public TextArea(Point position, Point size, BitmapFont font, String defaultText, String text) {
 		super(position, size, font, defaultText, text);
-		background = new Texture("text_field_background.png");
+		background = new Texture("white.png");
 		backgroundFocus = new Texture("text_field_background_focus.png");
 	}
 	
