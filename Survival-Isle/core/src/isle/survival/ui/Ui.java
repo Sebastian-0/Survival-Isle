@@ -19,7 +19,7 @@ public class Ui {
 	public Ui(TextureBase textures, Inventory inventory, GameProtocolCoder coder, WorldObjects objects) {
 		buildMenu = new BuildMenu(textures, inventory, coder);
 		inventoryMenu = new InventoryMenu(textures, inventory);
-		chatBox = new ChatBox();
+		chatBox = new ChatBox(textures);
 		chatHistory = new ChatHistory();
 		healthBar = new HealthBar(objects);
 		enabled = true;

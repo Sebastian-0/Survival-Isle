@@ -2,17 +2,17 @@ package isle.survival.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+import isle.survival.world.TextureBase;
 import util.Point;
 
 public class TextField extends MenuComponent {
 	
-	public TextField(Point position, Point size, BitmapFont font, String defaultText, String text) {
+	public TextField(Point position, Point size, BitmapFont font, TextureBase textures, String defaultText, String text) {
 		super(position, size, font, defaultText, text);
-		background = new Texture("text_field_background.png");
-		backgroundFocus = new Texture("text_field_background_focus.png");
+		background = textures.getTexture("text_field_background");
+		backgroundFocus = textures.getTexture("text_field_background_focus");
 	}
 	
 	@Override

@@ -5,13 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import isle.survival.ui.Button;
 import isle.survival.ui.TextArea;
 import isle.survival.ui.TextField;
+import isle.survival.world.TextureBase;
 import util.Point;
 
 public class TitleScreen extends InputAdapter {
@@ -23,7 +24,7 @@ public class TitleScreen extends InputAdapter {
 	
 	private TitleScreenBackend backend;
 	private SpriteBatch spriteBatch;
-	private Texture texture;
+	private TextureRegion texture;
 	private TextField nameField;
 	private TextField ipField;
 	private TextField portField;
@@ -34,27 +35,27 @@ public class TitleScreen extends InputAdapter {
 	private BitmapFont errorFont;
 	private BitmapFont creditsFont;
 	
-	public TitleScreen(TitleScreenBackend backend, SpriteBatch spriteBatch) {
+	public TitleScreen(TitleScreenBackend backend, SpriteBatch spriteBatch, TextureBase textures) {
 		this.backend = backend;
-		texture = new Texture("title_screen.png");
+		texture = textures.getTexture("title_screen");
 		this.spriteBatch = spriteBatch;
 		
 		Preferences preferences = Gdx.app.getPreferences(PREFERENCES_FILE);
 
 		font = new BitmapFont(Gdx.files.internal("dragonslapper.fnt"));
-		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, "Enter username...", preferences.getString(KEY_USERNAME, "Username"));
-		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, "Enter host IP...", preferences.getString(KEY_HOST, "localhost"));
-		portField = new TextField(new Point(160, 160), new Point(320, 26), font, "Enter port number...", preferences.getString(KEY_PORT, "1337"));
-		startButton = new Button(new Point(256, 100), new Point(128, 28), font, " Join Game");
+		nameField = new TextField(new Point(160, 240), new Point(320, 26), font, textures, "Enter username...", preferences.getString(KEY_USERNAME, "Username"));
+		ipField = new TextField(new Point(160, 200), new Point(320, 26), font, textures, "Enter host IP...", preferences.getString(KEY_HOST, "localhost"));
+		portField = new TextField(new Point(160, 160), new Point(320, 26), font, textures, "Enter port number...", preferences.getString(KEY_PORT, "1337"));
+		startButton = new Button(new Point(256, 100), new Point(128, 28), font, textures, " Join Game");
 		
 		errorFont = new BitmapFont(Gdx.files.internal("font32.fnt")); 
-		errorMessageArea = new TextArea(new Point(160, 30), new Point(320, 24), errorFont, "", "");
+		errorMessageArea = new TextArea(new Point(160, 30), new Point(320, 24), errorFont, textures, "", "");
 
 		creditsFont = new BitmapFont(Gdx.files.internal("credits.fnt"));
 		int x = 320-Gdx.graphics.getWidth()/2;
 		
-		creditsArea = new TextArea(new Point(x, -32), new Point(0, 0), creditsFont, "", 
-				"Game by Mattias Gustafsson, Sebastian Hjelm, Markus Olsson, Måns Åhlander\n"
+		creditsArea = new TextArea(new Point(x, -32), new Point(0, 0), creditsFont, textures, 
+				"", "Game by Mattias Gustafsson, Sebastian Hjelm, Markus Olsson, Måns Åhlander\n"
 				+ "Music by Grandvision, F4LL0UT (www.newgrounds.com)");
 	}
 	
@@ -80,11 +81,11 @@ public class TitleScreen extends InputAdapter {
 	}
 
 	private int getHeightOffset() {
-		return Gdx.graphics.getHeight()/2 - texture.getHeight()/2;
+		return Gdx.graphics.getHeight()/2 - texture.getRegionHeight()/2;
 	}
 
 	private int getWidthOffset() {
-		return Gdx.graphics.getWidth()/2 - texture.getWidth()/2;
+		return Gdx.graphics.getWidth()/2 - texture.getRegionWidth()/2;
 	}
 	
 	@Override

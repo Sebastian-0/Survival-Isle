@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import isle.survival.world.TextureBase;
 import util.Point;
 
 public class ChatBox {
@@ -14,11 +15,11 @@ public class ChatBox {
 	private boolean enabled;
 	private BitmapFont font;
 	
-	public ChatBox() {
+	public ChatBox(TextureBase textures) {
 		font = new BitmapFont(Gdx.files.internal("high_tower_text24.fnt"));
 		position = new Point();
 		size = new Point();
-		textField = new TextField(position, size, font, "Enter text...", "");
+		textField = new TextField(position, size, font, textures, "Enter text...", "");
 		textField.setFocus(true);
 	}
 	

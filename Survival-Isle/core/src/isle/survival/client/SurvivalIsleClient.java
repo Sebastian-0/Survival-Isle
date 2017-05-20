@@ -36,13 +36,13 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		particleBase = new ParticleBase();
 		soundBase = new SoundBase();
 		
-		titleScreen = new TitleScreen(this, spriteBatch);
+		titleScreen = new TitleScreen(this, spriteBatch, textureBase);
 		Gdx.input.setInputProcessor(titleScreen);
 		
 		Shaders.initShaders();
 		spriteBatch.setShader(Shaders.colorShader);
 		
-		//GLProfiler.enable();
+		GLProfiler.enable();
 	}
 
 	@Override
@@ -83,14 +83,14 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				titleScreen.draw();
 			} else {
 				game.update();
-//				long startTime = System.currentTimeMillis();
+				long startTime = System.currentTimeMillis();
 				game.draw();	
-//				long endTime = System.currentTimeMillis();
-//				long dTime = endTime - startTime;
-//				System.out.println("Frame time: " + dTime + "ms, Draw calls: " + GLProfiler.drawCalls + 
-//						" Shader switches: " + GLProfiler.shaderSwitches + " Texture bindings: " + GLProfiler.textureBindings + 
-//						" Vertex counts: " + GLProfiler.vertexCount.average);
-//				GLProfiler.reset();
+				long endTime = System.currentTimeMillis();
+				long dTime = endTime - startTime;
+				System.out.println("Frame time: " + dTime + "ms, Draw calls: " + GLProfiler.drawCalls + 
+						" Shader switches: " + GLProfiler.shaderSwitches + " Texture bindings: " + GLProfiler.textureBindings + 
+						" Vertex counts: " + GLProfiler.vertexCount.average);
+				GLProfiler.reset();
 			}
 		}
 	}

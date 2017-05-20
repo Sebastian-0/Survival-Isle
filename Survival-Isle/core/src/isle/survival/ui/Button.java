@@ -1,17 +1,17 @@
 package isle.survival.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+import isle.survival.world.TextureBase;
 import util.Point;
 
 public class Button extends MenuComponent {
 	
-	public Button(Point position, Point size, BitmapFont font, String text) {
+	public Button(Point position, Point size, BitmapFont font, TextureBase textures, String text) {
 		super(position, size, font, "", text);
-		background = new Texture("button_background.png");
-		backgroundFocus = new Texture("button_background.png");
+		background = textures.getTexture("button_background");
+		backgroundFocus = textures.getTexture("button_background");
 	}
 
 	@Override

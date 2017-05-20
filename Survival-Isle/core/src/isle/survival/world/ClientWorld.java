@@ -2,9 +2,9 @@ package isle.survival.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
 import server.Connection;
@@ -24,7 +24,7 @@ public class ClientWorld extends World {
 	private float[][] debug;
 	private int[][] shiny;
 	private boolean isDaytime; 
-	private Texture nightTexture;
+	private TextureRegion nightTexture;
 	private double duskTimer;
 	private long nightMusicId;
 	
@@ -38,7 +38,7 @@ public class ClientWorld extends World {
 		debug = new float[0][0];
 		isDaytime = true;
 		
-		nightTexture = new Texture("night.png");
+		nightTexture = textureBase.getTexture("night");
 		duskTimer = 0;
 		
 		nightMusicId = -1;

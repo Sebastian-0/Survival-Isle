@@ -1,9 +1,9 @@
 package isle.survival.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import util.Point;
 
@@ -14,8 +14,8 @@ public abstract class MenuComponent {
 	protected Point position;
 	protected Point size;
 	protected BitmapFont font;
-	protected Texture background;
-	protected Texture backgroundFocus;
+	protected TextureRegion background;
+	protected TextureRegion backgroundFocus;
 	
 	public MenuComponent(Point position, Point size, BitmapFont font, String defaultText, String text) {
 		this.position = position;
