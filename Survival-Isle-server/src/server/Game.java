@@ -240,7 +240,7 @@ public class Game implements GameInterface, TimeListener, Serializable {
 				c.sendUpdateObject(p);
 		});
 		List<Enemy> enemies = worldObjects.getObjectsOfType(Enemy.class);
-		enemies.forEach((e)->{e.spawnDeathEffect(this); removeObject(e);});
+		enemies.forEach(e->e.dieByDawn((float)Math.random()+0.01f));
 	}
 	
 	@Override

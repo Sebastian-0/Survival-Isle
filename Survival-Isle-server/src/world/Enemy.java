@@ -25,6 +25,8 @@ public class Enemy extends GameObject implements Serializable {
 	private boolean prioritizeCrystals;
 	private GameObject target;
 	
+	private float timeToLive = 0;
+	
 	public Enemy(int difficulty) {
 		type = ObjectType.Enemy;
 		
@@ -38,6 +40,12 @@ public class Enemy extends GameObject implements Serializable {
 	@Override
 	public void update(GameInterface game, double deltaTime) {
 		super.update(game, deltaTime);
+		
+		if (timeToLive > 0) {
+			timeToLive -= deltaTime;
+			if (timeToLive <= 0)
+				die(game);;
+		}
 
 		if (target == null || target.shouldBeRemoved || !lockTarget) {
 			List<GameObject> targets = new ArrayList<>();
@@ -121,7 +129,11 @@ public class Enemy extends GameObject implements Serializable {
 		spawnDeathEffect(game);
 	}
 	
-	public void spawnDeathEffect(GameInterface game) {
+	private void spawnDeathEffect(GameInterface game) {
 		game.doForEachClient(s->s.sendCreateEffect(EffectType.EnemyDied, getId()));
+	}
+	
+	public void dieByDawn(float ttl) {
+		timeToLive = ttl;
 	}
 }
