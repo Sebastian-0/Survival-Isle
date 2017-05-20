@@ -90,7 +90,7 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 //				System.out.println("Frame time: " + dTime + "ms, Draw calls: " + GLProfiler.drawCalls + 
 //						" Shader switches: " + GLProfiler.shaderSwitches + " Texture bindings: " + GLProfiler.textureBindings + 
 //						" Vertex counts: " + GLProfiler.vertexCount.average);
-				GLProfiler.reset();
+//				GLProfiler.reset();
 			}
 		}
 	}
