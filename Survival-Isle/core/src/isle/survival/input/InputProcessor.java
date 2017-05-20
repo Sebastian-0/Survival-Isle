@@ -90,6 +90,9 @@ public class InputProcessor extends InputAdapter {
 		case Input.Keys.F2:
 			game.toggleDebug();
 			break;
+		case Input.Keys.F3:
+			game.togglePerformanceMode();
+			break;
 		case Input.Keys.SPACE:
 			coder.sendActivateTool();
 			break;

@@ -59,6 +59,7 @@ public class ClientGame implements ClientGameInterface {
 	private int deathCount;
 
 	private boolean inDebugMode;
+	private boolean inPerformanceMode;
 	private BitmapFont debugFont;
 	
 	private Ui ui;
@@ -140,7 +141,8 @@ public class ClientGame implements ClientGameInterface {
 		worldObjects.draw(xView, yView);
 		worldEffects.draw(xView, yView);
 		
-		world.drawShininess(xView, yView, inventory.getAmount(ItemType.RespawnCrystal));
+		if (!inPerformanceMode)
+			world.drawShininess(xView, yView, inventory.getAmount(ItemType.RespawnCrystal));
 		
 		world.drawTime();
 		
@@ -157,7 +159,6 @@ public class ClientGame implements ClientGameInterface {
 		
 		spriteBatch.draw(frameBuffer.getColorBufferTexture(), 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0, 0, 1, 1);
 		spriteBatch.setShader(Shaders.colorShader);
-
 		
 		if (inDebugMode)
 			world.drawDebug(debugFont, xView, yView);
@@ -251,7 +252,8 @@ public class ClientGame implements ClientGameInterface {
 					NetworkObject enemy = worldObjects.getObject(objectId);
 					if (enemy != null) {
 						soundBase.playSoundAtPosition("enemy_death", new Point(enemy.getX(), enemy.getY()));
-						worldEffects.addEffect(new EnemyDiedEffect(enemy, particleBase));
+						if (!inPerformanceMode)
+							worldEffects.addEffect(new EnemyDiedEffect(enemy, particleBase));
 					}
 				}
 				break;
@@ -310,5 +312,11 @@ public class ClientGame implements ClientGameInterface {
 	@Override
 	public void toggleDebug() {
 		inDebugMode = !inDebugMode;
+	}
+
+	@Override
+	public void togglePerformanceMode() {
+		inPerformanceMode = !inPerformanceMode;
+		
 	}
 }
