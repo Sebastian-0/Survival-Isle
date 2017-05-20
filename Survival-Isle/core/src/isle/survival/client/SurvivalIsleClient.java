@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 
 import isle.survival.shaders.Shaders;
 import isle.survival.world.ParticleBase;
@@ -40,6 +41,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		
 		Shaders.initShaders();
 		spriteBatch.setShader(Shaders.colorShader);
+		
+		//GLProfiler.enable();
 	}
 
 	@Override
@@ -80,7 +83,14 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				titleScreen.draw();
 			} else {
 				game.update();
+				long startTime = System.currentTimeMillis();
 				game.draw();	
+				long endTime = System.currentTimeMillis();
+				long dTime = endTime - startTime;
+//				System.out.println("Frame time: " + dTime + "ms, Draw calls: " + GLProfiler.drawCalls + 
+//						" Shader switches: " + GLProfiler.shaderSwitches + " Texture bindings: " + GLProfiler.textureBindings + 
+//						" Vertex counts: " + GLProfiler.vertexCount.average);
+				GLProfiler.reset();
 			}
 		}
 	}
