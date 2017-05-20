@@ -83,10 +83,10 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 				titleScreen.draw();
 			} else {
 				game.update();
-				long startTime = System.currentTimeMillis();
+//				long startTime = System.currentTimeMillis();
 				game.draw();	
-				long endTime = System.currentTimeMillis();
-				long dTime = endTime - startTime;
+//				long endTime = System.currentTimeMillis();
+//				long dTime = endTime - startTime;
 //				System.out.println("Frame time: " + dTime + "ms, Draw calls: " + GLProfiler.drawCalls + 
 //						" Shader switches: " + GLProfiler.shaderSwitches + " Texture bindings: " + GLProfiler.textureBindings + 
 //						" Vertex counts: " + GLProfiler.vertexCount.average);
