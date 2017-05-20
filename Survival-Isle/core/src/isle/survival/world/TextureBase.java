@@ -1,19 +1,27 @@
 package isle.survival.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class TextureBase {
-	private ObjectMap<Integer, Texture> groundTileTextures;
-	private ObjectMap<Integer, Texture> wallTileTextures;
-	private ObjectMap<Integer, Texture> objectTextures;
 	
-	private ObjectMap<String, Texture> textures;
+	private TextureAtlas textureAtlas;
+	
+	private ObjectMap<Integer, TextureRegion> groundTileTextures;
+	private ObjectMap<Integer, TextureRegion> wallTileTextures;
+	private ObjectMap<Integer, TextureRegion> objectTextures;
+	
+	private ObjectMap<String, TextureRegion> textures;
 
-	private Texture defaultTexture;
+	private TextureRegion defaultTexture;
 
 	public TextureBase() {
+		textureAtlas = new TextureAtlas(Gdx.files.internal("game_textures.atlas"));
+		
 		groundTileTextures = new ObjectMap<>();
 		wallTileTextures = new ObjectMap<>();
 		objectTextures = new ObjectMap<>();
@@ -22,94 +30,89 @@ public class TextureBase {
 	}
 	
 	public void setUpTextures() {
-		defaultTexture = new Texture("default.png");
+		defaultTexture = textureAtlas.findRegion("default");
+		if (defaultTexture == null)
+			defaultTexture = new TextureRegion(new Texture(64, 64, Format.RGBA8888));
 		setUpGroundTileTextures();
 		setUpWallTileTextures();
 		setUpObjectTextures();
 	}
 
 	private void setUpGroundTileTextures() {
-		groundTileTextures.put(0, new Texture("seafloor.png"));
-		groundTileTextures.put(1, new Texture("grass.png"));
-		groundTileTextures.put(2, new Texture("rock.png"));
-		groundTileTextures.put(3, new Texture("stump.png"));
-		groundTileTextures.put(4, new Texture("shallow_water.png"));
-		groundTileTextures.put(5, new Texture("beach.png"));
-		groundTileTextures.put(6, new Texture("flowers.png"));
+		groundTileTextures.put(0, textureAtlas.findRegion("seafloor"));
+		groundTileTextures.put(1, textureAtlas.findRegion("grass"));
+		groundTileTextures.put(2, textureAtlas.findRegion("rock"));
+		groundTileTextures.put(3, textureAtlas.findRegion("stump"));
+		groundTileTextures.put(4, textureAtlas.findRegion("shallow_water"));
+		groundTileTextures.put(5, textureAtlas.findRegion("beach"));
+		groundTileTextures.put(6, textureAtlas.findRegion("flowers"));
 	}
 	
 	private void setUpWallTileTextures() {
-		wallTileTextures.put(0, new Texture("water.png"));
-		wallTileTextures.put(1, new Texture("forest.png"));
-		wallTileTextures.put(2, new Texture("mountain.png"));
-		wallTileTextures.put(3, new Texture("woodwall.png"));
-		wallTileTextures.put(4, new Texture("stonewall.png"));
-		wallTileTextures.put(5, new Texture("enemy_spawn.png"));
-		wallTileTextures.put(6, new Texture("turret_base.png"));
-		wallTileTextures.put(7, new Texture("respawn_crystal.png"));
+		wallTileTextures.put(0, textureAtlas.findRegion("water"));
+		wallTileTextures.put(1, textureAtlas.findRegion("forest"));
+		wallTileTextures.put(2, textureAtlas.findRegion("mountain"));
+		wallTileTextures.put(3, textureAtlas.findRegion("woodwall"));
+		wallTileTextures.put(4, textureAtlas.findRegion("stonewall"));
+		wallTileTextures.put(5, textureAtlas.findRegion("enemy_spawn"));
+		wallTileTextures.put(6, textureAtlas.findRegion("turret_base"));
+		wallTileTextures.put(7, textureAtlas.findRegion("respawn_crystal"));
 	}
 	
 	private void setUpObjectTextures() {
-		objectTextures.put(0, new Texture("friend_down.png"));
-		objectTextures.put(1, new Texture("friend_right.png"));
-		objectTextures.put(2, new Texture("friend_up.png"));
-		objectTextures.put(3, new Texture("friend_left.png"));
+		objectTextures.put(0, textureAtlas.findRegion("friend_down"));
+		objectTextures.put(1, textureAtlas.findRegion("friend_right"));
+		objectTextures.put(2, textureAtlas.findRegion("friend_up"));
+		objectTextures.put(3, textureAtlas.findRegion("friend_left"));
 		
-		objectTextures.put(4, new Texture("player_down.png"));
-		objectTextures.put(5, new Texture("player_right.png"));
-		objectTextures.put(6, new Texture("player_up.png"));
-		objectTextures.put(7, new Texture("player_left.png"));
+		objectTextures.put(4, textureAtlas.findRegion("player_down"));
+		objectTextures.put(5, textureAtlas.findRegion("player_right"));
+		objectTextures.put(6, textureAtlas.findRegion("player_up"));
+		objectTextures.put(7, textureAtlas.findRegion("player_left"));
 
-		objectTextures.put(8, new Texture("enemy_down.png"));
-		objectTextures.put(9, new Texture("enemy_right.png"));
-		objectTextures.put(10, new Texture("enemy_up.png"));
-		objectTextures.put(11, new Texture("enemy_left.png"));
+		objectTextures.put(8, textureAtlas.findRegion("enemy_down"));
+		objectTextures.put(9, textureAtlas.findRegion("enemy_right"));
+		objectTextures.put(10, textureAtlas.findRegion("enemy_up"));
+		objectTextures.put(11, textureAtlas.findRegion("enemy_left"));
 		
-		objectTextures.put(12, new Texture("turret_down.png"));
-		objectTextures.put(13, new Texture("turret_right.png"));
-		objectTextures.put(14, new Texture("turret_up.png"));
-		objectTextures.put(15, new Texture("turret_left.png"));
+		objectTextures.put(12, textureAtlas.findRegion("turret_down"));
+		objectTextures.put(13, textureAtlas.findRegion("turret_right"));
+		objectTextures.put(14, textureAtlas.findRegion("turret_up"));
+		objectTextures.put(15, textureAtlas.findRegion("turret_left"));
 
-		objectTextures.put(16, new Texture("empty.png"));
-		objectTextures.put(17, new Texture("empty.png"));
-		objectTextures.put(18, new Texture("empty.png"));
-		objectTextures.put(19, new Texture("empty.png"));
+		objectTextures.put(16, textureAtlas.findRegion("empty"));
+		objectTextures.put(17, textureAtlas.findRegion("empty"));
+		objectTextures.put(18, textureAtlas.findRegion("empty"));
+		objectTextures.put(19, textureAtlas.findRegion("empty"));
 	}
 
 	public void dispose() {
-		defaultTexture.dispose();
-
-		groundTileTextures.forEach((t) -> {t.value.dispose();}); 
-		wallTileTextures.forEach((t) -> {t.value.dispose();}); 
-		objectTextures.forEach((t) -> {t.value.dispose();}); 
-		textures.forEach((t) -> {t.value.dispose();}); 
+		textureAtlas.dispose();
 	}
 	
-	public Texture getGroundTileTexture(int tileId) {
+	public TextureRegion getGroundTileTexture(int tileId) {
 		return groundTileTextures.get(tileId, defaultTexture);
 	}
 	
-	public Texture getWallTileTexture(int tileId) {
+	public TextureRegion getWallTileTexture(int tileId) {
 		return wallTileTextures.get(tileId, defaultTexture);
 	}
 
-	public Texture getObjectTexture(int objectId) {
+	public TextureRegion getObjectTexture(int objectId) {
 		return objectTextures.get(objectId, defaultTexture);
 	}
 	
-	public Texture getTexture(String name) {
+	public TextureRegion getTexture(String name) {
 		if (textures.containsKey(name)) {
 			return textures.get(name);
 		}
 		
-		try {
-			Texture texture = new Texture(name + ".png");
-			textures.put(name, texture);
-			return texture;
-		} catch (GdxRuntimeException e) {
-			System.out.println("Failed to load the texture: " + name + ".png");
-			textures.put(name, defaultTexture);
-			return defaultTexture;
+		TextureRegion texture = textureAtlas.findRegion(name);
+		if (texture == null) {
+			System.out.println("Failed to find the texture: " + name);
+			texture = defaultTexture;
 		}
+		textures.put(name, texture);
+		return texture;
 	}
 }

@@ -6,10 +6,9 @@ import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
 import isle.survival.client.GameProtocolCoder;
@@ -21,7 +20,7 @@ import world.Tool;
 public class BuildMenu {
 	private Array<BuildItem> items;
 	private BuildItem selectedItem;
-	private Texture marker;
+	private TextureRegion marker;
 	private GameProtocolCoder coder;
 	private TextureBase textureBase;
 	private BitmapFont font;
@@ -32,8 +31,8 @@ public class BuildMenu {
 		
 		BuildItem.whiteTexture = textures.getTexture("white");
 		items = new Array<>();
-		Texture pickaxe = textures.getTexture("pickaxe");
-		pickaxe.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		TextureRegion pickaxe = textures.getTexture("pickaxe");
+//		pickaxe.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 		items.add(new BuildItem(Tool.Pickaxe, pickaxe, inventory));
 		items.add(new BuildItem(Tool.WoodWall, textures.getTexture("buildwoodwall"), inventory));
 		items.add(new BuildItem(Tool.StoneWall, textures.getTexture("buildstonewall"), inventory));
@@ -124,7 +123,7 @@ public class BuildMenu {
 		return selectedItem.getTool();
 	}
 	
-	public Texture getSelectedToolIcon() {
+	public TextureRegion getSelectedToolIcon() {
 		return selectedItem.getIcon();
 	}
 
@@ -160,14 +159,14 @@ public class BuildMenu {
 				float x = selectedItem.getPosition().x - 6;
 				offset += (iconSize + 2);
 				float y = selectedItem.getPosition().y + 46 + offset;
-				Texture image = textureBase.getTexture(resource.getKey().getTexture());
+				TextureRegion image = textureBase.getTexture(resource.getKey().getTexture());
 				spriteBatch.setColor(1.0f, 1.0f, 1.0f, 0.5f);
 				spriteBatch.draw(
 						image, 
-						x - (scale - 1) * image.getWidth()/2, 
-						y - (scale - 1) * image.getHeight()/2,
-						image.getWidth() * scale, 
-						image.getHeight() * scale);
+						x - (scale - 1) * image.getRegionWidth()/2, 
+						y - (scale - 1) * image.getRegionHeight()/2,
+						image.getRegionWidth() * scale, 
+						image.getRegionHeight() * scale);
 				spriteBatch.setColor(Color.WHITE);
 				
 				if(inventory.getAmount(resource.getKey()) < resource.getValue())

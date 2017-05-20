@@ -6,9 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 
 import isle.survival.input.ClientGameInterface;
@@ -173,9 +173,9 @@ public class ClientGame implements ClientGameInterface {
 		}
 		
 		if (gameOver) {
-			Texture t = textureBase.getTexture("game_over");
-			int x = Gdx.graphics.getWidth()/2 - t.getWidth()/2;
-			int y = Math.min(Gdx.graphics.getHeight()*2/3, Gdx.graphics.getHeight() - t.getHeight());
+			TextureRegion t = textureBase.getTexture("game_over");
+			int x = Gdx.graphics.getWidth()/2 - t.getRegionWidth()/2;
+			int y = Math.min(Gdx.graphics.getHeight()*2/3, Gdx.graphics.getHeight() - t.getRegionHeight());
 			spriteBatch.draw(t, x, y);
 		}
 		

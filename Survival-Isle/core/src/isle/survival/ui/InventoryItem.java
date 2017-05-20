@@ -1,22 +1,21 @@
 package isle.survival.ui;
 
-import util.Point;
-import world.Inventory;
-import world.ItemType;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+import util.Point;
+import world.Inventory;
+import world.ItemType;
 
 public class InventoryItem {
 	public static final int HEIGHT = 32;
 	public static final float ANIMATION_TIME = 1f;
 	private static final int PADDING = 8;
 	
-	private Texture image;
+	private TextureRegion image;
 	private String text;
 	
 	private Point position;
@@ -29,7 +28,7 @@ public class InventoryItem {
 	private ItemType type;
 	private int amount;
 	
-	public InventoryItem(Texture image, String text, BitmapFont font, Inventory inventory, ItemType type) {
+	public InventoryItem(TextureRegion image, String text, BitmapFont font, Inventory inventory, ItemType type) {
 		this.image = image;
 		this.text = text;
 		this.font = font;
@@ -58,13 +57,13 @@ public class InventoryItem {
 		float x = position.x;
 		spriteBatch.draw(
 				image, 
-				x - (scale - 1) * image.getWidth()/2, 
-				position.y - (scale - 1) * image.getHeight()/2,
-				image.getWidth() * scale, 
-				image.getHeight() * scale);
+				x - (scale - 1) * image.getRegionWidth()/2, 
+				position.y - (scale - 1) * image.getRegionHeight()/2,
+				image.getRegionWidth() * scale, 
+				image.getRegionHeight() * scale);
 		
-		x += image.getWidth() + PADDING;
-		float y = position.y + image.getHeight() / 2 + font.getCapHeight()/2;
+		x += image.getRegionWidth() + PADDING;
+		float y = position.y + image.getRegionHeight() / 2 + font.getCapHeight()/2;
 		font.draw(spriteBatch, text, x, y);
 		x += layout.width;
 		font.draw(spriteBatch, Integer.toString(amount), x, y);

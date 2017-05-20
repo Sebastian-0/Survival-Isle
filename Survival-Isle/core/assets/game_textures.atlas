@@ -1,0 +1,482 @@
+
+game_textures.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+beach
+  rotate: false
+  xy: 1033, 228
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+buildcrystal
+  rotate: false
+  xy: 643, 148
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+buildstonewall
+  rotate: false
+  xy: 643, 18
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+buildturret
+  rotate: false
+  xy: 643, 278
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+buildwoodwall
+  rotate: false
+  xy: 773, 278
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 1111, 402
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+button_background
+  rotate: false
+  xy: 1101, 327
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+button_background_focus
+  rotate: false
+  xy: 1385, 396
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+cracks_0
+  rotate: false
+  xy: 1033, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+cracks_1
+  rotate: false
+  xy: 1555, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+cracks_2
+  rotate: false
+  xy: 1555, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+default
+  rotate: false
+  xy: 1067, 262
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+empty
+  rotate: false
+  xy: 1725, 498
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+enemy_down
+  rotate: false
+  xy: 1067, 92
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+enemy_left
+  rotate: false
+  xy: 1033, 126
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+enemy_right
+  rotate: false
+  xy: 1385, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+enemy_spawn
+  rotate: false
+  xy: 1521, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+enemy_up
+  rotate: false
+  xy: 1419, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+flowers
+  rotate: false
+  xy: 1453, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+forest
+  rotate: false
+  xy: 1419, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+friend_down
+  rotate: false
+  xy: 1067, 126
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+friend_left
+  rotate: false
+  xy: 1033, 160
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+friend_right
+  rotate: false
+  xy: 1487, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+friend_up
+  rotate: false
+  xy: 1419, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+game_over
+  rotate: false
+  xy: 643, 408
+  size: 480, 91
+  orig: 480, 91
+  offset: 0, 0
+  index: -1
+gather_effect
+  rotate: false
+  xy: 1, 1
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+grass
+  rotate: false
+  xy: 1657, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+item_1
+  rotate: false
+  xy: 773, 18
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+item_2
+  rotate: false
+  xy: 903, 18
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+item_3
+  rotate: false
+  xy: 1125, 371
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+item_4
+  rotate: false
+  xy: 773, 148
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+item_5
+  rotate: false
+  xy: 1255, 371
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+marker
+  rotate: false
+  xy: 1033, 330
+  size: 76, 76
+  orig: 76, 76
+  offset: 0, 0
+  index: -1
+mountain
+  rotate: false
+  xy: 1657, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+mute_music
+  rotate: false
+  xy: 1033, 24
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+mute_sound
+  rotate: false
+  xy: 1589, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+night
+  rotate: false
+  xy: 1657, 430
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+pickaxe
+  rotate: false
+  xy: 903, 278
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+player_down
+  rotate: false
+  xy: 1623, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+player_left
+  rotate: false
+  xy: 1067, 296
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+player_right
+  rotate: false
+  xy: 1453, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+player_up
+  rotate: false
+  xy: 1033, 194
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+respawn_crystal_icon
+  rotate: false
+  xy: 1033, 296
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+respawn_crystal
+  rotate: false
+  xy: 1033, 296
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+respawn_crystal_icon_old
+  rotate: false
+  xy: 1589, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+rock
+  rotate: false
+  xy: 1521, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+seafloor
+  rotate: false
+  xy: 1521, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+shallow_water
+  rotate: false
+  xy: 1623, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+shiny_tile
+  rotate: false
+  xy: 1589, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+stone_icon
+  rotate: false
+  xy: 1067, 24
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+stone_icon_old
+  rotate: false
+  xy: 1623, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+stonewall
+  rotate: false
+  xy: 1033, 58
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+stump
+  rotate: false
+  xy: 1033, 262
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+text_field_background
+  rotate: false
+  xy: 1691, 464
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+text_field_background_focus
+  rotate: false
+  xy: 1033, 21
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+title_screen
+  rotate: false
+  xy: 1, 19
+  size: 640, 480
+  orig: 640, 480
+  offset: 0, 0
+  index: -1
+turret_base
+  rotate: false
+  xy: 1385, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+turret_down
+  rotate: false
+  xy: 1453, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+turret_left
+  rotate: false
+  xy: 1067, 228
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+turret_right
+  rotate: false
+  xy: 1691, 467
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+turret_up
+  rotate: false
+  xy: 1067, 194
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+unshiny_tile
+  rotate: false
+  xy: 1487, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+water
+  rotate: false
+  xy: 1067, 160
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 903, 148
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+wood_icon
+  rotate: false
+  xy: 1067, 58
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wood_icon_bkp
+  rotate: false
+  xy: 1385, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+wood_icon_old
+  rotate: false
+  xy: 1555, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+woodwall
+  rotate: false
+  xy: 1487, 399
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

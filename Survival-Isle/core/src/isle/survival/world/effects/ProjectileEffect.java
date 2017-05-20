@@ -1,7 +1,7 @@
 package isle.survival.world.effects;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import isle.survival.world.Effect;
@@ -42,11 +42,11 @@ public class ProjectileEffect extends Effect {
 
 	@Override
 	public void draw(SpriteBatch spriteBatch, TextureBase textures, float xView, float yView) {
-		Texture texture = textureBase.getTexture(textureName);
+		TextureRegion texture = textureBase.getTexture(textureName);
 		spriteBatch.draw(
 				texture, 
-				(position.x+0.5f)*World.TILE_WIDTH - texture.getWidth()/4 - xView, 
-				(position.y+0.5f)*World.TILE_WIDTH - texture.getHeight()/4 - yView, 
-				(float)texture.getWidth(), (float)texture.getHeight());
+				(position.x+0.5f)*World.TILE_WIDTH - texture.getRegionWidth()/4 - xView, 
+				(position.y+0.5f)*World.TILE_WIDTH - texture.getRegionHeight()/4 - yView, 
+				(float)texture.getRegionWidth(), (float)texture.getRegionHeight());
 	}
 }

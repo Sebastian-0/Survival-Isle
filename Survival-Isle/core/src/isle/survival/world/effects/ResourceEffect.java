@@ -1,22 +1,22 @@
 package isle.survival.world.effects;
 
-import world.World;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+
 import isle.survival.world.Effect;
 import isle.survival.world.NetworkObject;
 import isle.survival.world.TextureBase;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
+import world.World;
 
 public class ResourceEffect extends Effect {
 	private Vector2 position;
 	private NetworkObject target;
 	private Vector2 speed;
-	private Texture texture;
+	private TextureRegion texture;
 	
-	public ResourceEffect(int x, int y, NetworkObject target, Texture texture) {
+	public ResourceEffect(int x, int y, NetworkObject target, TextureRegion texture) {
 		this.position = new Vector2(x, y);
 		this.target = target;
 		speed = new Vector2(0.15f, 0).setAngle(MathUtils.random() * 360);
@@ -44,8 +44,8 @@ public class ResourceEffect extends Effect {
 		float xView, float yView) {
 		spriteBatch.draw(
 				texture, 
-				(position.x+0.5f)*World.TILE_WIDTH - texture.getWidth()/4 - xView, 
-				(position.y+0.5f)*World.TILE_WIDTH - texture.getHeight()/4 - yView, 
-				texture.getWidth()/2, texture.getHeight()/2);
+				(position.x+0.5f)*World.TILE_WIDTH - texture.getRegionWidth()/4 - xView, 
+				(position.y+0.5f)*World.TILE_WIDTH - texture.getRegionHeight()/4 - yView, 
+				texture.getRegionWidth()/2, texture.getRegionHeight()/2);
 	}
 }

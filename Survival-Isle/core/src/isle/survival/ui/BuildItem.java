@@ -1,8 +1,8 @@
 package isle.survival.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import util.Point;
 import world.Inventory;
@@ -12,16 +12,16 @@ public class BuildItem {
 	public static final int WIDTH  = 64;
 	public static final int HEIGHT = 64;
 	
-	public static Texture whiteTexture; 
+	public static TextureRegion whiteTexture; 
 	
 	private Tool tool;
-	private Texture texture;
+	private TextureRegion texture;
 	private Inventory inventory;
 	
 	private Point position;
 	private boolean isSelected;
 	
-	public BuildItem(Tool tool, Texture texture, Inventory inventory) {
+	public BuildItem(Tool tool, TextureRegion texture, Inventory inventory) {
 		this.tool = tool;
 		this.texture = texture;
 		this.inventory = inventory;
@@ -60,7 +60,7 @@ public class BuildItem {
 		return tool;
 	}
 	
-	public Texture getIcon() {
+	public TextureRegion getIcon() {
 		return texture;
 	}
 
