@@ -6,476 +6,504 @@ filter: Linear,Linear
 repeat: none
 beach
   rotate: false
-  xy: 1033, 228
+  xy: 1385, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 buildcrystal
   rotate: false
-  xy: 643, 148
+  xy: 903, 21
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 buildstonewall
   rotate: false
-  xy: 643, 18
+  xy: 773, 281
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 buildturret
   rotate: false
-  xy: 643, 278
+  xy: 643, 281
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 buildwoodwall
   rotate: false
-  xy: 773, 278
+  xy: 773, 21
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 bullet
   rotate: false
-  xy: 1111, 402
+  xy: 1111, 405
   size: 4, 4
   orig: 4, 4
   offset: 0, 0
   index: -1
 button_background
   rotate: false
-  xy: 1101, 327
+  xy: 1, 1
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 button_background_focus
   rotate: false
-  xy: 1385, 396
+  xy: 1385, 399
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 cracks_0
   rotate: false
-  xy: 1033, 92
+  xy: 1033, 61
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 cracks_1
   rotate: false
-  xy: 1555, 467
+  xy: 1067, 95
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 cracks_2
   rotate: false
-  xy: 1555, 399
+  xy: 1589, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 default
   rotate: false
-  xy: 1067, 262
+  xy: 1657, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 empty
   rotate: false
-  xy: 1725, 498
+  xy: 1759, 501
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 enemy_down
   rotate: false
-  xy: 1067, 92
+  xy: 1487, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 enemy_left
   rotate: false
-  xy: 1033, 126
+  xy: 1385, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 enemy_right
   rotate: false
-  xy: 1385, 467
+  xy: 1623, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 enemy_spawn
   rotate: false
-  xy: 1521, 467
+  xy: 1521, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 enemy_up
   rotate: false
-  xy: 1419, 399
+  xy: 1033, 231
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 flowers
   rotate: false
-  xy: 1453, 399
+  xy: 1033, 197
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 forest
   rotate: false
-  xy: 1419, 467
+  xy: 1691, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 friend_down
   rotate: false
-  xy: 1067, 126
+  xy: 1589, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 friend_left
   rotate: false
-  xy: 1033, 160
+  xy: 1033, 163
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 friend_right
   rotate: false
-  xy: 1487, 467
+  xy: 1067, 231
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 friend_up
   rotate: false
-  xy: 1419, 433
+  xy: 1033, 95
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 game_over
   rotate: false
-  xy: 643, 408
+  xy: 643, 411
   size: 480, 91
   orig: 480, 91
   offset: 0, 0
   index: -1
 gather_effect
   rotate: false
-  xy: 1, 1
+  xy: 1, 4
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 grass
   rotate: false
-  xy: 1657, 467
+  xy: 1453, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 item_1
   rotate: false
-  xy: 773, 18
+  xy: 773, 151
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 item_2
   rotate: false
-  xy: 903, 18
+  xy: 1125, 374
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 item_3
   rotate: false
-  xy: 1125, 371
+  xy: 903, 281
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 item_4
   rotate: false
-  xy: 773, 148
+  xy: 903, 151
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 item_5
   rotate: false
-  xy: 1255, 371
+  xy: 643, 21
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 marker
   rotate: false
-  xy: 1033, 330
+  xy: 1033, 333
   size: 76, 76
   orig: 76, 76
   offset: 0, 0
   index: -1
 mountain
   rotate: false
-  xy: 1657, 433
+  xy: 1657, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 mute_music
   rotate: false
-  xy: 1033, 24
+  xy: 1067, 299
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 mute_sound
   rotate: false
-  xy: 1589, 467
+  xy: 1385, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 night
   rotate: false
-  xy: 1657, 430
+  xy: 1101, 330
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 pickaxe
   rotate: false
-  xy: 903, 278
+  xy: 1255, 374
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_down
   rotate: false
-  xy: 1623, 399
+  xy: 1623, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 player_left
   rotate: false
-  xy: 1067, 296
+  xy: 1623, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 player_right
   rotate: false
-  xy: 1453, 467
+  xy: 1453, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 player_up
   rotate: false
-  xy: 1033, 194
+  xy: 1555, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 respawn_crystal_icon
   rotate: false
-  xy: 1033, 296
+  xy: 1067, 163
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 respawn_crystal
   rotate: false
-  xy: 1033, 296
+  xy: 1067, 163
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 respawn_crystal_icon_old
   rotate: false
-  xy: 1589, 399
+  xy: 1067, 61
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 rock
   rotate: false
-  xy: 1521, 399
+  xy: 1067, 265
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 seafloor
   rotate: false
-  xy: 1521, 433
+  xy: 1033, 299
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 shallow_water
   rotate: false
-  xy: 1623, 467
+  xy: 1419, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 shiny_tile
   rotate: false
-  xy: 1589, 433
+  xy: 1487, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 stone_icon
   rotate: false
-  xy: 1067, 24
+  xy: 1555, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 stone_icon_old
   rotate: false
-  xy: 1623, 433
+  xy: 1521, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 stonewall
   rotate: false
-  xy: 1033, 58
+  xy: 1453, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 stump
   rotate: false
-  xy: 1033, 262
+  xy: 1067, 129
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 text_field_background
   rotate: false
-  xy: 1691, 464
+  xy: 1033, 24
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 text_field_background_focus
   rotate: false
-  xy: 1033, 21
+  xy: 1725, 467
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 title_screen
   rotate: false
-  xy: 1, 19
+  xy: 1, 22
   size: 640, 480
   orig: 640, 480
   offset: 0, 0
   index: -1
 turret_base
   rotate: false
-  xy: 1385, 399
+  xy: 1691, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 turret_down
   rotate: false
-  xy: 1453, 433
+  xy: 1487, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 turret_left
   rotate: false
-  xy: 1067, 228
+  xy: 1067, 27
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 turret_right
   rotate: false
-  xy: 1691, 467
+  xy: 1657, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 turret_up
   rotate: false
-  xy: 1067, 194
+  xy: 1419, 402
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+undead_down
+  rotate: false
+  xy: 1725, 470
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+undead_left
+  rotate: false
+  xy: 1067, 197
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+undead_right
+  rotate: false
+  xy: 1589, 470
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+undead_up
+  rotate: false
+  xy: 1419, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 unshiny_tile
   rotate: false
-  xy: 1487, 433
+  xy: 1555, 402
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 water
   rotate: false
-  xy: 1067, 160
+  xy: 1033, 265
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 903, 148
+  xy: 643, 151
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 wood_icon
   rotate: false
-  xy: 1067, 58
+  xy: 1521, 436
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 wood_icon_bkp
   rotate: false
-  xy: 1385, 433
+  xy: 1033, 129
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 wood_icon_old
   rotate: false
-  xy: 1555, 433
+  xy: 1033, 27
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 woodwall
   rotate: false
-  xy: 1487, 399
+  xy: 1691, 470
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
