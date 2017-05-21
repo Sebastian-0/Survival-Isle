@@ -25,6 +25,7 @@ import world.RespawnCrystal;
 import world.ServerWorld;
 import world.SoundType;
 import world.Time;
+import world.Undead;
 import world.WorldObjects;
 
 public class Game implements GameInterface, TimeListener, Serializable {
@@ -241,6 +242,8 @@ public class Game implements GameInterface, TimeListener, Serializable {
 		});
 		List<Enemy> enemies = worldObjects.getObjectsOfType(Enemy.class);
 		enemies.forEach(e->e.dieByDawn((float)Math.random()+0.01f));
+		List<Undead> undead = worldObjects.getObjectsOfType(Undead.class);
+		undead.forEach(e->e.dieByDawn((float)Math.random()+0.01f));
 	}
 	
 	@Override
@@ -248,6 +251,20 @@ public class Game implements GameInterface, TimeListener, Serializable {
 		doForEachClient(c->c.sendTimeEvent(0));
 		System.out.println("Dusk of day " + day);
 		world.decreaseTemporaryPathCost();
+		
+		for (Player p : worldObjects.getObjectsOfType(Player.class)) {
+			if (p.getInventory().getAmount(ItemType.RespawnCrystal) == 0 && p.getDeathCount() > 0) {
+				for (int i = 0; i < p.getDeathCount(); i++) {
+					Undead e = new Undead(p, time.getDay());
+					worldObjects.addObject(e);
+					e.setPosition(world.getRandomEnemySpawnPoint());
+			
+					for (ServerProtocolCoder client : clients) {
+						client.sendCreateObject(e);
+					}	
+				}
+			}
+		}
 	}
 
 	public synchronized void parseClientMessage(ClientProtocol code, ServerProtocolCoder client) {

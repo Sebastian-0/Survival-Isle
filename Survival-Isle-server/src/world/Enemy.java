@@ -19,13 +19,14 @@ public class Enemy extends GameObject implements Serializable {
 	private List<Point> path = new ArrayList<>();
 	private double movementCounter = 0;
 	private int pathAgeInSteps;
-	private int maxHp;
+	protected int maxHp;
 
 	private boolean lockTarget;
 	private boolean prioritizeCrystals;
-	private GameObject target;
+	protected GameObject target;
 	
 	private float timeToLive = 0;
+	private boolean deadByDaylight;
 	
 	public Enemy(int difficulty) {
 		type = ObjectType.Enemy;
@@ -39,27 +40,8 @@ public class Enemy extends GameObject implements Serializable {
 	
 	@Override
 	public void update(GameInterface game, double deltaTime) {
-		super.update(game, deltaTime);
-		
-		if (timeToLive > 0) {
-			timeToLive -= deltaTime;
-			if (timeToLive <= 0)
-				die(game);;
-		}
-
-		if (target == null || target.shouldBeRemoved || !lockTarget) {
-			List<GameObject> targets = new ArrayList<>();
-			targets.addAll(game.getObjects().getObjectsOfType(Player.class));
-			if (prioritizeCrystals) {
-				for (int i = 0; i < targets.size(); i++) {
-					if (((Player)targets.get(i)).getInventory().getAmount(ItemType.RespawnCrystal) == 0) {
-						targets.remove(i);
-					}
-				}
-			}
-			targets.addAll(game.getObjects().getObjectsOfType(RespawnCrystal.class));
-			target = getClosestObject(targets);
-		}
+		checkTimeToLive(game, deltaTime);
+		updateTarget(game);
 		
 		if (path.isEmpty()) {
 			if (target != null) {
@@ -73,10 +55,10 @@ public class Enemy extends GameObject implements Serializable {
 		
 		animationState = AnimationState.Idle;
 		movementCounter += deltaTime;
-		if (movementCounter > MOVEMENT_TIME) {
+		if (movementCounter > getMovementTime()) {
 			movementCounter = 0;
 			if (target != null && target.position.equals(position)) {
-				target.damage(game, PLAYER_DAMAGE);
+				target.damage(game, getPlayerDamage());
 				animationState = AnimationState.Attacking;
 				animationTarget.x = position.x - 1 + (float)Math.floor(Math.random()*3);
 				animationTarget.y = position.y - 1 + (float)Math.floor(Math.random()*3);
@@ -89,7 +71,7 @@ public class Enemy extends GameObject implements Serializable {
 					setPosition(nextPosition);
 					shouldSendUpdate = true;
 				} else if (wallTile.isBreakable()) {
-					if (game.getWorld().attackWallTileAtPosition(nextPosition, TILE_DAMAGE)) {
+					if (game.getWorld().attackWallTileAtPosition(nextPosition, getTileDamage())) {
 						animationState = AnimationState.Attacking;
 						animationTarget.set(nextPosition);
 						shouldSendUpdate = true;
@@ -105,7 +87,7 @@ public class Enemy extends GameObject implements Serializable {
 				}
 			}
 			
-			if (++pathAgeInSteps > MAXIMUM_PATH_AGE) {
+			if (++pathAgeInSteps > getMaximumPathAge()) {
 				path.clear();
 			}
 		}
@@ -116,20 +98,63 @@ public class Enemy extends GameObject implements Serializable {
 			isHurt = false;
 	}
 
+	protected void updateTarget(GameInterface game) {
+		if (target == null || target.shouldBeRemoved || !lockTarget) {
+			List<GameObject> targets = new ArrayList<>();
+			targets.addAll(game.getObjects().getObjectsOfType(Player.class));
+			if (prioritizeCrystals) {
+				for (int i = 0; i < targets.size(); i++) {
+					if (((Player)targets.get(i)).getInventory().getAmount(ItemType.RespawnCrystal) == 0) {
+						targets.remove(i);
+					}
+				}
+			}
+			targets.addAll(game.getObjects().getObjectsOfType(RespawnCrystal.class));
+			target = getClosestObject(targets);
+		}
+	}
+
+	protected void checkTimeToLive(GameInterface game, double deltaTime) {
+		if (timeToLive > 0) {
+			timeToLive -= deltaTime;
+			if (timeToLive <= 0) {
+				deadByDaylight = true;
+				die(game);
+			}
+		}
+	}
+
 	@Override
 	protected int getMaxHp() {
 		return maxHp;
+	}
+	
+	protected double getMovementTime() {
+		return MOVEMENT_TIME;
+	}
+
+	protected int getMaximumPathAge() {
+		return MAXIMUM_PATH_AGE;
+	}
+	
+	protected int getPlayerDamage() {
+		return PLAYER_DAMAGE;
+	}
+	
+	protected int getTileDamage() {
+		return TILE_DAMAGE;
 	}
 	
 	@Override
 	protected void die(GameInterface game) {
 		super.die(game);
 		shouldBeRemoved = true;
-		game.getWorld().increaseTemporaryPathCost(getPosition(), 1, 1f);
+		if (!deadByDaylight)
+			game.getWorld().increaseTemporaryPathCost(getPosition(), 1, 1f);
 		spawnDeathEffect(game);
 	}
 	
-	private void spawnDeathEffect(GameInterface game) {
+	protected void spawnDeathEffect(GameInterface game) {
 		game.doForEachClient(s->s.sendCreateEffect(EffectType.EnemyDied, getId()));
 	}
 	

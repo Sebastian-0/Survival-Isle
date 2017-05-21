@@ -84,6 +84,11 @@ public class TextureBase {
 		objectTextures.put(17, textureAtlas.findRegion("empty"));
 		objectTextures.put(18, textureAtlas.findRegion("empty"));
 		objectTextures.put(19, textureAtlas.findRegion("empty"));
+		
+		objectTextures.put(20, textureAtlas.findRegion("undead_down"));
+		objectTextures.put(21, textureAtlas.findRegion("undead_right"));
+		objectTextures.put(22, textureAtlas.findRegion("undead_up"));
+		objectTextures.put(23, textureAtlas.findRegion("undead_left"));
 	}
 
 	public void dispose() {

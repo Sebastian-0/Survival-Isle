@@ -5,5 +5,6 @@ public enum ObjectType {
 	Friend,
 	Enemy,
 	Turret, 
-	RespawnCrystal;
+	RespawnCrystal, 
+	Undead;
 }
