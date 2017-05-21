@@ -17,6 +17,13 @@ import server.ConnectionClosedException;
 import server.ServerProtocol;
 
 public class SurvivalIsleClient extends ApplicationAdapter implements ClientInterface, TitleScreenBackend {
+	private static final boolean ENABLE_PROFILING = false;
+
+	private int totalRenderedFrames;
+	private int totalRenderedSeconds;
+	private int frameCount;
+	private long frameTimestamp;
+	
 	private SpriteBatch spriteBatch;
 	private TextureBase textureBase;
 	private ParticleBase particleBase;
@@ -42,7 +49,8 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		Shaders.initShaders();
 		spriteBatch.setShader(Shaders.colorShader);
 		
-		GLProfiler.enable();
+		if (ENABLE_PROFILING)
+			GLProfiler.enable();
 	}
 
 	@Override
@@ -81,16 +89,28 @@ public class SurvivalIsleClient extends ApplicationAdapter implements ClientInte
 		synchronized (this) {
 			if (game == null) {
 				titleScreen.draw();
+				frameTimestamp = System.currentTimeMillis();
 			} else {
 				game.update();
-				long startTime = System.currentTimeMillis();
-				game.draw();	
-				long endTime = System.currentTimeMillis();
-				long dTime = endTime - startTime;
-				System.out.println("Frame time: " + dTime + "ms, Draw calls: " + GLProfiler.drawCalls + 
-						" Shader switches: " + GLProfiler.shaderSwitches + " Texture bindings: " + GLProfiler.textureBindings + 
-						" Vertex counts: " + GLProfiler.vertexCount.average);
-				GLProfiler.reset();
+				game.draw();
+				
+				if (ENABLE_PROFILING) {
+					frameCount++;
+					if (System.currentTimeMillis() - frameTimestamp > 1000) {
+						totalRenderedFrames += frameCount;
+						totalRenderedSeconds += 1;
+						System.out.println(String.format("FPS: %d (avg. %.2f), draw calls: %.2f, shader switches: %.2f, texture binds: %.2f, vertex count: %.2f, ",
+								frameCount,
+								totalRenderedFrames / (float)totalRenderedSeconds,
+								GLProfiler.drawCalls / (float)frameCount,
+								GLProfiler.shaderSwitches / (float)frameCount,
+								GLProfiler.textureBindings / (float)frameCount,
+								GLProfiler.vertexCount.average / (float)frameCount));
+						frameCount = 0;
+						frameTimestamp = System.currentTimeMillis();
+						GLProfiler.reset();
+					}
+				}
 			}
 		}
 	}
