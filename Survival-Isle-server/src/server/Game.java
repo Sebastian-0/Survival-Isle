@@ -263,6 +263,16 @@ public class Game implements GameInterface, TimeListener, Serializable {
 						client.sendCreateObject(e);
 					}	
 				}
+				
+				if (Math.random() < p.getDeathCount() * 0.1) {
+					String name = "Noname";
+					ServerProtocolCoder spc = getClientFromPlayer(p);
+					if (spc != null) {
+						name = spc.getName();
+					}
+					final String n = name;
+					doForEachClient(c->c.sendChatMessage("Echoes", "Chills run down " + n + "'s back. They come for you!"));
+				}
 			}
 		}
 	}
@@ -353,14 +363,10 @@ public class Game implements GameInterface, TimeListener, Serializable {
 		deadPlayers.add(player);
 
 		String name = "Noname";
-		Iterator<Entry<ServerProtocolCoder, Player>> iterator = players.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Entry<ServerProtocolCoder, Player> e = iterator.next();
-			if (e.getValue() == player) {
-				name = e.getKey().getName();
-				e.getKey().sendDeathCount(deathCount);
-				break;
-			}
+		ServerProtocolCoder spc = getClientFromPlayer(player);
+		if (spc != null) {
+			name = spc.getName();
+			spc.sendDeathCount(deathCount);
 		}
 		final String n = name;
 
@@ -372,6 +378,17 @@ public class Game implements GameInterface, TimeListener, Serializable {
 			doForEachClient(c->c.sendChatMessage("Echoes", "As " + n + " dies, their " + crystalCount + " crystals shatter!"));
 		
 		checkForRespawnCrystals();
+	}
+
+	private ServerProtocolCoder getClientFromPlayer(Player player) {
+		Iterator<Entry<ServerProtocolCoder, Player>> iterator = players.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<ServerProtocolCoder, Player> e = iterator.next();
+			if (e.getValue() == player) {
+				return e.getKey();
+			}
+		}
+		return null;
 	}
 	
 	@Override
