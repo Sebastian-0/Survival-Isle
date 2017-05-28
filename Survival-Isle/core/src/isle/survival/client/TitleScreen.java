@@ -56,7 +56,7 @@ public class TitleScreen extends InputAdapter {
 		
 		creditsArea = new TextArea(new Point(x, -32), new Point(0, 0), creditsFont, textures, 
 				"", "Game by Mattias Gustafsson, Sebastian Hjelm, Markus Olsson, Måns Åhlander\n"
-				+ "Music by Grandvision, F4LL0UT (www.newgrounds.com)");
+				+ "Music by Grandvision, John Rawman (www.newgrounds.com)");
 	}
 	
 	public void draw() {
